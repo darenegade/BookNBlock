@@ -1,0 +1,69 @@
+\documentclass[17pt]{beamer}
+
+\usepackage{default}
+
+% Datum
+\usepackage[ddmmyyyy]{datetime}
+\renewcommand{\dateseparator}{.}
+
+% Themenwahl
+\usepackage[utf8]{inputenc}
+\usetheme{Warsaw}  
+
+\title{OpenChain}
+\author{Daniel Sikeler}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{frame}
+\frametitle{Architektur}
+\begin{itemize}
+	\item nur \textbf{eine} Validierungsinstanz \\ $\Rightarrow$ Client-Server Architektur
+	\item Observer/Anwender besitzen eine \textbf{readonly} Kopie
+	\item Clients/Wallets verbinden sich mit dem Validator
+	\item Smart Contracts
+	\item Gateways
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Architektur}
+\begin{itemize}
+	\item Jede Organization hat eine separate Blockchain
+	\item OpenChains können miteinander verbunden werden
+	\item Anbindung an Bitcoin Blockchain möglich
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Vorteile}
+\begin{itemize}
+	\item keine Miner $\Rightarrow$ Transaktionen sind kostenlos und schnell
+	\item einheitliche API (HTTP)
+	\item kein zentrales Ledger, sondern viele spezialisierte
+	\item keine Kryptowährung
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Aktuelle Entwicklung}
+\begin{itemize}
+	\item letzte Aktivität auf Github vor einem Jahr
+	\item Server in C\#, Docker-Container vorhanden
+	\item Referenz-Client in Javascript
+	\item gute Dokumentation
+\end{itemize}
+\end{frame}
+	
+\begin{frame}
+	\frametitle{Links}
+	\begin{itemize}
+		\item \href{https://www.openchain.org/}{Homepage}
+		\item \href{https://github.com/openchain}{Github}
+		\item \href{https://wallet.openchain.org/\#/addendpoint}{Endpoint anlegen}
+	\end{itemize}
+\end{frame}
+
+\end{document}
