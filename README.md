@@ -12,6 +12,7 @@ BookNBlock soll ein Community-Marktplatz für Buchungen und Vermietungen von Unt
 
 ## Starten des Servers
 * Entwicklungsserver auf Port 4200 starten: `npm start`
+* Die Anwendung ist dann erreichbar unter [http://localhost:4200](http://localhost:4200 "")
 
 
 ## Smart Contract 
