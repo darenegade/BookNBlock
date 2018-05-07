@@ -2,7 +2,6 @@ package contract
 
 import (
 	"time"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 
@@ -11,26 +10,33 @@ import (
 
 type (
 	Ethereum struct {
-		//Path to GETH Node
+		//Pfad zur GETH Node
 		gethPath string
-		//Address to the contract
+		//Adresse zum Contract
 		contractAddress string
+		//Instanz des schon im Network deployten Contract
+		contract BlocknBlock
 	}
 )
 
-func (e *Ethereum) IsAllowedAt(mieter tür.MieterID, t time.Time) (bool, error) {
-	panic("not yet implemented")
+func (e *Ethereum) IsAllowedAt(mieter tür.MieterID, t time.Time) (allowed bool, error) {
+	//Annahme: Es existiert ein Contract mit der Methode 'isAllowed(mieterId string, time time.Time)'
+	allowed = e.contract.isAllowedAt(mieter,t)
 }
-func (e. *Ethereum) setPath(path string){
+func (e *Ethereum) setPath(path string){
 	e.path=path
 }
+func (e *Ethereum) setContractAddress(contractAddress string){
+	e.contractAddress=contractAddress
+}
 func (e *Ethererum) createConnection(){
-	// Create an IPC based RPC connection to a remote node
-	conn, err := ethclient.Dial(e.path)
+	//  IPC basierte RPC-Verbindung wird zur entfernten Node hergestellt
+	conn, err := ethclient.Dial(e.gethPath)
 	if err != nil {
 		log.Fatalf("Failed to connect to the Ethereum client: %v", err)
 	}
-	contract, err := NewTronToken(common.HexToAddress("0xf230b790E05390FC8295F4d3F60332c93BEd42e2"), conn)
+	//Annahme: Contract mit Namen BlocknBlock wurde schon zum Network deployed
+	e.contract, err := NewBlocknBlock(common.HexToAddress(e.contractAddress), conn)
 	if err != nil {
 		log.Fatalf("Failed to instantiate contract: %v", err)
 }
