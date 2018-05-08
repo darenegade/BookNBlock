@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgLoggerModule } from '@nsalaun/ng-logger';
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { EthereumConnector } from './connector/ethereum.connector';
@@ -25,6 +26,7 @@ import { BlockchainConnector } from './connector/blockchain.connector';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     NgLoggerModule.forRoot(environment.loglevel),
     RouterModule.forRoot(routes)
   ],
