@@ -1,4 +1,4 @@
 export class OpenDoorMessage {
-    doorId: number
-    renterId: number
+    doorId: number;
+    renterId: number;
 }
