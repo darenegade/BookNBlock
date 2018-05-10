@@ -9,6 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-mock": "ng serve --environment=mock",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",

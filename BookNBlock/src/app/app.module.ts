@@ -15,6 +15,7 @@ import { LoginComponent } from './ui/login/login.component';
 import { BookingComponent } from './ui/booking/booking.component';
 import { OfferComponent } from './ui/offer/offer.component';
 import { BlockchainConnector } from './connector/blockchain.connector';
+import { MockConnector } from './connector/mock.connector';
 
 
 @NgModule({
@@ -31,7 +32,7 @@ import { BlockchainConnector } from './connector/blockchain.connector';
     RouterModule.forRoot(routes)
   ],
   providers: [
-    { provide: BlockchainConnector, useClass: EthereumConnector },
+    { provide: BlockchainConnector, useClass: environment.mock ? MockConnector : EthereumConnector },
     MessageService,
     QueryService,
     TransactionService
