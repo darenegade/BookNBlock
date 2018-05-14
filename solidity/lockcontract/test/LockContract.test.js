@@ -16,7 +16,7 @@ beforeEach(async () => {
 
     //Use one of those accounts to deploy the contract
     lockContract = await new web3.eth.Contract(JSON.parse(interface))
-        .deploy({ data: bytecode, arguments: ['Room locked!']})
+        .deploy({ data: bytecode, arguments: ['Room uninitialized']})
         .send({ from: accounts[0], gas: '1000000' })
 
     lockContract.setProvider(provider);
@@ -27,8 +27,28 @@ describe('lockContract', () => {
         assert.ok(lockContract.options.address);
     });
 
-    it('has default message Room locked', async () => {
+    it('has default message Room uninitialized', async () => {
         const message = await lockContract.methods.message().call();
-        assert.equal(message, 'Room locked!')
+        assert.equal(message, 'Room uninitialized')
     });
+
+    it('can change the message', async () => {
+        await lockContract.methods.setMessage('Room out of order').send({ from: accounts[0]});
+        const message = await lockContract.methods.message().call();
+        assert.equal(message, 'Room out of order')
+    });
+
+    it('can be booked', async () => {
+        await lockContract.methods.setBooked().send({ from: accounts[0]});
+        const message = await lockContract.methods.message().call();
+        assert.equal(message, 'Booked!')
+    })
+
+    it('can be set free', async () => {
+        await lockContract.methods.setFree().send({ from: accounts[0]});
+        const message = await lockContract.methods.message().call();
+        assert.equal(message, 'Free!')
+    })
+
+
 });

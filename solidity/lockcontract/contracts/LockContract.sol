@@ -10,4 +10,12 @@ contract LockContract {
     function setMessage(string newMessage) public {
         message = newMessage;
     }
+
+    function setBooked() public {
+        message = "Booked!";
+    }
+
+    function setFree() public {
+        message = "Free!";
+    }
 }
