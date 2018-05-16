@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BlockchainConnector } from './blockchain.connector';
 import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
+import { Logger } from '@nsalaun/ng-logger';
 
 /**
  * A connector to the Ethereum Blockchain.
@@ -9,7 +10,7 @@ import { OpenDoorMessage } from '../data/OpenDoorMessage';
 @Injectable()
 export class EthereumConnector extends BlockchainConnector {
 
-  constructor() {
+  constructor(private log: Logger) {
     super();
   }
 
@@ -26,6 +27,10 @@ export class EthereumConnector extends BlockchainConnector {
   }
 
   insertOffer(offer: Offer): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
+  rentOffer(offerId: number): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 

@@ -49,6 +49,11 @@ export class MockConnector extends BlockchainConnector {
     return Promise.resolve();
   }
 
+  rentOffer(offerId: number): Promise<boolean> {
+    this.log.debug(`MockConnector.rentOffer(${offerId})`);
+    return Promise.resolve(this.offers.find(offer => offer.id === offerId) !== undefined);
+  }
+
   sendMessage(message: OpenDoorMessage): Promise<void> {
     this.log.debug(`MockConnector.sendMessage(${JSON.stringify(message)})`);
     return Promise.resolve();

@@ -32,6 +32,12 @@ export abstract class BlockchainConnector {
   abstract insertOffer(offer: Offer): Promise<void>;
 
   /**
+   * Rent an offer.
+   * @param offerId: Id of the offer.
+   */
+  abstract rentOffer(offerId: number): Promise<boolean>;
+
+  /**
    * Send a message to open a door.
    * @param message The message.
    */

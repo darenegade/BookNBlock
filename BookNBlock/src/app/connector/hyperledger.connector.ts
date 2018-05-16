@@ -29,6 +29,10 @@ export class HyperledgerConnector extends BlockchainConnector {
     throw new Error('Method not implemented.');
   }
 
+  rentOffer(offerId: number): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+
   sendMessage(message: OpenDoorMessage): Promise<void> {
     throw new Error('Method not implemented.');
   }
