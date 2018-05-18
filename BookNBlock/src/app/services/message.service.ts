@@ -3,7 +3,8 @@ import { Logger } from '@nsalaun/ng-logger';
 import { BlockchainConnectorFactory } from '../connector/connector.factory';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
 import { User } from '../data/user';
-import * as crypto from 'crypto';
+import { privateEncrypt } from 'crypto-browserify';
+import { Buffer } from 'buffer';
 
 @Injectable()
 export class MessageService {
@@ -17,9 +18,9 @@ export class MessageService {
   sendMessage(doorId: number): Promise<void> {
     const message: OpenDoorMessage = {
       doorId: doorId,
-      renterId: crypto.privateEncrypt(this.user.privateKey, new Buffer(this.user.walletId)).toString(),
+      renterId: privateEncrypt(this.user.privateKey, new Buffer(String(this.user.walletId))).toString(),
       renterPK: this.user.publicKey,
-      timestemp: crypto.privateEncrypt(this.user.privateKey, new Buffer(Date.now())).toString()
+      timestemp: privateEncrypt(this.user.privateKey, new Buffer(Date.now().toString())).toString()
     } as OpenDoorMessage;
     return this.factory.get().sendMessage(message);
   }
