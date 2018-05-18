@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgLoggerModule } from '@nsalaun/ng-logger';
+import { NgLoggerModule, Logger } from '@nsalaun/ng-logger';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -14,7 +14,8 @@ import { routes } from './app.routes';
 import { LoginComponent } from './ui/login/login.component';
 import { BookingComponent } from './ui/booking/booking.component';
 import { OfferComponent } from './ui/offer/offer.component';
-import { BlockchainConnector } from './connector/blockchain.connector';
+import { BlockchainConnectorFactory } from './connector/connector.factory';
+import { User } from './data/user';
 import { MockConnector } from './connector/mock.connector';
 
 
@@ -32,7 +33,11 @@ import { MockConnector } from './connector/mock.connector';
     RouterModule.forRoot(routes)
   ],
   providers: [
-    { provide: BlockchainConnector, useClass: environment.mock ? MockConnector : EthereumConnector },
+    { provide: User, useValue: {walletId: 12345, privateKey: 'private', publicKey: 'public', ethereum: true} as User },
+    BlockchainConnectorFactory,
+    MockConnector,
+    HyperledgerConnector,
+    EthereumConnector,
     MessageService,
     QueryService,
     TransactionService
