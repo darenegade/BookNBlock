@@ -14,7 +14,7 @@ const deploy = async () => {
     console.log('Attempting to deploy from account', accounts[0]);
 
     const result = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: '0x' + bytecode, arguments: ['Room uninitialized'] })
+    .deploy({ data: '0x' + bytecode })
     .send({ gas: '1000000', from: accounts[0] });
 
     //you can check the deployed contract on rinkeby.etherscan.io
