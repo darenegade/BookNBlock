@@ -1,21 +1,25 @@
 pragma solidity ^0.4.17;
 
 contract LockContract {
-    string public message;
 
-    function LockContract(string initialMessage) public {
-        message = initialMessage;
+    struct booking {
+        uint bookingId;
+        uint256 checkIn;
+        uint256 checkOut;
+        address tenant;
     }
 
-    function setMessage(string newMessage) public {
-        message = newMessage;
+    struct offer{
+        uint offerId;
+        string price;   //Fixed Numbers currently not supported: https://github.com/ethereum/solidity/issues/409
+        string objectName;
+        string ownerName;
+        address owner;
+        booking[] bookings;
     }
 
-    function setBooked() public {
-        message = "Booked!";
+    constructor(string initialMessage) public {
+        
     }
 
-    function setFree() public {
-        message = "Free!";
-    }
 }
