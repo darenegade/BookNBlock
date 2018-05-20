@@ -34,7 +34,7 @@ contract LockContract {
 
         require(offers.length > offerID);
 
-        Offer memory offer = offers[offerID];
+        Offer storage offer = offers[offerID];
         require(offer.owner == msg.sender);
 
         for (uint i = offerID; i<offers.length-1; i++) {
