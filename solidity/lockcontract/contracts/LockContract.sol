@@ -3,26 +3,25 @@ pragma solidity ^0.4.23;
 contract LockContract {
 
     struct Booking {
+        uint offerID;
         uint256 checkIn;
         uint256 checkOut;
         address tenant;
     }
 
     struct Offer{
-        uint offerID;
         string price;   //Fixed Numbers currently not supported: https://github.com/ethereum/solidity/issues/409
         string objectName;
         string ownerName;
         address owner;
-        Booking[] bookings;
     }
 
     Offer[] public offers;
+    Booking[] public bookings;
 
     function insertOffer(string price, string objectName, string ownerName) public {
         
         Offer memory c;
-        c.offerID = offers.length + 1;
         c.price = price;
         c.objectName = objectName;
         c.ownerName = ownerName;
@@ -34,7 +33,7 @@ contract LockContract {
 
         require(offers.length > offerID);
 
-        Offer offer = offers[offerID];
+        Offer storage offer = offers[offerID];
         require(offer.owner == msg.sender);
 
         for (uint i = offerID; i<offers.length-1; i++) {
@@ -48,15 +47,15 @@ contract LockContract {
 
         require(checkIn < checkOut);
         require(offers.length > offerID);
-        
-        Offer offer = offers[offerID];
 
-        for(uint i = 0; i<offer.bookings.length; i++) {
-            Booking b = offer.bookings[i];
-            require(b.checkIn > checkOut || b.checkOut < checkIn);
+        for(uint i = 0; i < bookings.length; i++) {
+            Booking storage b = bookings[i];
+            if(b.offerID == offerID){
+                require(b.checkIn > checkOut || b.checkOut < checkIn);
+            }
         }
 
-        offer.bookings.push(Booking(checkIn, checkOut, msg.sender));
+        bookings.push(Booking(offerID, checkIn, checkOut, msg.sender));
     }
 
 }
