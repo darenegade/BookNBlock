@@ -16,7 +16,7 @@ beforeEach(async () => {
 
     //Use one of those accounts to deploy the contract
     lockContract = await new web3.eth.Contract(JSON.parse(interface))
-        .deploy({ data: bytecode, arguments: ['Room uninitialized']})
+        .deploy({ data: bytecode})
         .send({ from: accounts[0], gas: '1000000' })
 
     lockContract.setProvider(provider);
@@ -27,6 +27,7 @@ describe('lockContract', () => {
         assert.ok(lockContract.options.address);
     });
 
+    /** 
     it('has default message Room uninitialized', async () => {
         const message = await lockContract.methods.message().call();
         assert.equal(message, 'Room uninitialized')
@@ -49,6 +50,6 @@ describe('lockContract', () => {
         const message = await lockContract.methods.message().call();
         assert.equal(message, 'Free!')
     })
-
+    */
 
 });
