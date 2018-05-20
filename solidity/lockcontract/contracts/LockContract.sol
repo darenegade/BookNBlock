@@ -14,8 +14,7 @@ contract LockContract {
         string objectName;
         string ownerName;
         address owner;
-        mapping(uint => Booking[]) bookings;
-        uint bookingsSize;
+        Booking[] bookings;
     }
 
     Offer[] public offers;
@@ -52,13 +51,12 @@ contract LockContract {
         
         Offer storage offer = offers[offerID];
 
-        for(uint i = 0; i<offer.bookingsSize; i++) {
+        for(uint i = 0; i<offer.bookings.length; i++) {
             Booking storage b = offer.bookings[i];
             require(b.checkIn > checkOut || b.checkOut < checkIn);
         }
 
-        offer.bookings[offer.bookingsSize] = Booking(checkIn, checkOut, msg.sender);
-        offer.bookingsSize++;
+        offer.bookings.push(Booking(checkIn, checkOut, msg.sender));
     }
 
 }
