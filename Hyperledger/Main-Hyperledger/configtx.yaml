@@ -1,0 +1,91 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+---
+Profiles:
+
+    OneSingleOrgOrdererGenesis:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+    OneSingleOrgChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+            Capabilities:
+                <<: *ApplicationCapabilities
+
+Organizations:
+
+    - &OrdererOrg
+        Name: OrdererOrg
+
+        ID: OrdererBookAndBlock
+
+        MSPDir: crypto-config/ordererOrganizations/bookandblock.com/msp
+
+    - &Org1
+        Name: OrgBookAndBlock
+
+        ID: OrgBookAndBlock
+
+        MSPDir: crypto-config/peerOrganizations/org1.bookandblock.com/msp
+
+        AnchorPeers:
+            - Host: peer0.org1.bookandblock.com
+              Port: 7051
+
+Orderer: &OrdererDefaults
+
+    #Pay attention to this value as it is not intended for productional use
+    OrdererType: solo
+
+    Addresses:
+        - orderer.bookandblock.com:7050
+
+    #For the testing network we set the batch timeout to an higher amount in order to verify the correct processing of blocks with only one transaction inside, see below
+    BatchTimeout: 2s
+    #100s
+
+    BatchSize:
+        #Set to a minimum value in order to test correct block processing
+        MaxMessageCount: 10
+        #1
+
+        AbsoluteMaxBytes: 99 MB
+
+        PreferredMaxBytes: 512 KB
+
+    #Maybe Kafka in combination with ZooKeeper should be investigated in some further research
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+
+    Organizations:
+
+Application: &ApplicationDefaults
+
+    Organizations:
+
+Capabilities:
+    Global: &ChannelCapabilities
+        V1_1: true
+
+    Orderer: &OrdererCapabilities
+        V1_1: true
+
+    Application: &ApplicationCapabilities
+        V1_1: true
