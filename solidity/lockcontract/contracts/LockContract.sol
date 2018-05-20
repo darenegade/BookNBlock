@@ -1,9 +1,8 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.23;
 
 contract LockContract {
 
     struct Booking {
-        uint bookingID;
         uint256 checkIn;
         uint256 checkOut;
         address tenant;
@@ -15,25 +14,28 @@ contract LockContract {
         string objectName;
         string ownerName;
         address owner;
-        Booking[] bookings;
+        mapping(uint => Booking[]) bookings;
+        uint bookingsSize;
     }
 
-    Offer[] offers;
-
-    constructor() public {
-        offers = new Offer[](10);
-    }
+    Offer[] public offers;
 
     function insertOffer(string price, string objectName, string ownerName) public {
-        Booking[] memory bookingInit = new Booking[](10);
-        offers.push(Offer(offers.length + 1, price, objectName, ownerName, msg.sender, bookingInit));
+        
+        Offer memory c;
+        c.offerID = offers.length + 1;
+        c.price = price;
+        c.objectName = objectName;
+        c.ownerName = ownerName;
+        c.owner = msg.sender;
+        offers.push(c);
     }
 
     function deleteOffer(uint offerID) public {
 
         require(offers.length > offerID);
 
-        Offer offer = offers[offerID];
+        Offer memory offer = offers[offerID];
         require(offer.owner == msg.sender);
 
         for (uint i = offerID; i<offers.length-1; i++) {
@@ -46,15 +48,17 @@ contract LockContract {
     function rentAnOffer(uint offerID,  uint256 checkIn, uint256 checkOut) public {
 
         require(checkIn < checkOut);
-
         require(offers.length > offerID);
-        Offer offer = offers[offerID];        
+        
+        Offer storage offer = offers[offerID];
 
-        for(uint i = 0; i<offer.bookings.length; i++) {
-            require(offer.bookings[i].checkIn > checkOut || offer.bookings[i].checkOut < checkIn);
+        for(uint i = 0; i<offer.bookingsSize; i++) {
+            Booking storage b = offer.bookings[i];
+            require(b.checkIn > checkOut || b.checkOut < checkIn);
         }
 
-        offer.bookings.push(Booking(offer.bookings.length, checkIn, checkOut, msg.sender));
+        offer.bookings[offer.bookingsSize] = Booking(checkIn, checkOut, msg.sender);
+        offer.bookingsSize++;
     }
 
 }
