@@ -34,7 +34,7 @@ contract LockContract {
 
         require(offers.length > offerID);
 
-        Offer storage offer = offers[offerID];
+        Offer offer = offers[offerID];
         require(offer.owner == msg.sender);
 
         for (uint i = offerID; i<offers.length-1; i++) {
@@ -49,10 +49,10 @@ contract LockContract {
         require(checkIn < checkOut);
         require(offers.length > offerID);
         
-        Offer storage offer = offers[offerID];
+        Offer offer = offers[offerID];
 
         for(uint i = 0; i<offer.bookings.length; i++) {
-            Booking storage b = offer.bookings[i];
+            Booking b = offer.bookings[i];
             require(b.checkIn > checkOut || b.checkOut < checkIn);
         }
 
