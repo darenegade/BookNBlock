@@ -14,6 +14,7 @@ contract LockContract {
         string objectName;
         string ownerName;
         address owner;
+        uint[] bookingIndexes;
     }
 
     Offer[] public offers;
@@ -48,13 +49,16 @@ contract LockContract {
         require(checkIn < checkOut);
         require(offers.length > offerID);
 
-        for(uint i = 0; i < bookings.length; i++) {
-            Booking storage b = bookings[i];
+        uint[] storage bookingIndexes = offers[offerID].bookingIndexes;
+
+        for(uint i = 0; i < bookingIndexes.length; i++) {
+            Booking storage b = bookings[bookingIndexes[i]];
             if(b.offerID == offerID){
                 require(b.checkIn > checkOut || b.checkOut < checkIn);
             }
         }
 
+        bookingIndexes.push(bookings.length);
         bookings.push(Booking(offerID, checkIn, checkOut, msg.sender));
     }
 
