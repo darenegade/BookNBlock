@@ -14,19 +14,21 @@ contract LockContract {
         string objectName;
         string ownerName;
         address owner;
+        address door;
         uint[] bookingIndexes;
     }
 
     Offer[] public offers;
     Booking[] public bookings;
 
-    function insertOffer(string price, string objectName, string ownerName) public {
+    function insertOffer(string price, string objectName, string ownerName, address door) public {
         
         Offer memory c;
         c.price = price;
         c.objectName = objectName;
         c.ownerName = ownerName;
         c.owner = msg.sender;
+        c.door = door;
         offers.push(c);
     }
 
