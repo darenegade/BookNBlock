@@ -10,7 +10,7 @@ contract LockContract {
     }
 
     struct Offer{
-        string price;   //Fixed Numbers currently not supported: https://github.com/ethereum/solidity/issues/409
+        uint price;   //Price in Cent - Fixed Numbers currently not supported: https://github.com/ethereum/solidity/issues/409
         string objectName;
         string objectAddress;
         string ownerName;
@@ -25,8 +25,18 @@ contract LockContract {
     Offer[] public offers;
     Booking[] public bookings;
 
+    modifier offerAvailable(uint offerID) {
+        require(offers.length > offerID);
+        _;
+    }
+
+    modifier onlyOwner(uint offerID) {
+        require(offers[offerID].owner == msg.sender);
+        _;
+    }
+
     function insertOffer(
-        string price, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+        uint price, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
         ) public {
         
         require(validFrom < validUntil);
@@ -44,12 +54,30 @@ contract LockContract {
         offers.push(c);
     }
 
-    function deleteOffer(uint offerID) public {
-
-        require(offers.length > offerID);
+    function updateOffer(
+        uint offerID, uint price, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+        )
+         public 
+         offerAvailable(offerID)
+         onlyOwner(offerID){
+        
+        require(validFrom < validUntil);
 
         Offer storage offer = offers[offerID];
-        require(offer.owner == msg.sender);
+        offer.price = price;
+        offer.objectName = objectName;
+        offer.objectAddress = objectAddress;
+        offer.ownerName = ownerName;
+        offer.description = description;
+        offer.door = door;
+        offer.validFrom = validFrom;
+        offer.validUntil = validUntil;
+    }
+
+    function deleteOffer(uint offerID) 
+        public 
+        offerAvailable(offerID)
+        onlyOwner(offerID) {
 
         for (uint i = offerID; i<offers.length-1; i++) {
             offers[i] = offers[i+1];
@@ -58,10 +86,11 @@ contract LockContract {
         offers.length--;
     }
 
-    function rentAnOffer(uint offerID,  uint256 checkIn, uint256 checkOut) public {
+    function rentAnOffer(uint offerID,  uint256 checkIn, uint256 checkOut) 
+        public 
+        offerAvailable(offerID) {
 
         require(checkIn < checkOut);
-        require(offers.length > offerID);
 
         Offer storage offer = offers[offerID];
         require(checkIn >= offer.validFrom && checkOut <= offer.validUntil);
