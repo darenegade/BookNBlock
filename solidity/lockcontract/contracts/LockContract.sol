@@ -12,7 +12,11 @@ contract LockContract {
     struct Offer{
         string price;   //Fixed Numbers currently not supported: https://github.com/ethereum/solidity/issues/409
         string objectName;
+        string objectAddress;
         string ownerName;
+        string description;
+        uint256 validFrom;
+        uint256 validUntil;
         address owner;
         address door;
         uint[] bookingIndexes;
@@ -21,14 +25,22 @@ contract LockContract {
     Offer[] public offers;
     Booking[] public bookings;
 
-    function insertOffer(string price, string objectName, string ownerName, address door) public {
+    function insertOffer(
+        string price, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+        ) public {
         
+        require(validFrom < validUntil);
+
         Offer memory c;
         c.price = price;
         c.objectName = objectName;
+        c.objectAddress = objectAddress;
         c.ownerName = ownerName;
+        c.description = description;
         c.owner = msg.sender;
         c.door = door;
+        c.validFrom = validFrom;
+        c.validUntil = validUntil;
         offers.push(c);
     }
 
@@ -51,7 +63,10 @@ contract LockContract {
         require(checkIn < checkOut);
         require(offers.length > offerID);
 
-        uint[] storage bookingIndexes = offers[offerID].bookingIndexes;
+        Offer storage offer = offers[offerID];
+        require(checkIn >= offer.validFrom && checkOut <= offer.validUntil);
+
+        uint[] storage bookingIndexes = offer.bookingIndexes;
 
         for(uint i = 0; i < bookingIndexes.length; i++) {
             Booking storage b = bookings[bookingIndexes[i]];
