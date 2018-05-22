@@ -10,7 +10,7 @@ contract LockContract {
     }
 
     struct Offer{
-        uint price;   //Price in Cent - Fixed Numbers currently not supported: https://github.com/ethereum/solidity/issues/409
+        uint price;   //Price in Wei
         string objectName;
         string objectAddress;
         string ownerName;
@@ -26,13 +26,30 @@ contract LockContract {
     Booking[] public bookings;
 
     modifier offerAvailable(uint offerID) {
-        require(offers.length > offerID);
+        require(
+            offers.length > offerID,
+            "Offer not found"
+        );
         _;
     }
 
     modifier onlyOwner(uint offerID) {
-        require(offers[offerID].owner == msg.sender);
+        require(
+            offers[offerID].owner == msg.sender,
+            "Only Owner of Offer is alowed"
+        );
         _;
+    }
+
+    modifier costs(uint offerID) {
+        uint price = offers[offerID].price;
+        require(
+            msg.value >= price,
+            "Not enough Ether provided."
+        );
+        _;
+        if (msg.value > price)
+            msg.sender.transfer(msg.value - price);
     }
 
     function insertOffer(
@@ -87,7 +104,8 @@ contract LockContract {
     }
 
     function rentAnOffer(uint offerID,  uint256 checkIn, uint256 checkOut) 
-        public 
+        public
+        payable 
         offerAvailable(offerID) {
 
         require(checkIn < checkOut);
@@ -106,6 +124,7 @@ contract LockContract {
 
         bookingIndexes.push(bookings.length);
         bookings.push(Booking(offerID, checkIn, checkOut, msg.sender));
+        offer.owner.transfer(offer.price);
     }
 
 }
