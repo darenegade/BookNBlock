@@ -10,7 +10,7 @@ contract LockContract {
     }
 
     struct Offer{
-        uint price;   //Price in Wei
+        uint priceInWei;
         string objectName;
         string objectAddress;
         string ownerName;
@@ -42,24 +42,24 @@ contract LockContract {
     }
 
     modifier costs(uint offerID) {
-        uint price = offers[offerID].price;
+        uint priceInWei = offers[offerID].priceInWei;
         require(
-            msg.value >= price,
-            "Not enough Ether provided."
+            msg.value >= priceInWei,
+            "Not enough Wei provided."
         );
         _;
-        if (msg.value > price)
-            msg.sender.transfer(msg.value - price);
+        if (msg.value > priceInWei)
+            msg.sender.transfer(msg.value - priceInWei);
     }
 
     function insertOffer(
-        uint price, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+        uint priceInWei, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
         ) public {
         
         require(validFrom < validUntil);
 
         Offer memory c;
-        c.price = price;
+        c.priceInWei = priceInWei;
         c.objectName = objectName;
         c.objectAddress = objectAddress;
         c.ownerName = ownerName;
@@ -72,7 +72,7 @@ contract LockContract {
     }
 
     function updateOffer(
-        uint offerID, uint price, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+        uint offerID, uint priceInWei, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
         )
          public 
          offerAvailable(offerID)
@@ -81,7 +81,7 @@ contract LockContract {
         require(validFrom < validUntil);
 
         Offer storage offer = offers[offerID];
-        offer.price = price;
+        offer.priceInWei = priceInWei;
         offer.objectName = objectName;
         offer.objectAddress = objectAddress;
         offer.ownerName = ownerName;
@@ -124,7 +124,7 @@ contract LockContract {
 
         bookingIndexes.push(bookings.length);
         bookings.push(Booking(offerID, checkIn, checkOut, msg.sender));
-        offer.owner.transfer(offer.price);
+        offer.owner.transfer(offer.priceInWei);
     }
 
 }
