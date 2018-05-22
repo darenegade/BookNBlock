@@ -13,7 +13,8 @@ export class TransactionService {
     private log: Logger
   ) { }
 
-  insertOffer(doorId: number, prize: number, fromDate: Date, toDate: Date, address: string, name: string, image?: any): Promise<void> {
+  insertOffer(doorId: number, prize: number, fromDate: Date, toDate: Date,
+    address: string, name: string, description: string, image?: any): Promise<void> {
     const offer: Offer = {
       id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
       doorId: doorId,
@@ -23,14 +24,15 @@ export class TransactionService {
       toDate: toDate,
       address: address,
       name: name,
+      description: description,
       walletId: this.user.walletId,
       image: image
     } as Offer;
     return this.factory.get().insertOffer(offer);
   }
 
-  rentOffer(offerId: number): Promise<boolean> {
-    return this.factory.get().rentOffer(offerId);
+  rentOffer(offerId: number, checkIn: Date, checkOut: Date): Promise<boolean> {
+    return this.factory.get().rentOffer(offerId, checkIn, checkOut);
   }
 
 }

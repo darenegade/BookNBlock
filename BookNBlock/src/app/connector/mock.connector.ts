@@ -11,12 +11,12 @@ import { Logger } from '@nsalaun/ng-logger';
 export class MockConnector extends BlockchainConnector {
 
   private offers: Offer[] = [
-    { id: 1, doorId: 1, isBooked: false, prize: 100, fromDate: new Date(2018, 0, 1),
-      toDate: new Date(2018, 0, 31), address: 'World Disney', name: 'Mickey Mouse', walletId: 10000 },
-    { id: 2, doorId: 1, isBooked: true, prize: 100, fromDate: new Date(2018, 8, 1),
-      toDate: new Date(2018, 8, 10), address: 'World Disney', name: 'Mickey Mouse', walletId: 10000 },
-    { id: 3, doorId: 1, isBooked: false, prize: 100, fromDate: new Date(2018, 11, 24),
-      toDate: new Date(2018, 11, 30), address: 'Entenhausen', name: 'Donald Duck', walletId: 20000 }
+    { id: 1, doorId: 1, isBooked: false, prize: 100, fromDate: new Date(2018, 0, 1), toDate: new Date(2018, 0, 31),
+      address: 'World Disney', name: 'Mickey Mouse', description: 'Mickey\'s house', walletId: 10000 },
+    { id: 2, doorId: 1, isBooked: true, prize: 100, fromDate: new Date(2018, 8, 1), toDate: new Date(2018, 8, 10),
+      address: 'World Disney', name: 'Mickey Mouse', description: 'Mickey\'s house', walletId: 10000 },
+    { id: 3, doorId: 1, isBooked: false, prize: 100, fromDate: new Date(2018, 11, 24), toDate: new Date(2018, 11, 30),
+      address: 'Entenhausen', name: 'Donald Duck', description: 'Donalds\'s house', walletId: 20000 }
   ];
 
   constructor(private log: Logger) {
@@ -49,7 +49,7 @@ export class MockConnector extends BlockchainConnector {
     return Promise.resolve();
   }
 
-  rentOffer(offerId: number): Promise<boolean> {
+  rentOffer(offerId: number, checkIn?: Date, checkOut?: Date): Promise<boolean> {
     this.log.debug(`MockConnector.rentOffer(${offerId})`);
     return Promise.resolve(this.offers.find(offer => offer.id === offerId) !== undefined);
   }

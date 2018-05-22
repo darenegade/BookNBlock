@@ -34,8 +34,10 @@ export abstract class BlockchainConnector {
   /**
    * Rent an offer.
    * @param offerId: Id of the offer.
+   * @param checkIn: Optional. Date of check-in, if none is provided the offer fromDate is used.
+   * @param checkOut: Optional. Date of check-out, if none is provided the offer toDate is used.
    */
-  abstract rentOffer(offerId: number): Promise<boolean>;
+  abstract rentOffer(offerId: number, checkIn?: Date, checkOut?: Date): Promise<boolean>;
 
   /**
    * Send a message to open a door.
