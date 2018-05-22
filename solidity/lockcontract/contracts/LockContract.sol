@@ -52,6 +52,10 @@ contract LockContract {
             msg.sender.transfer(msg.value - priceInWei);
     }
 
+    event OfferSaved();
+    event OfferDeleted();
+    event BookingAccepted();
+
     function insertOffer(
         uint priceInWei, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
         ) public {
@@ -69,6 +73,8 @@ contract LockContract {
         c.validFrom = validFrom;
         c.validUntil = validUntil;
         offers.push(c);
+
+        emit OfferSaved();
     }
 
     function updateOffer(
@@ -89,6 +95,8 @@ contract LockContract {
         offer.door = door;
         offer.validFrom = validFrom;
         offer.validUntil = validUntil;
+
+        emit OfferSaved();
     }
 
     function deleteOffer(uint offerID) 
@@ -101,6 +109,8 @@ contract LockContract {
         }
         delete offers[offers.length-1];
         offers.length--;
+
+        emit OfferDeleted();
     }
 
     function rentAnOffer(uint offerID,  uint256 checkIn, uint256 checkOut) 
@@ -125,6 +135,8 @@ contract LockContract {
         bookingIndexes.push(bookings.length);
         bookings.push(Booking(offerID, checkIn, checkOut, msg.sender));
         offer.owner.transfer(offer.priceInWei);
+
+        emit BookingAccepted();
     }
 
 }
