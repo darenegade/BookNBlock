@@ -4,6 +4,7 @@ import (
 	"time"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"golang.org/x/net/context"
 
 	".."
 )
@@ -15,7 +16,7 @@ type (
 		//Adresse zum Contract
 		contractAddress string
 		//Instanz des schon im Network deployten Contract
-		contract BlocknBlock
+		contract LockContract
 	}
 )
 
@@ -35,9 +36,16 @@ func (e *Ethererum) createConnection(){
 	if err != nil {
 		log.Fatalf("Failed to connect to the Ethereum client: %v", err)
 	}
-	//Annahme: Contract mit Namen BlocknBlock wurde schon zum Network deployed
-	e.contract, err := NewBlocknBlock(common.HexToAddress(e.contractAddress), conn)
+	//Annahme: Contract mit Namen LockContract wurde schon zum Network deployed
+	e.contract, err := LockContract(common.HexToAddress(e.contractAddress), conn)
 	if err != nil {
 		log.Fatalf("Failed to instantiate contract: %v", err)
+}
+func main(){
+	ethCon := Ethereum
+	ethCon.setPath("https://rinkeby.infura.io/VhXic4UDRfv5w86p2hq7")
+	ethCon.setContractAddress("0xEe86D8d8163844517676C918556CDf42310c1671")
+	ehtCon.createConnection()
+	
 }
 }
