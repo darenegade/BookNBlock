@@ -1,0 +1,46 @@
+
+
+.landing-page-container {
+  margin-top: 60px;
+}
+
+.info-container {
+  height: 600px;
+  //border: 0.5px solid gray;
+  margin-right: .90rem;
+  //-webkit-box-shadow: 2px 2px 29px 0px rgba(0,0,0,0.63);
+  //-moz-box-shadow: 2px 2px 29px 0px rgba(0,0,0,0.63);
+  //box-shadow: 2px 2px 29px 0px rgba(0,0,0,0.63);
+}
+
+.image-container {
+  height: 600px;
+  border: 0.5px solid gray;
+  -webkit-box-shadow: 2px 2px 29px 0px rgba(0, 0, 0, 0.63);
+  -moz-box-shadow: 2px 2px 29px 0px rgba(0, 0, 0, 0.63);
+  box-shadow: 2px 2px 29px 0px rgba(0, 0, 0, 0.63);
+  background: url(/assets/images/home1.jpg) no-repeat;
+  background-size: 1000px 600px;
+}
+
+.brand-text {
+  font: bolder 100px 'Alfa Slab One';
+  text-align: center;
+  background: url(/assets/images/yellow2.jpg) center;
+  background-size: contain;
+  margin: auto;
+  background-clip: unset;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+p {
+  text-align: justify;
+  font-size: 18px;
+  margin-top: 15px;
+}
+
+.short-text {
+  text-align: center;
+  
+}
