@@ -28,6 +28,7 @@ func Connection(t *testing.T) {
 
 		// Hier muss unsere Aufsperrcode rein
 		// 1. Auslesen der Nachricht
+
 		// 2. Validierung der Nachricht
 		// 3. Öffnen dert Tür
 
