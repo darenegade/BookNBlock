@@ -167,6 +167,10 @@ contract LockContract {
         emit BookingAccepted(bookings.length - 1);
     }
 
+    function getOfferIDs() public view returns(uint[]) {
+        return offerIDs;
+    }
+
     function getOffersLength() public view returns(uint) {
         return offerIDs.length;
     }
