@@ -36,6 +36,14 @@ contract LockContract {
         _;
     }
 
+    modifier bookingAvailable(uint bookingID) {
+        require(
+            bookingID >= 0 && bookingID < bookings.length,
+            "Booking not found"
+        );
+        _;
+    }
+
     modifier onlyOwner(uint offerID) {
         require(
             offers[offerID].owner == msg.sender,
@@ -87,22 +95,6 @@ contract LockContract {
         offerIDs.push(newOfferID);
 
         emit OfferSaved(newOfferID);
-    }
-
-    function getOffer(uint offerID) public view offerAvailable(offerID) 
-        returns (
-            uint, string, string, string, string, address, uint256, uint256){
-        Offer storage offer = offers[offerID];
-        return (
-            offer.priceInWei,
-            offer.objectName,
-            offer.objectAddress,
-            offer.ownerName,
-            offer.description,
-            offer.door,
-            offer.validFrom,
-            offer.validUntil
-            );
     }
 
     function updateOffer(
@@ -167,8 +159,39 @@ contract LockContract {
         emit BookingAccepted(bookings.length - 1);
     }
 
+    function getOffer(uint offerID) public view offerAvailable(offerID) 
+        returns (
+            uint, string, string, string, string, address, uint256, uint256){
+        Offer storage offer = offers[offerID];
+        return (
+            offer.priceInWei,
+            offer.objectName,
+            offer.objectAddress,
+            offer.ownerName,
+            offer.description,
+            offer.door,
+            offer.validFrom,
+            offer.validUntil
+            );
+    }
+
+    function getBooking(uint bookingID) public view bookingAvailable(bookingID) 
+        returns (uint,uint256, uint256) {
+        Booking storage booking = bookings[bookingID];
+        return (
+            booking.offerID,
+            booking.checkIn,
+            booking.checkOut
+            );
+    }
+
     function getOfferIDs() public view returns(uint[]) {
         return offerIDs;
+    }
+
+    function getBookingIDsForOffer(uint offerID) public view offerAvailable(offerID) returns(uint[]) {
+        Offer storage offer = offers[offerID];
+        return offer.bookingIndexes;
     }
 
     function getOffersLength() public view returns(uint) {
