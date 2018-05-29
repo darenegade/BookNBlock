@@ -52,9 +52,13 @@ contract LockContract {
             msg.sender.transfer(msg.value - priceInWei);
     }
 
-    event OfferSaved();
+    event OfferSaved(uint offerID);
     event OfferDeleted();
     event BookingAccepted();
+
+    constructor() public {
+
+    }
 
     function insertOffer(
         uint priceInWei, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
@@ -74,7 +78,23 @@ contract LockContract {
         c.validUntil = validUntil;
         offers.push(c);
 
-        emit OfferSaved();
+        emit OfferSaved(offers.length - 1);
+    }
+
+    function getOffer(uint offerID) public view offerAvailable(offerID) 
+        returns (
+            uint, string, string, string, string, address, uint256, uint256){
+        Offer storage offer = offers[offerID];
+        return (
+            offer.priceInWei,
+            offer.objectName,
+            offer.objectAddress,
+            offer.ownerName,
+            offer.description,
+            offer.door,
+            offer.validFrom,
+            offer.validUntil
+            );
     }
 
     function updateOffer(
@@ -96,7 +116,7 @@ contract LockContract {
         offer.validFrom = validFrom;
         offer.validUntil = validUntil;
 
-        emit OfferSaved();
+        emit OfferSaved(offerID);
     }
 
     function deleteOffer(uint offerID) 

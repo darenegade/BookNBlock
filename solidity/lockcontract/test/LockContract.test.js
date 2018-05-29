@@ -27,29 +27,54 @@ describe('lockContract', () => {
         assert.ok(lockContract.options.address);
     });
 
-    /** 
-    it('has default message Room uninitialized', async () => {
-        const message = await lockContract.methods.message().call();
-        assert.equal(message, 'Room uninitialized')
-    });
+    it('offer can be created', async () => {
 
-    it('can change the message', async () => {
-        await lockContract.methods.setMessage('Room out of order').send({ from: accounts[0]});
-        const message = await lockContract.methods.message().call();
-        assert.equal(message, 'Room out of order')
-    });
+        assert.equal( await lockContract.offers, undefined)
 
-    it('can be booked', async () => {
-        await lockContract.methods.setBooked().send({ from: accounts[0]});
-        const message = await lockContract.methods.message().call();
-        assert.equal(message, 'Booked!')
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer',
+                'Teststraße 1, München', 
+                'Hans', 
+                'Very Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.notEqual(tx.events["OfferSaved"], undefined);
+                assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
+              });
+
+            let offer = await lockContract.methods.getOffer(0).call();
+            assert.equal( offer[0], 1)
     })
 
-    it('can be set free', async () => {
-        await lockContract.methods.setFree().send({ from: accounts[0]});
-        const message = await lockContract.methods.message().call();
-        assert.equal(message, 'Free!')
+    it('offer can be created', async () => {
+
+        assert.equal( await lockContract.offers, undefined)
+
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer',
+                'Teststraße 1, München', 
+                'Hans', 
+                'Very Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.notEqual(tx.events["OfferSaved"], undefined);
+                assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
+              });
+
+            let offer = await lockContract.methods.getOffer(0).call();
+            assert.equal( offer[0], 1)
     })
-    */
 
 });
