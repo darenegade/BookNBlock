@@ -10,6 +10,7 @@ contract LockContract {
     }
 
     struct Offer{
+        uint index;
         uint priceInWei;
         string objectName;
         string objectAddress;
@@ -22,12 +23,14 @@ contract LockContract {
         uint[] bookingIndexes;
     }
 
-    Offer[] public offers;
+    mapping(uint => Offer) public offers;
+    uint[] public offerIDs;
+    uint public nextID;
     Booking[] public bookings;
 
     modifier offerAvailable(uint offerID) {
         require(
-            offers.length > offerID,
+            offerID >= 0 && offerIDs[offers[offerID].index] == offerID,
             "Offer not found"
         );
         _;
@@ -53,8 +56,8 @@ contract LockContract {
     }
 
     event OfferSaved(uint offerID);
-    event OfferDeleted();
-    event BookingAccepted();
+    event OfferDeleted(uint offerID);
+    event BookingAccepted(uint bookingID);
 
     constructor() public {
 
@@ -66,7 +69,10 @@ contract LockContract {
         
         require(validFrom < validUntil);
 
+        uint newOfferID = getNextID();
+
         Offer memory c;
+        c.index = offerIDs.length;
         c.priceInWei = priceInWei;
         c.objectName = objectName;
         c.objectAddress = objectAddress;
@@ -76,9 +82,11 @@ contract LockContract {
         c.door = door;
         c.validFrom = validFrom;
         c.validUntil = validUntil;
-        offers.push(c);
+        offers[newOfferID] = c;
 
-        emit OfferSaved(offers.length - 1);
+        offerIDs.push(newOfferID);
+
+        emit OfferSaved(newOfferID);
     }
 
     function getOffer(uint offerID) public view offerAvailable(offerID) 
@@ -124,13 +132,13 @@ contract LockContract {
         offerAvailable(offerID)
         onlyOwner(offerID) {
 
-        for (uint i = offerID; i<offers.length-1; i++) {
-            offers[i] = offers[i+1];
-        }
-        delete offers[offers.length-1];
-        offers.length--;
+        uint rowToDelete = offers[offerID].index;
+        uint keyToMove = offerIDs[offerIDs.length-1];
+        offerIDs[rowToDelete] = keyToMove;
+        offers[keyToMove].index = rowToDelete; 
+        offerIDs.length--;
 
-        emit OfferDeleted();
+        emit OfferDeleted(offerID);
     }
 
     function rentAnOffer(uint offerID,  uint256 checkIn, uint256 checkOut) 
@@ -156,11 +164,14 @@ contract LockContract {
         bookings.push(Booking(offerID, checkIn, checkOut, msg.sender));
         offer.owner.transfer(offer.priceInWei);
 
-        emit BookingAccepted();
+        emit BookingAccepted(bookings.length - 1);
     }
 
     function getOffersLength() public view returns(uint) {
-        return offers.length;
+        return offerIDs.length;
     }
 
+    function getNextID() private returns(uint) {
+        return nextID++;
+    }
 }

@@ -29,8 +29,6 @@ describe('lockContract', () => {
 
     it('offer can be created', async () => {
 
-        assert.equal( await lockContract.offers, undefined)
-
         await lockContract.methods
             . insertOffer(
                 1, 
@@ -52,9 +50,9 @@ describe('lockContract', () => {
             assert.equal( offer[0], 1)
     })
 
-    it('offer can be created', async () => {
+    it('offer can be deleted', async () => {
 
-        assert.equal( await lockContract.offers, undefined)
+        let id = -1; 
 
         await lockContract.methods
             . insertOffer(
@@ -69,12 +67,18 @@ describe('lockContract', () => {
                 )
             .send({ from: accounts[0], gas: '2000000'})
             .then(function (tx) {
-                assert.notEqual(tx.events["OfferSaved"], undefined);
-                assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
-              });
+                 id = tx.events["OfferSaved"].returnValues.offerID
+            });
 
-            let offer = await lockContract.methods.getOffer(0).call();
-            assert.equal( offer[0], 1)
+            assert.equal(id, 0)
+
+            await lockContract.methods
+            .deleteOffer(id)
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.notEqual(tx.events["OfferDeleted"], undefined);
+                assert.equal(tx.events["OfferDeleted"].returnValues.offerID, id);
+              })
     })
 
 });
