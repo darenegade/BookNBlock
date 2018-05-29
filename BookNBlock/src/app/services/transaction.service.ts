@@ -16,7 +16,7 @@ export class TransactionService {
   insertOffer(doorId: number, prize: number, fromDate: Date, toDate: Date,
     address: string, name: string, description: string, image?: any): Promise<void> {
     const offer: Offer = {
-      id: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
+      id: undefined,
       doorId: doorId,
       isBooked: false,
       prize: prize,
