@@ -25,6 +25,12 @@ func Connection(t *testing.T) {
 		if string(msg.Payload()) != "mymessage" {
 			t.Fatalf("want mymessage, got %s", msg.Payload())
 		}
+
+		// Hier muss unsere Aufsperrcode rein
+		// 1. Auslesen der Nachricht
+		// 2. Validierung der Nachricht
+		// 3. Öffnen dert Tür
+
 		wg.Done()
 	}); token.Wait() && token.Error() != nil {
 		t.Fatal(token.Error())
