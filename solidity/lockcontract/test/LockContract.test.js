@@ -81,4 +81,39 @@ describe('lockContract', () => {
               })
     })
 
+    it('offer can be rented', async () => {
+
+        let id = -1; 
+
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer',
+                'Teststraße 1, München', 
+                'Hans', 
+                'Very Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                 id = tx.events["OfferSaved"].returnValues.offerID
+            });
+
+            assert.equal(id, 0)
+
+            await lockContract.methods
+            .rentAnOffer(
+                id,
+                1520035200,
+                1520121600
+            )
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.notEqual(tx.events["BookingAccepted"], undefined);
+                assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 1);
+              })
+    })
+
 });
