@@ -109,10 +109,10 @@ describe('lockContract', () => {
                 1520035200,
                 1520121600
             )
-            .send({ from: accounts[0], gas: '2000000'})
+            .send({value: 1, from: accounts[0], gas: '2000000'})
             .then(function (tx) {
                 assert.notEqual(tx.events["BookingAccepted"], undefined);
-                assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 1);
+                assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 0);
               })
     })
 
