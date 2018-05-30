@@ -9,7 +9,6 @@ export class Offer {
   name: string;
   description: string;
   walletId: number;
-  description: string;
   title: string;
   image?: any;
 }

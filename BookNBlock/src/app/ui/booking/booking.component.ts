@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Offer } from '../../data/offer';
 import {MockConnector} from '../../connector/mock.connector';
+import {QueryService} from '../../services/query.service';
 
 @Component({
   selector: 'app-booking',
@@ -11,7 +12,7 @@ export class BookingComponent implements OnInit {
 
   allOffers: Offer[] = [];
 
-  constructor(private mockConnecotr: MockConnector) {
+  constructor(private queryService: QueryService) {
   }
 
   ngOnInit() {
@@ -22,7 +23,7 @@ export class BookingComponent implements OnInit {
    * Get all offers.
    */
   getAllOffers(): void {
-    this.mockConnecotr.getAllOffers().then(result => this.allOffers = result);
+    this.queryService.queryAllOffers().then(result => this.allOffers = result);
   }
 
 }
