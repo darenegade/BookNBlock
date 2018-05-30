@@ -16,8 +16,8 @@ beforeEach(async () => {
 
     //Use one of those accounts to deploy the contract
     lockContract = await new web3.eth.Contract(JSON.parse(interface))
-        .deploy({ data: bytecode, arguments: ['Room uninitialized']})
-        .send({ from: accounts[0], gas: '1000000' })
+        .deploy({ data: bytecode})
+        .send({ from: accounts[0], gas: '2000000' })
 
     lockContract.setProvider(provider);
 });
@@ -27,28 +27,93 @@ describe('lockContract', () => {
         assert.ok(lockContract.options.address);
     });
 
-    it('has default message Room uninitialized', async () => {
-        const message = await lockContract.methods.message().call();
-        assert.equal(message, 'Room uninitialized')
-    });
+    it('offer can be created', async () => {
 
-    it('can change the message', async () => {
-        await lockContract.methods.setMessage('Room out of order').send({ from: accounts[0]});
-        const message = await lockContract.methods.message().call();
-        assert.equal(message, 'Room out of order')
-    });
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer',
+                'Teststraße 1, München', 
+                'Hans', 
+                'Very Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.notEqual(tx.events["OfferSaved"], undefined);
+                assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
+              });
 
-    it('can be booked', async () => {
-        await lockContract.methods.setBooked().send({ from: accounts[0]});
-        const message = await lockContract.methods.message().call();
-        assert.equal(message, 'Booked!')
+            let offer = await lockContract.methods.getOffer(0).call();
+            assert.equal( offer[0], 1)
     })
 
-    it('can be set free', async () => {
-        await lockContract.methods.setFree().send({ from: accounts[0]});
-        const message = await lockContract.methods.message().call();
-        assert.equal(message, 'Free!')
+    it('offer can be deleted', async () => {
+
+        let id = -1; 
+
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer',
+                'Teststraße 1, München', 
+                'Hans', 
+                'Very Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                 id = tx.events["OfferSaved"].returnValues.offerID
+            });
+
+            assert.equal(id, 0)
+
+            await lockContract.methods
+            .deleteOffer(id)
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.notEqual(tx.events["OfferDeleted"], undefined);
+                assert.equal(tx.events["OfferDeleted"].returnValues.offerID, id);
+              })
     })
 
+    it('offer can be rented', async () => {
+
+        let id = -1; 
+
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer',
+                'Teststraße 1, München', 
+                'Hans', 
+                'Very Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                 id = tx.events["OfferSaved"].returnValues.offerID
+            });
+
+            assert.equal(id, 0)
+
+            await lockContract.methods
+            .rentAnOffer(
+                id,
+                1520035200,
+                1520121600
+            )
+            .send({value: 1, from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.notEqual(tx.events["BookingAccepted"], undefined);
+                assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 0);
+              })
+    })
 
 });
