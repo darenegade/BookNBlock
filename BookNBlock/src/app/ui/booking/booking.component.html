@@ -1,3 +1,33 @@
-<p>
-  booking works!
-</p>
+<div class="container-fluid">
+  <div class="container" style="margin-top: 40px">
+    <div class="tile is-ancestor">
+      <div class="tile is-vertical is-12">
+
+        <div *ngFor="let offer of allOffers" class="tile is-parent">
+          <article class="tile is-child box">
+            <p class="title">{{offer.title}}</p>
+            <p class="subtitle">{{offer.address}}</p>
+            <div class="content">
+              <h4>Details</h4>
+              <label>Mietdauer</label>
+              <p> von {{offer.fromDate | date:'shortDate'}} bis {{offer.toDate | date:'shortDate'}}  </p>
+              <label>Preis für die gesamte Mietdauer</label>
+              <p>{{offer.prize}} Euro </p>
+            </div>
+            <div class="content">
+              <h4>Beschreibung</h4>
+              <p>
+                {{offer.description}}
+              </p>
+            </div>
+            <div style="margin-bottom: 1em">
+              <button style="width: 100%" type="submit" class="button">Angebot buchen</button>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

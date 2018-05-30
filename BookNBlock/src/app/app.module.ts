@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgLoggerModule, Logger } from '@nsalaun/ng-logger';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { EthereumConnector } from './connector/ethereum.connector';
@@ -16,6 +16,9 @@ import { BookingComponent } from './ui/booking/booking.component';
 import { OfferComponent } from './ui/offer/offer.component';
 import { BlockchainConnectorFactory } from './connector/connector.factory';
 import { User } from './data/user';
+import { SignInComponent } from './ui/login/sign-in/sign-in.component';
+import { SignUpComponent } from './ui/login/sign-up/sign-up.component';
+import { HomeComponent } from './ui/home/home.component';
 import { MockConnector } from './connector/mock.connector';
 
 const privateKey = `-----BEGIN RSA PRIVATE KEY-----
@@ -42,11 +45,15 @@ FPqri0cb2JZfXJ/DgYSF6vUpwmJG8wVQZKjeGcjDOL5UlsuusFncCzWBQ7RKNUSesmQRMSGkVb1/
     AppComponent,
     LoginComponent,
     BookingComponent,
-    OfferComponent
+    OfferComponent,
+    SignInComponent,
+    SignUpComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     NgLoggerModule.forRoot(environment.loglevel),
     RouterModule.forRoot(routes)
   ],
