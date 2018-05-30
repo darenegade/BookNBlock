@@ -147,9 +147,7 @@ contract LockContract {
 
         for(uint i = 0; i < bookingIndexes.length; i++) {
             Booking storage b = bookings[bookingIndexes[i]];
-            if(b.offerID == offerID){
-                require(b.checkIn > checkOut || b.checkOut < checkIn);
-            }
+            require(b.checkIn > checkOut || b.checkOut < checkIn);
         }
 
         bookingIndexes.push(bookings.length);
@@ -187,6 +185,33 @@ contract LockContract {
 
     function getOfferIDs() public view returns(uint[]) {
         return offerIDs;
+    }
+
+    function getFreeOfferIDs(uint256 from, uint256 to) public view returns (uint[]) {
+        uint[] memory freeOffers = new uint[](offerIDs.length);
+        uint freeOffersCounter = 0;
+
+        for(uint i = 0; i < offerIDs.length; i++) {
+            uint[] storage bookingIndexes = offers[offerIDs[i]].bookingIndexes;
+            bool free = true;
+            for(uint j = 0; j < bookingIndexes.length; j++) {
+                Booking storage b = bookings[bookingIndexes[i]];
+                if(b.checkIn > to || b.checkOut < from) {
+                    free = false;
+                }
+            }
+            if (free == true){
+                freeOffers[i] = offerIDs[i];
+                freeOffersCounter++;
+            }
+        }
+
+        uint[] memory freeOffersStripped = new uint[](freeOffersCounter);
+        for(uint k = 0; k < freeOffersCounter; k++) {
+            freeOffersStripped[k] = freeOffers[k];
+        }
+
+        return freeOffersStripped;
     }
 
     function getBookingIDsForOffer(uint offerID) public view offerAvailable(offerID) returns(uint[]) {
