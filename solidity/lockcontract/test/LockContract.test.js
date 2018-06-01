@@ -6,6 +6,7 @@ const provider = ganache.provider();
 const web3 = new Web3(provider);
 
 const { interface, bytecode } = require('../compile');
+const GAS = '3000000'
 
 let accounts;
 let lockContract;
@@ -17,7 +18,7 @@ beforeEach(async () => {
     //Use one of those accounts to deploy the contract
     lockContract = await new web3.eth.Contract(JSON.parse(interface))
         .deploy({ data: bytecode})
-        .send({ from: accounts[0], gas: '2000000' })
+        .send({ from: accounts[0], gas: GAS})
 
     lockContract.setProvider(provider);
 });
@@ -40,7 +41,7 @@ describe('lockContract', () => {
                 1514764800, 
                 1546214400
                 )
-            .send({ from: accounts[0], gas: '2000000'})
+            .send({ from: accounts[0], gas: GAS})
             .then(function (tx) {
                 assert.notEqual(tx.events["OfferSaved"], undefined);
                 assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
@@ -65,7 +66,7 @@ describe('lockContract', () => {
                 1514764800, 
                 1546214400
                 )
-            .send({ from: accounts[0], gas: '2000000'})
+            .send({ from: accounts[0], gas: GAS})
             .then(function (tx) {
                  id = tx.events["OfferSaved"].returnValues.offerID
             });
@@ -74,7 +75,7 @@ describe('lockContract', () => {
 
             await lockContract.methods
             .deleteOffer(id)
-            .send({ from: accounts[0], gas: '2000000'})
+            .send({ from: accounts[0], gas: GAS})
             .then(function (tx) {
                 assert.notEqual(tx.events["OfferDeleted"], undefined);
                 assert.equal(tx.events["OfferDeleted"].returnValues.offerID, id);
@@ -96,7 +97,7 @@ describe('lockContract', () => {
                 1514764800, 
                 1546214400
                 )
-            .send({ from: accounts[0], gas: '2000000'})
+            .send({ from: accounts[0], gas: GAS})
             .then(function (tx) {
                  id = tx.events["OfferSaved"].returnValues.offerID
             });
@@ -109,7 +110,7 @@ describe('lockContract', () => {
                 1520035200,
                 1520121600
             )
-            .send({value: 1, from: accounts[0], gas: '2000000'})
+            .send({value: 1, from: accounts[0], gas: GAS})
             .then(function (tx) {
                 assert.notEqual(tx.events["BookingAccepted"], undefined);
                 assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 0);
@@ -121,7 +122,7 @@ describe('lockContract', () => {
                   1520121601,
                   1520121700
               )
-              .send({value: 1, from: accounts[0], gas: '2000000'})
+              .send({value: 1, from: accounts[0], gas: GAS})
               .then(function (tx) {
                   assert.notEqual(tx.events["BookingAccepted"], undefined);
                   assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 1);
@@ -143,7 +144,7 @@ describe('lockContract', () => {
                 1514764800, 
                 1546214400
                 )
-            .send({ from: accounts[0], gas: '2000000'})
+            .send({ from: accounts[0], gas: GAS})
             .then(function (tx) {
                 assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
                 id = tx.events["OfferSaved"].returnValues.offerID
@@ -160,7 +161,7 @@ describe('lockContract', () => {
                 1514764800, 
                 1546214400
                 )
-            .send({ from: accounts[0], gas: '2000000'})
+            .send({ from: accounts[0], gas: GAS})
             .then(function (tx) {
                 assert.equal(tx.events["OfferSaved"].returnValues.offerID, 1);
             });
@@ -171,7 +172,7 @@ describe('lockContract', () => {
                 1520035200,
                 1520121600
             )
-            .send({value: 1, from: accounts[0], gas: '2000000'})
+            .send({value: 1, from: accounts[0], gas: GAS})
             .then(function (tx) {
                 assert.notEqual(tx.events["BookingAccepted"], undefined);
                 assert.equal(tx.events["BookingAccepted"].returnValues.offerID, 0);
@@ -183,7 +184,7 @@ describe('lockContract', () => {
                 1520121601,
                 1520121700
             )
-            .call({from: accounts[0], gas: '2000000'})
+            .call({from: accounts[0], gas: GAS})
 
         assert.deepEqual(freeOffers, [0,1]);
 
@@ -192,9 +193,62 @@ describe('lockContract', () => {
                 1520035100,
                 1520035201
             )
-            .call({from: accounts[0], gas: '2000000'})
+            .call({from: accounts[0], gas: GAS})
 
         assert.deepEqual(freeOffers, [1]);
+            
+    })
+
+    it('booking can allow tenant', async () => {
+
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer',
+                'Teststraße 1, München', 
+                'Hans', 
+                'Very Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: GAS})
+            .then(function (tx) {
+                assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
+            });
+
+        await lockContract.methods
+            .rentAnOffer(
+                0,
+                1520035200,
+                1520121600
+            )
+            .send({value: 1, from: accounts[0], gas: GAS})
+            .then(function (tx) {
+                assert.notEqual(tx.events["BookingAccepted"], undefined);
+                assert.equal(tx.events["BookingAccepted"].returnValues.offerID, 0);
+                assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 0);
+                })
+
+        let allowed = await lockContract.methods
+            .isAllowedAt(
+                0,
+                accounts[0],
+                1520035205
+            )
+            .call({from: accounts[0], gas: GAS})
+
+        assert.deepEqual(allowed, true);
+
+        allowed = await lockContract.methods
+            .isAllowedAt(
+                0,
+                accounts[0],
+                1520121605
+            )
+            .call({from: accounts[0], gas: GAS})
+
+        assert.deepEqual(allowed, false);
             
     })
 

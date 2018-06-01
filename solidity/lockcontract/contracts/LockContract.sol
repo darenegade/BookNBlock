@@ -207,6 +207,14 @@ contract LockContract {
         return offer.bookingIndexes;
     }
 
+    function isAllowedAt(uint bookingID, address tenant, uint256 time) public view bookingAvailable(bookingID) returns ( bool) {
+        Booking storage booking = bookings[bookingID];
+
+        require(booking.tenant == tenant);
+
+        return booking.checkIn <= time && booking.checkOut >= time;
+    }
+
     function getOffersLength() public view returns(uint) {
         return offerIDs.length;
     }
