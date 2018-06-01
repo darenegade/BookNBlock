@@ -188,7 +188,8 @@ contract LockContract {
         require(from < to);
 
         for(uint i = 0; i < offerIDs.length; i++) {
-            if ( isFree(offerIDs[i], from, to) ) {
+            Offer storage offer = offers[offerIDs[i]];
+            if ( from >= offer.validFrom && to <= offer.validUntil && isFree(offerIDs[i], from, to) ) {
                 freeOffers[freeOffersCounter] = offerIDs[i];
                 freeOffersCounter++;
             }
