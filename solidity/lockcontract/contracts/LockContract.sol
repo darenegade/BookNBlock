@@ -65,7 +65,7 @@ contract LockContract {
 
     event OfferSaved(uint offerID);
     event OfferDeleted(uint offerID);
-    event BookingAccepted(uint bookingID);
+    event BookingAccepted(uint offerID, uint bookingID);
 
     constructor() public {
 
@@ -142,19 +142,13 @@ contract LockContract {
 
         Offer storage offer = offers[offerID];
         require(checkIn >= offer.validFrom && checkOut <= offer.validUntil);
+        require(isFree(offerID, checkIn, checkOut));
 
-        uint[] storage bookingIndexes = offer.bookingIndexes;
-
-        for(uint i = 0; i < bookingIndexes.length; i++) {
-            Booking storage b = bookings[bookingIndexes[i]];
-            require(b.checkIn > checkOut || b.checkOut < checkIn);
-        }
-
-        bookingIndexes.push(bookings.length);
+        offer.bookingIndexes.push(bookings.length);
         bookings.push(Booking(offerID, checkIn, checkOut, msg.sender));
         offer.owner.transfer(offer.priceInWei);
 
-        emit BookingAccepted(bookings.length - 1);
+        emit BookingAccepted(offerID, bookings.length - 1);
     }
 
     function getOffer(uint offerID) public view offerAvailable(offerID) 
@@ -191,17 +185,11 @@ contract LockContract {
         uint[] memory freeOffers = new uint[](offerIDs.length);
         uint freeOffersCounter = 0;
 
+        require(from < to);
+
         for(uint i = 0; i < offerIDs.length; i++) {
-            uint[] storage bookingIndexes = offers[offerIDs[i]].bookingIndexes;
-            bool free = true;
-            for(uint j = 0; j < bookingIndexes.length; j++) {
-                Booking storage b = bookings[bookingIndexes[i]];
-                if(b.checkIn > to || b.checkOut < from) {
-                    free = false;
-                }
-            }
-            if (free == true){
-                freeOffers[i] = offerIDs[i];
+            if ( isFree(offerIDs[i], from, to) ) {
+                freeOffers[freeOffersCounter] = offerIDs[i];
                 freeOffersCounter++;
             }
         }
@@ -225,5 +213,20 @@ contract LockContract {
 
     function getNextID() private returns(uint) {
         return nextID++;
+    }
+
+    function isFree(uint offerID, uint256 from, uint256 to) private view returns(bool) {
+        bool free = true;
+
+        uint[] storage bookingIndexes = offers[offerID].bookingIndexes;
+        for(uint i = 0; free && i < bookingIndexes.length; i++) {
+            Booking storage b = bookings[bookingIndexes[i]];
+
+            if( ! ( (b.checkIn < from && b.checkOut < from) || (b.checkIn > to && b.checkOut > to) ) ) {
+                free = false;
+            }
+        }
+
+        return free;
     }
 }

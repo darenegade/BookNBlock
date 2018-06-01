@@ -114,6 +114,88 @@ describe('lockContract', () => {
                 assert.notEqual(tx.events["BookingAccepted"], undefined);
                 assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 0);
               })
+
+              await lockContract.methods
+              .rentAnOffer(
+                  id,
+                  1520121601,
+                  1520121700
+              )
+              .send({value: 1, from: accounts[0], gas: '2000000'})
+              .then(function (tx) {
+                  assert.notEqual(tx.events["BookingAccepted"], undefined);
+                  assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 1);
+                })
+    })
+
+    it('free offer can be seen', async () => {
+
+        let id = -1; 
+
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer',
+                'Teststraße 1, München', 
+                'Hans', 
+                'Very Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
+                id = tx.events["OfferSaved"].returnValues.offerID
+            });
+
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer 2',
+                'Teststraße 12, München', 
+                'Hans', 
+                'Not so Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.equal(tx.events["OfferSaved"].returnValues.offerID, 1);
+            });
+
+        await lockContract.methods
+            .rentAnOffer(
+                0,
+                1520035200,
+                1520121600
+            )
+            .send({value: 1, from: accounts[0], gas: '2000000'})
+            .then(function (tx) {
+                assert.notEqual(tx.events["BookingAccepted"], undefined);
+                assert.equal(tx.events["BookingAccepted"].returnValues.offerID, 0);
+                assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 0);
+                })
+
+        let freeOffers = await lockContract.methods
+            .getFreeOfferIDs(
+                1520121601,
+                1520121700
+            )
+            .call({from: accounts[0], gas: '2000000'})
+
+        assert.deepEqual(freeOffers, [0,1]);
+
+        freeOffers = await lockContract.methods
+            .getFreeOfferIDs(
+                1520035100,
+                1520035201
+            )
+            .call({from: accounts[0], gas: '2000000'})
+
+        assert.deepEqual(freeOffers, [1]);
+            
     })
 
 });
