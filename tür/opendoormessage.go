@@ -5,6 +5,6 @@ type (
 		DoorID    DoorID
 		RenterPK  RenterPK
 		RenterID  RenterID
-		Timestamp int
+		Timestamp int64
 	}
 )
