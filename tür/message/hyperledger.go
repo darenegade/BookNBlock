@@ -97,14 +97,14 @@ func (h *Hyperledger) decryptPaylpad(payload string) (renterID tür.RenterID, ti
 }
 
 func (h *Hyperledger) SendtestMessage() (testMsg string) {
-	testMsg = fmt.Sprintf("{ \"doorID\": \"008457\", \"renterPK\": \"f78uf\", \"payload\": \"%x\" }", test_encrypt())
+	testMsg = fmt.Sprintf("{ \"doorID\": \"008457\", \"renterPK\": \"f78uf\", \"payload\": \"%x\" }", h.test_encrypt())
 	if token := h.client.Publish(TOPIC, 0, false, testMsg); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
 	return
 }
 
-func test_encrypt() (ciphertext []byte) {
+func (h *Hyperledger) test_encrypt() (ciphertext []byte) {
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
 	plaintext := []byte("4286f4,1527950669609")
 
