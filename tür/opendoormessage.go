@@ -2,7 +2,9 @@ package tür
 
 type (
 	OpenDoorMessage struct {
-		Mieter MieterID
-		// ...?
+		DoorID    DoorID
+		RenterPK  RenterPK
+		RenterID  RenterID
+		Timestamp int
 	}
 )
