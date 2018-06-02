@@ -3,7 +3,6 @@ package message
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 
 	".."
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -62,5 +61,4 @@ func (h *Hyperledger) SendtestMessage() {
 	if token := h.client.Publish(TOPIC, 0, false, testMsg); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
-	time.Sleep(200 * time.Millisecond)
 }

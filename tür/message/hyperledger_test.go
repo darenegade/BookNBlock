@@ -2,12 +2,15 @@ package message
 
 import (
 	"testing"
+	"time"
 )
 
 func TestHyperledger_Subscribe(t *testing.T) {
 	h := NewHyperledger()
 	c, _ := h.Subscribe()
 	h.SendtestMessage()
+
+	time.Sleep(200 * time.Millisecond)
 
 	message := <-c
 	if message.RenterID != "4286f4" {
