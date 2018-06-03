@@ -11,12 +11,15 @@ import { Logger } from '@nsalaun/ng-logger';
 export class MockConnector extends BlockchainConnector {
 
   private offers: Offer[] = [
-    { id: 1, doorId: 1, isBooked: false, prize: 100, fromDate: new Date(2018, 0, 1), toDate: new Date(2018, 0, 31),
-      address: 'World Disney', name: 'Mickey Mouse', description: 'Mickey\'s house', walletId: 10000, title: 'Wohnen in Mickey\'s house' },
-    { id: 2, doorId: 1, isBooked: true, prize: 100, fromDate: new Date(2018, 8, 1), toDate: new Date(2018, 8, 10),
-      address: 'World Disney', name: 'Mickey Mouse', description: 'Mickey\'s house', walletId: 10000, title: 'Wohnen in Mickey\'s house' },
-    { id: 3, doorId: 1, isBooked: false, prize: 100, fromDate: new Date(2018, 11, 24), toDate: new Date(2018, 11, 30),
-      address: 'Entenhausen', name: 'Donald Duck', description: 'Donalds\'s house', walletId: 20000, title: 'Wohnen in Mickey\'s house' }
+    { id: 1, doorId: '1', prize: 100, fromDate: new Date(2018, 0, 1), toDate: new Date(2018, 0, 31),
+      address: 'World Disney', name: 'Maeusebau', nameLandlord: 'Mickey Mouse', description: 'Mickey\'s house', walletId: 10000,
+      title: 'Wohnen in Mickey\'s house' },
+    { id: 2, doorId: '1', prize: 100, fromDate: new Date(2018, 8, 1), toDate: new Date(2018, 8, 10),
+      address: 'World Disney', name: 'Maeusebau', nameLandlord: 'Mickey Mouse', description: 'Mickey\'s house', walletId: 10000,
+      title: 'Wohnen in Mickey\'s house' },
+    { id: 3, doorId: '1', prize: 100, fromDate: new Date(2018, 11, 24), toDate: new Date(2018, 11, 30),
+      address: 'Entenhausen', name: 'Entennest', nameLandlord: 'Donald Duck', description: 'Donalds\'s house', walletId: 20000,
+      title: 'Wohnen in Mickey\'s house' }
   ];
 
   constructor(private log: Logger) {
@@ -35,7 +38,7 @@ export class MockConnector extends BlockchainConnector {
 
   getAllOffers(): Promise<Offer[]> {
     this.log.debug(`MockConnector.getAllOffers()`);
-    return Promise.resolve(this.offers.filter(offer => !offer.isBooked));
+    return Promise.resolve(this.offers);
   }
 
   searchOffer(criterion: any): Promise<Offer[]> {

@@ -13,17 +13,17 @@ export class TransactionService {
     private log: Logger
   ) { }
 
-  insertOffer(doorId: number, prize: number, fromDate: Date, toDate: Date,
-    address: string, name: string, description: string, image?: any): Promise<void> {
+  insertOffer(doorId: string, prize: number, fromDate: Date, toDate: Date,
+    address: string, name: string, nameLandlord: string, description: string, image?: any): Promise<void> {
     const offer: Offer = {
       id: undefined,
       doorId: doorId,
-      isBooked: false,
       prize: prize,
       fromDate: fromDate,
       toDate: toDate,
       address: address,
       name: name,
+      nameLandlord: nameLandlord,
       description: description,
       walletId: this.user.walletId,
       image: image
