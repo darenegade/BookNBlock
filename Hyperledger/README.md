@@ -129,19 +129,21 @@ Alternativ kann die Restschnittstelle genutzt werden, um mit der Blockchain zu k
 
 ## Aktuelle Features (wip)
 
-|Bezeichnung                                                | Chaincode funktion                |
-| ----------------------------------|:--------------------------|
-|Angebot anlegen                                        |insertOffer                                |
-|Angebot löschen                                        |delete                                                |
-|Angebot über seine Id finden                |getOffer                                        |
-|Angebote über Public Key suchen        |queryOffersByPk                        |
-|Anzeigen der Historie                                |getHistoryForOffer                        |
+|Bezeichnung                        | Chaincode funktion       | Parameter
+| ----------------------------------|--------------------------|:--------------------------|
+|Angebot anlegen                    |insertOffer               |["id","price","startDate in Unixtime", "endDate in Unixtime", "Name of Offer", "Owner Name", "Public Key of tenant", "Public key of Owner"]|
+|Angebot löschen                    |delete                    | "id" |
+|Angebot über seine Id finden       |getOffer                  |"id" |
+|Angebote über Public Key suchen    |queryOffersByPk           |"Public Key of owner" |
+|Anzeigen der Historie              |getHistoryForOffer        | "id" |
+|Angebot übertragen                 |transferOffer             | ["id","new name of owner","Public Key of new Owner"] |
+|angebot mieten                     |rentAnOffer               | ["id", "Public Key tenant", "startDate in Unixtime", "endDate in Unix"] |
 
 
 ## Geplante Features (wip)
 
-* Angebot übertragen
-* Angebot mieten
+* ~~Angebot übertragen~~
+* ~~Angebot mieten~~
 * Optimierung
 * ABAC (Attribute-Based-Access-Control)
 * Kafka / ZooKeeper
@@ -150,12 +152,12 @@ Alternativ kann die Restschnittstelle genutzt werden, um mit der Blockchain zu k
 ## Quellen
 
 * [Hyperledger Fabric](http://hyperledger-fabric.readthedocs.io) bietet eine Reihe von Tutorials für den Einstieg.
-        * [fabcar](https://github.com/hyperledger/fabric-samples/tree/release-1.1/fabcar)
-        * [marble](https://github.com/hyperledger/fabric-samples/tree/release-1.1/chaincode/marbles02)
-        * Hilfreich für das Verständis könnten auch die anderen Beispiele in [fabric-samples](https://github.com/hyperledger/fabric-samples) sein.
+    * [fabcar](https://github.com/hyperledger/fabric-samples/tree/release-1.1/fabcar)
+    * [marble](https://github.com/hyperledger/fabric-samples/tree/release-1.1/chaincode/marbles02)
+    * Hilfreich für das Verständis könnten auch die anderen Beispiele in [fabric-samples](https://github.com/hyperledger/fabric-samples) sein.
 * Hilfreiche Videos zu Hyperledger von Иван Ванков 
-        * [Hyperledger Fabric - build first network](https://www.youtube.com/watch?v=MPNkUqOKhVE&list=PLjsqymUqgpSTGC4L6ULHCB_Mqmy43OcIh)
-        * [Hyperledger - Blockchain Technologies for Business](https://www.youtube.com/watch?v=7EpPrSJtqZU&list=PLjsqymUqgpSRXC9ywNIVUUoGXelQa4olO)
+	* [Hyperledger Fabric - build first network](https://www.youtube.com/watch?v=MPNkUqOKhVE&list=PLjsqymUqgpSTGC4L6ULHCB_Mqmy43OcIh)
+    * [Hyperledger - Blockchain Technologies for Business](https://www.youtube.com/watch?v=7EpPrSJtqZU&list=PLjsqymUqgpSRXC9ywNIVUUoGXelQa4olO)
 
 ## Betreuer
 * [**Michael Schäfer**](https://www.cs.hm.edu/die_fakultaet/ansprechpartner/lehrbeauftragte/lba_liste_iframe_zpa.de.html) 
