@@ -1,16 +1,12 @@
 package contract
 
-import (
-	"time"
-
-	".."
-)
+import time "time"
 
 type (
 	Mock struct {
 	}
 )
 
-func (Mock) IsAllowedAt(mieter tür.MieterID, t time.Time) (bool, error) {
+func (Mock) IsAllowedAt(mieter string, t time.Time) (bool, error) {
 	return true, nil
 }

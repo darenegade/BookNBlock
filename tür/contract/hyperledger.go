@@ -1,10 +1,6 @@
 package contract
 
-import (
-	"time"
-
-	".."
-)
+import time "time"
 
 type (
 	HyperLedger struct {
@@ -12,6 +8,6 @@ type (
 	}
 )
 
-func (e *HyperLedger) IsAllowedAt(mieter tür.MieterID, t time.Time) (bool, error) {
+func (e *HyperLedger) IsAllowedAt(mieter string, t time.Time) (bool, error) {
 	panic("not yet implemented")
 }
