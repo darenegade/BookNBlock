@@ -34,10 +34,10 @@ export class EthereumConnector extends BlockchainConnector {
 
   async getOffer(id: number): Promise<Offer> {
     this.log.debug(`EthereumConnector.getOffer(${id})`);
-    const ids: number[] = await this.contract.methods.getOfferIDs().call();
-    this.log.debug(ids);
-    if (ids.indexOf(id) >= 0) {
+    const ids: string[] = await this.contract.methods.getOfferIDs().call();
+    if (ids.map(i => Number.parseInt(i)).indexOf(id) >= 0) {
       const o = await this.contract.methods.getOffer(id).call();
+      this.log.debug(JSON.stringify(o));
       const offer = new Offer();
       offer.id = o.index;
       offer.doorId = o.door;
@@ -60,7 +60,7 @@ export class EthereumConnector extends BlockchainConnector {
     const indeces = await this.contract.methods.getOpenOfferIndeces().call();
     const promises: Promise<Offer>[] =  indeces.map(async i => {
       const p = new Promise<Offer>(async (resolve, reject) => {
-        const o = await this.contract.methods.getOffer(i).call();
+        const o = await this.contract.methods.getOffer(Number.parseInt(i)).call();
         const offer = new Offer();
         offer.id = o.index;
         offer.doorId = o.door;

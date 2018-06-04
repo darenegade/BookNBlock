@@ -52,7 +52,7 @@ export class OfferComponent implements OnInit {
       name: formModel.name,
       nameLandlord: formModel.name,
       // TODO: get walletId from user
-      walletId: 6,
+      walletId: '6',
       description: formModel.title,
       title: formModel.title,
       image: ''

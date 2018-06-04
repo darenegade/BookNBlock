@@ -26,7 +26,8 @@ export class TransactionService {
       nameLandlord: nameLandlord,
       description: description,
       walletId: this.user.walletId,
-      image: image
+      image: image,
+      title: ''
     } as Offer;
     return this.factory.get().insertOffer(offer);
   }
