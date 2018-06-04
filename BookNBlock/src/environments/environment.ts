@@ -8,5 +8,6 @@ export const environment = {
   production: false,
   mock: false,
   loglevel: Level.DEBUG,
-  ethereumAddress: 'wss://rinkeby.infura.io/ws'
+  // ethereumAddress: 'wss://rinkeby.infura.io/ws'
+  ethereumAddress: 'https://rinkeby.infura.io'
 };

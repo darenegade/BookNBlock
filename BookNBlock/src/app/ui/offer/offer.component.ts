@@ -42,14 +42,15 @@ export class OfferComponent implements OnInit {
     const saveOffer: Offer = {
       // TODO: how we handle this id
       id: 333,
-      doorId: 3,
-      isBooked: false,
+      doorId: '3',
+      // isBooked: false,
       prize: formModel.prize,
       fromDate: formModel.fromDate,
       toDate: formModel.toDate,
       // TODO: concat address
       address: '',
       name: formModel.name,
+      nameLandlord: formModel.name,
       // TODO: get walletId from user
       walletId: 6,
       description: formModel.title,

@@ -4,6 +4,7 @@ import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
 import { Logger } from '@nsalaun/ng-logger';
 const Web3 = require('web3');
+const HDWalletProvider = require('truffle-hdwallet-provider');
 import { abi, address } from './LockContract';
 import { environment } from '../../environments/environment';
 import { Contract, BatchRequest } from 'web3/types';
@@ -21,9 +22,14 @@ export class EthereumConnector extends BlockchainConnector {
   constructor(private log: Logger, private user: User) {
     super();
 
-    this.web3 = new Web3(environment.ethereumAddress);
+    const provider = new HDWalletProvider(
+      `${this.user.privateKey}`,
+      `${environment.ethereumAddress}/${this.user.publicKey}`
+    );
+
+    this.web3 = new Web3(provider);
     this.contract = new this.web3.eth.Contract(abi, address);
-    this.contract.options.from = this.user.publicKey;
+    this.contract.options.from = this.user.walletId;
   }
 
   async getOffer(id: number): Promise<Offer> {

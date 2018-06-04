@@ -1,7 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "book-nblock"
+    "name": "book-nblock",
+    "ejected": true
   },
   "apps": [
     {
@@ -57,6 +58,7 @@
   },
   "defaults": {
     "styleExt": "scss",
-    "component": {}
+    "component": {
+    }
   }
 }
