@@ -37,17 +37,15 @@ export class EthereumConnector extends BlockchainConnector {
     const ids: string[] = await this.contract.methods.getOfferIDs().call();
     if (ids.map(i => Number.parseInt(i)).indexOf(id) >= 0) {
       const o = await this.contract.methods.getOffer(id).call();
-      this.log.debug(JSON.stringify(o));
       const offer = new Offer();
-      offer.id = o.index;
+      offer.id = id;
       offer.doorId = o.door;
-      offer.prize  = o.prizeInWei;
+      offer.prize  = o.priceInWei;
       offer.fromDate = o.validFrom;
       offer.toDate = o.validUntil;
       offer.address = o.objectAddress;
       offer.name = o.objectName;
       offer.nameLandlord = o.ownerName;
-      offer.walletId = o.owner;
 
       return Promise.resolve(offer);
     } else {
@@ -57,22 +55,29 @@ export class EthereumConnector extends BlockchainConnector {
 
   async getAllOffers(): Promise<Offer[]> {
     this.log.debug(`EthereumConnector.getAllOffers()`);
-    const indeces = await this.contract.methods.getOpenOfferIndeces().call();
-    const promises: Promise<Offer>[] =  indeces.map(async i => {
+    const from = new Date(2018, 0, 5).getTime();
+    const to = new Date(2018, 0, 15).getTime();
+    this.log.debug(from);
+    this.log.debug(to);
+    const indeces: string[] = await this.contract.methods.getFreeOfferIDs(from, to).call();
+    this.log.debug(indeces);
+    const promises: Promise<Offer>[] =  []
+    indeces.map(async i => {
+      const id = Number.parseInt(i);
       const p = new Promise<Offer>(async (resolve, reject) => {
-        const o = await this.contract.methods.getOffer(Number.parseInt(i)).call();
-        const offer = new Offer();
-        offer.id = o.index;
-        offer.doorId = o.door;
-        offer.prize  = o.prizeInWei;
-        offer.fromDate = o.validFrom;
-        offer.toDate = o.validUntil;
-        offer.address = o.objectAddress;
-        offer.name = o.objectName;
-        offer.nameLandlord = o.ownerName;
-        offer.walletId = o.owner;
+          this.contract.methods.getOffer(id).call().then(o => {
+          const offer = new Offer();
+          offer.id = id;
+          offer.doorId = o.door;
+          offer.prize  = o.priceInWei;
+          offer.fromDate = o.validFrom;
+          offer.toDate = o.validUntil;
+          offer.address = o.objectAddress;
+          offer.name = o.objectName;
+          offer.nameLandlord = o.ownerName;
 
-        resolve(offer);
+          resolve(offer);
+        })
       });
 
       promises.push(p);
