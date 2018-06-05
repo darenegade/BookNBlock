@@ -3,8 +3,8 @@ package tür
 type (
 	OpenDoorMessage struct {
 		DoorID    DoorID
-		RenterPK  RenterPK
 		RenterID  RenterID
+		RenterPK  RenterPK
 		Timestamp int64
 	}
 )

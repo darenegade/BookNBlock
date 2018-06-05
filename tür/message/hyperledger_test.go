@@ -34,7 +34,7 @@ func TestHyperledger_Subscribe(t *testing.T) {
 func TestEncypt(t *testing.T) {
 	h := NewHyperledger()
 	msg := h.SendtestMessage()
-	if msg != "{ \"doorID\": \"008457\", \"renterPK\": \"f78uf\", \"payload\": \"0db22a5f80511bdcd3d297ead7fc741b0759cd759ec7deb8db98f92bb65e9595c012cac7\" }" {
-		t.Error("Test message funktioneirt nicht")
+	if msg != "{ \"doorID\": \"008457\", \"renterID\": \"4286f4\", \"payload\": \"5fb72a1c804906d8d4d799e6d2fa7414085fc4d3687e462ac256f18c0dfe06f5d79a70\" }" {
+		t.Error("Test message funktioniert nicht")
 	}
 }

@@ -47,14 +47,13 @@ func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessage, error) {
 		}
 		fmt.Println(dat)
 
-		renterID, timestamp := h.decryptPaylpad(dat["payload"].(string))
+		renterPK, timestamp := h.decryptPaylpad(dat["payload"].(string))
 
 		c <- tür.OpenDoorMessage{
 			DoorID:    tür.DoorID(dat["doorID"].(string)),
-			RenterPK:  tür.RenterPK(dat["renterPK"].(string)),
-			RenterID:  renterID,
+			RenterID:  tür.RenterID(dat["renterID"].(string)),
+			RenterPK:  renterPK,
 			Timestamp: timestamp,
-			//Timestamp: int(dat["timestamp"].(float64)),
 		}
 
 	}); token.Wait() && token.Error() != nil {
@@ -64,7 +63,7 @@ func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessage, error) {
 	return c, nil
 }
 
-func (h *Hyperledger) decryptPaylpad(payload string) (renterID tür.RenterID, timestamp int64) {
+func (h *Hyperledger) decryptPaylpad(payload string) (renterPK tür.RenterPK, timestamp int64) {
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
 	ciphertext, _ := hex.DecodeString(payload)
 	nonce := []byte("64a9433eae7c")
@@ -86,7 +85,7 @@ func (h *Hyperledger) decryptPaylpad(payload string) (renterID tür.RenterID, ti
 
 	fmt.Printf("%s\n", plaintext)
 	words := strings.Split(string(plaintext), ",")
-	renterID = tür.RenterID(words[0])
+	renterPK = tür.RenterPK(words[0])
 
 	i, err := strconv.ParseInt(words[1], 10, 64)
 	if err != nil {
@@ -97,7 +96,7 @@ func (h *Hyperledger) decryptPaylpad(payload string) (renterID tür.RenterID, ti
 }
 
 func (h *Hyperledger) SendtestMessage() (testMsg string) {
-	testMsg = fmt.Sprintf("{ \"doorID\": \"008457\", \"renterPK\": \"f78uf\", \"payload\": \"%x\" }", h.test_encrypt())
+	testMsg = fmt.Sprintf("{ \"doorID\": \"008457\", \"renterID\": \"4286f4\", \"payload\": \"%x\" }", h.test_encrypt())
 	if token := h.client.Publish(TOPIC, 0, false, testMsg); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
@@ -106,7 +105,7 @@ func (h *Hyperledger) SendtestMessage() (testMsg string) {
 
 func (h *Hyperledger) test_encrypt() (ciphertext []byte) {
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
-	plaintext := []byte("4286f4,1527950669609")
+	plaintext := []byte("f78uf,1527950669609")
 
 	block, err := aes.NewCipher(key)
 
