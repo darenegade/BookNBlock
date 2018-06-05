@@ -153,7 +153,8 @@ contract LockContract {
 
     function getOffer(uint offerID) public view offerAvailable(offerID) 
         returns (
-            uint, string, string, string, string, address, uint256, uint256){
+            uint priceInWei, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+            ){
         Offer storage offer = offers[offerID];
         return (
             offer.priceInWei,
@@ -168,7 +169,7 @@ contract LockContract {
     }
 
     function getBooking(uint bookingID) public view bookingAvailable(bookingID) 
-        returns (uint,uint256, uint256) {
+        returns (uint offerID, uint256 checkIn, uint256 checkOut) {
         Booking storage booking = bookings[bookingID];
         return (
             booking.offerID,
@@ -177,7 +178,7 @@ contract LockContract {
             );
     }
 
-    function getOfferIDs() public view returns(uint[]) {
+    function getOfferIDs() public view returns(uint[] offerIDs) {
         return offerIDs;
     }
 
@@ -220,7 +221,7 @@ contract LockContract {
         return offerIDs.length;
     }
 
-    function getNextID() private returns(uint) {
+    function getNextID() private returns(uint nextID) {
         return nextID++;
     }
 
