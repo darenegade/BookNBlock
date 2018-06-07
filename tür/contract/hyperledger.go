@@ -14,6 +14,7 @@ type (
 		Url   string
 		offer Offer
 	}
+	//In this case OfferID corresponds to DoorID
 	Offer struct {
 		OfferID    int64     `json:"offerId"`
 		Free       bool      `json:"free"`
