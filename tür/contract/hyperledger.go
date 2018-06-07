@@ -53,14 +53,14 @@ func (h *HyperLedger) getBlockData() (offer Offer) {
 	json.Unmarshal(responseData, &offer)
 	return offer
 }
-func (h *HyperLedger) getRenterID(payload string) {
+func (o *Offer) getRenterID() {
 	// if h.offer == nil {
 	// 	return
 	// }
 }
 
 //Needed for decrypting the encrypted message from the user (over the mqqt broker)
-func (h *HyperLedger) decryptPayload(renterPK string, encryptedPayload string) (decryptedPayload string) {
+func (o *Offer) decryptPayload(renterPK string, encryptedPayload string) (decryptedPayload string) {
 	return
 }
 
