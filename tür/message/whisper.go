@@ -43,7 +43,6 @@ type (
 		NodeID         string
 
 		HTTPPort int
-		WSPort   int
 	}
 )
 
