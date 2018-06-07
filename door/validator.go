@@ -1,4 +1,4 @@
-package tür
+package door
 
 import (
 	"log"
@@ -12,7 +12,7 @@ type (
 	}
 
 	ContractInfoer interface {
-		IsAllowedAt(mieter MieterID, t time.Time) (bool, error)
+		IsAllowedAt(mieter RenterPublicKey, t time.Time) (bool, error)
 	}
 	Lock interface {
 		Open()
@@ -21,17 +21,17 @@ type (
 
 func (v *Validator) Handle(m OpenDoorMessage) error {
 	now := time.Now()
-	ok, err := v.ContractInfoer.IsAllowedAt(m.Mieter, now)
+	ok, err := v.ContractInfoer.IsAllowedAt(m.RenterPublicKey, now)
 	if err != nil {
 		log.Println("Failed to confirm contract.")
 		return err
 	}
 	if !ok {
-		log.Printf("Mieter %s was denied to open Door.\n", m.Mieter)
+		log.Printf("Renter %s was denied to open Door.\n", m.RenterPublicKey)
 		return nil
 	}
 
-	log.Println("Mieter is allowed, opening door.")
+	log.Println("Renter is allowed, opening door.")
 	v.Lock.Open()
 	return nil
 }

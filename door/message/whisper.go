@@ -2,14 +2,14 @@ package message
 
 import (
 	"crypto/ecdsa"
-	"fmt"
+	"encoding/json"
 	"log"
 	"os"
 	"time"
 
+	"github.com/darenegade/BookNBlock/door"
 	"github.com/ethereum/go-ethereum/p2p/discover"
 
-	".."
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	elog "github.com/ethereum/go-ethereum/log"
@@ -90,10 +90,10 @@ func StartNode(config WhisperConfig) *Whisper {
 
 // Subscribe to OpenDoorMessages sent to the door (defined by private key).
 // Messages that land in the channel are proofen to be from the real sender.
-func (w *Whisper) Subscribe(door tür.TürID) (<-chan tür.OpenDoorMessage, error) {
-	privateKey, err := crypto.HexToECDSA(string(door))
+func (w *Whisper) Subscribe(doorID door.DoorPrivateKey) (<-chan door.OpenDoorMessage, error) {
+	privateKey, err := crypto.HexToECDSA(string(doorID))
 	if err != nil {
-		log.Fatalf("failed to parse private key : %s, error: %s", door, err)
+		log.Fatalf("failed to parse private key : %s, error: %s", doorID, err)
 	}
 	filter := whisper.Filter{
 		PoW:      whisper.DefaultMinimumPoW,
@@ -107,6 +107,8 @@ func (w *Whisper) Subscribe(door tür.TürID) (<-chan tür.OpenDoorMessage, erro
 	if err != nil {
 		panic(err)
 	}
+
+	c := make(chan door.OpenDoorMessage)
 	go func() {
 		ticker := time.NewTicker(250 * time.Millisecond)
 		defer ticker.Stop()
@@ -116,14 +118,25 @@ func (w *Whisper) Subscribe(door tür.TürID) (<-chan tür.OpenDoorMessage, erro
 				if filter := w.shh.GetFilter(id); filter != nil {
 					for _, rpcMessage := range filter.Retrieve() {
 						ok := rpcMessage.ValidateAndParse()
-						fmt.Println(ok, string(rpcMessage.Payload))
+						if !ok {
+							log.Println("Failed to validate rpcMessage, ignoring it.")
+							continue // with next
+						}
+						var openDoorMessage door.OpenDoorMessage
+						err := json.Unmarshal(rpcMessage.Payload, &openDoorMessage)
+						if err != nil {
+							log.Printf("Failed to parse OpenDoorMessage from json, was: %s, err: %s", string(rpcMessage.Payload), err)
+							continue // with next
+						}
+						// fill remaining fields
+
+						c <- openDoorMessage
 					}
 				}
 			}
 		}
 	}()
 
-	c := make(chan tür.OpenDoorMessage)
 	return c, nil
 }
 
@@ -137,7 +150,7 @@ func (c WhisperConfig) privateKey() *ecdsa.PrivateKey {
 	}
 	key, err := crypto.GenerateKey()
 	if err != nil {
-		log.Fatalf("Could not generate private key: $s", err)
+		log.Fatalf("Could not generate private key: %s", err)
 	}
 	return key
 }

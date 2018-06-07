@@ -1,8 +1,8 @@
 package main
 
 import (
-	"../.."
-	"../../message"
+	"github.com/darenegade/BookNBlock/door"
+	"github.com/darenegade/BookNBlock/door/message"
 )
 
 // main used to start an bootnode for the whisper protocol. It is used to provide an initial
@@ -14,6 +14,6 @@ func main() {
 		HTTPPort:   9945,
 	}
 	w := message.StartNode(c)
-	w.Subscribe(tür.TürID("6ecd6756d5e9d9df44be83b82d99b17983ae5ce9d0f2de9dcd68c80197aafc4a"))
+	w.Subscribe(door.DoorPrivateKey("6ecd6756d5e9d9df44be83b82d99b17983ae5ce9d0f2de9dcd68c80197aafc4a"))
 	w.Node.Wait()
 }

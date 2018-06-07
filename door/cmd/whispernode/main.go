@@ -1,6 +1,6 @@
 package main
 
-import "../../message"
+import "github.com/darenegade/BookNBlock/door/message"
 
 // main starts a whisper node that can be used for transmitting messages via rpc.
 // see https://web3js.readthedocs.io/en/1.0/web3-shh.html
