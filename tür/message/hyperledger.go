@@ -14,7 +14,7 @@ import (
 )
 
 // TOPIC for OpenDoorMessage via Hyperledger and MQTT, to recive OpenDoorMessage from app
-const TOPIC = "test"
+const TOPIC = "openDoor"
 
 type (
 	// Hyperledger Making connection to MQTT Broker and for evaluating OpenDoorMessage
