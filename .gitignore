@@ -399,4 +399,4 @@ fabric.properties
 hs_err_pid*
 
 .vscode/settings.json
-tür/message/debug.test
+*debug.test

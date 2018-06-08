@@ -43,25 +43,18 @@ func NewHyperledger(config Config) *Hyperledger {
 }
 
 // Subscribe listen to messages entend for this door
-func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessage, error) {
-	c := make(chan tür.OpenDoorMessage)
+func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessageHyperledger, error) {
+	c := make(chan tür.OpenDoorMessageHyperledger)
 	if token := h.client.Subscribe(TOPIC, 0, func(client mqtt.Client, msg mqtt.Message) {
 		var dat map[string]interface{}
-		fmt.Println(msg.Payload())
 
 		if err := json.Unmarshal(msg.Payload(), &dat); err != nil {
 			panic(err)
 		}
-		fmt.Println(dat)
 
-		// request publicKey from Hyperledgerblock
-
-		renterPubkey, timestamp := h.decryptPaylpad(dat["payload"].(string), "")
-
-		c <- tür.OpenDoorMessage{
-			DoorID:       tür.DoorID(dat["doorID"].(string)),
-			RenterPubkey: tür.RenterPubkey(renterPubkey),
-			Timestamp:    timestamp,
+		c <- tür.OpenDoorMessageHyperledger{
+			DoorID:  tür.DoorID(dat["doorID"].(string)),
+			Payload: dat["payload"].([]byte),
 		}
 
 	}); token.Wait() && token.Error() != nil {
@@ -105,7 +98,7 @@ func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK
 
 // SendtestMessage for sending testmessage
 func (h *Hyperledger) SendtestMessage() (testMsg string) {
-	testMsg = fmt.Sprintf("{ \"doorID\": \"008457\", \"renterID\": \"4286f4\", \"payload\": \"%x\" }", h.test_encrypt())
+	testMsg = fmt.Sprintf("{ \"doorID\": \"008457\", \"payload\": \"%x\" }", h.test_encrypt())
 	if token := h.client.Publish(TOPIC, 0, false, testMsg); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
