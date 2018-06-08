@@ -21,6 +21,7 @@ type (
 	Hyperledger struct {
 		client mqtt.Client
 	}
+	// Config containing statick iportanten informations, like the adresse of the MQTT Broker
 	Config struct {
 		BrokerAdress string
 	}
