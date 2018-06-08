@@ -38,6 +38,8 @@ func readLogFile(filename string) (logs []string) {
 	return
 }
 
+// SetLogging sets the global logging to a file with the filename that's passed
+// Warning: When using this you have to care about the close() Operation of the file
 func SetLogging(filename string) (f *os.File, err error) {
 	f, err = os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
@@ -47,6 +49,8 @@ func SetLogging(filename string) (f *os.File, err error) {
 	return
 }
 
+// StartWebserver is running a webserver where the logs are listed the url is '/logging'
+// Warning: Run this in a goroutine otherwise it's blocking
 func StartWebserver() {
 	http.HandleFunc("/logging", viewHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
