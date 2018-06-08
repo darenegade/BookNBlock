@@ -1,9 +1,9 @@
 package tür
 
 type (
-	RenterID string
-	RenterPK string
-	DoorID   string
+	RenterID     string
+	RenterPubkey string
+	DoorID       string
 
 	Tür struct {
 		ID DoorID
