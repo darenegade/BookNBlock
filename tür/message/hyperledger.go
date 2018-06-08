@@ -13,17 +13,22 @@ import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
+// TOPIC for OpenDoorMessage via Hyperledger and MQTT, to recive OpenDoorMessage from app
 const TOPIC = "test"
 
 type (
+	// Hyperledger Making connection to MQTT Broker and for evaluating OpenDoorMessage
 	Hyperledger struct {
 		client mqtt.Client
 	}
+	Config struct {
+		BrokerAdress string
+	}
 )
 
-func NewHyperledger() *Hyperledger {
-	// localhost
-	opts := mqtt.NewClientOptions().AddBroker("tcp://localhost:1883")
+// NewHyperledger returns new Hyperledgercleint
+func NewHyperledger(config Config) *Hyperledger {
+	opts := mqtt.NewClientOptions().AddBroker(config.BrokerAdress)
 
 	client := mqtt.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -36,6 +41,7 @@ func NewHyperledger() *Hyperledger {
 
 }
 
+// Subscribe listen to messages entend for this door
 func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessage, error) {
 	c := make(chan tür.OpenDoorMessage)
 	if token := h.client.Subscribe(TOPIC, 0, func(client mqtt.Client, msg mqtt.Message) {
@@ -47,7 +53,9 @@ func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessage, error) {
 		}
 		fmt.Println(dat)
 
-		renterPK, timestamp := h.decryptPaylpad(dat["payload"].(string))
+		// request publicKey from Hyperledgerblock
+
+		renterPK, timestamp := h.decryptPaylpad(dat["payload"].(string), "")
 
 		c <- tür.OpenDoorMessage{
 			DoorID:    tür.DoorID(dat["doorID"].(string)),
@@ -63,7 +71,7 @@ func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessage, error) {
 	return c, nil
 }
 
-func (h *Hyperledger) decryptPaylpad(payload string) (renterPK tür.RenterPK, timestamp int64) {
+func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK tür.RenterPK, timestamp int64) {
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
 	ciphertext, _ := hex.DecodeString(payload)
 	nonce := []byte("64a9433eae7c")
@@ -95,6 +103,7 @@ func (h *Hyperledger) decryptPaylpad(payload string) (renterPK tür.RenterPK, ti
 	return
 }
 
+// SendtestMessage for sending testmessage
 func (h *Hyperledger) SendtestMessage() (testMsg string) {
 	testMsg = fmt.Sprintf("{ \"doorID\": \"008457\", \"renterID\": \"4286f4\", \"payload\": \"%x\" }", h.test_encrypt())
 	if token := h.client.Publish(TOPIC, 0, false, testMsg); token.Wait() && token.Error() != nil {

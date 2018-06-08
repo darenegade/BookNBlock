@@ -6,5 +6,6 @@ type (
 		RenterID  RenterID
 		RenterPK  RenterPK
 		Timestamp int64
+		
 	}
 )
