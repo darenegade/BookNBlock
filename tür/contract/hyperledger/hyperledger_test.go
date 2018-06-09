@@ -1,4 +1,4 @@
-package contract
+package hyperledger
 
 import (
 	"fmt"
@@ -7,25 +7,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/jarcoal/httpmock"
+	httpmock "gopkg.in/jarcoal/httpmock.v1"
 )
 
 func TestMain(m *testing.M) {
 	//Setting up the HTTP mock to have a fake rest interface
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
-	fixture := `[{
-		"offerID": 123,
-		"free": false,
-		"price": 300,
-		"checkIn": "01.06.2018",
-		"checkOut": "01.06.2020",
-		"objectName": "small Apt.",
-		"ownerName": "Schlicht",
-		"tenantPK": "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAId84WY3SCyOwh602wC0OTxQmuPZ3MwfIeNbnhYBs2Pnx/eq5KO0Mh5Bu6X0sGBGHS47Kd1bZ7GJgAFvGWLHr+kCAwEAAQ==",
-		"landlordPK": "test"
-	  }
-	  ]`
+	fixture := map[string]interface{}{"offerId": 123, "free": false, "price": 1200, "checkIn": "2018-01-01T00:00:00Z", "checkOut": "2019-01-01T00:00:00Z", "objectName": "Test-Apartment", "ownerName": "Schlicht", "tenantPk": "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAId84WY3SCyOwh602wC0OTxQmuPZ3MwfIeNbnhYBs2Pnx/eq5KO0Mh5Bu6X0sGBGHS47Kd1bZ7GJgAFvGWLHr+kCAwEAAQ", "landlordPk": "test"}
 
 	responder, err := httpmock.NewJsonResponder(200, fixture)
 	if err != nil {
@@ -40,17 +29,30 @@ func TestMain(m *testing.M) {
 }
 func TestMockAPI(t *testing.T) {
 	fakeURL := "https://hyperledger.com/door/123"
-	fixture := `[{\n\t\t\"offerID\": 123,\n\t\t\"free\": false,\n\t\t\"price\": 300,\n\t\t\"checkIn\": \"01.06.2018\",\n\t\t\"checkOut\": \"01.06.2020\",\n\t\t\"objectName\": \"small Apt.\",\n\t\t\"ownerName\": \"Schlicht\",\n\t\t\"tenantPK\": \"MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAId84WY3SCyOwh602wC0OTxQmuPZ3MwfIeNbnhYBs2Pnx/eq5KO0Mh5Bu6X0sGBGHS47Kd1bZ7GJgAFvGWLHr+kCAwEAAQ==\",\n\t\t\"landlordPK\": \"test\"\n\t  }\n\t  ]`
+	fixture := `{"checkIn":"2018-01-01T00:00:00Z","checkOut":"2019-01-01T00:00:00Z","free":false,"landlordPk":"test","objectName":"Test-Apartment","offerId":123,"ownerName":"Schlicht","price":1200,"tenantPk":"MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAId84WY3SCyOwh602wC0OTxQmuPZ3MwfIeNbnhYBs2Pnx/eq5KO0Mh5Bu6X0sGBGHS47Kd1bZ7GJgAFvGWLHr+kCAwEAAQ"}`
 	resp, err := http.Get(fakeURL)
 	if err != nil {
 		t.Error("Test api not working.")
+
 	}
 	responseData, err := ioutil.ReadAll(resp.Body)
 	fmt.Printf(string(responseData))
 	fmt.Print("\n\n")
 	fmt.Printf((string(fixture)))
-	if len(string(responseData)) == len(fixture) {
+	if string(responseData) == fixture {
 		t.Error("Test api returns wrong json.")
 	}
 
+}
+
+func TestGetBlockData(t *testing.T) {
+	fakeURL := "https://hyperledger.com/door/123"
+	hyper := HyperLedger{URL: fakeURL}
+	fmt.Print("asdfasdf" + hyper.URL)
+	hyper.getBlockData()
+	fmt.Print("it workded!!!")
+	fmt.Print(hyper.offer)
+	// if hyper.offer.CheckIn != time.Parse("2018-01-01T00:00:00Z", "2018-01-01T00:00:00Z") {
+	// 	t.Error("getBlockData not working.")
+	// }
 }

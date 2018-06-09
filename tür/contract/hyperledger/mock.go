@@ -1,4 +1,4 @@
-package contract
+package hyperledger
 
 type (
 	Mock struct {

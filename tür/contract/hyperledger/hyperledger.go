@@ -1,18 +1,18 @@
-package contract
+package hyperledger
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
-	http "net/http"
+	"net/http"
 	time "time"
 )
 
 type (
 	HyperLedger struct {
-		Url   string
-		offer Offer
+		URL   string
+		offer *Offer
 	}
 	//In this case OfferID corresponds to DoorID
 	Offer struct {
@@ -36,23 +36,32 @@ func (h *HyperLedger) isAllowedAt(requestPointofTime time.Time, startTime time.T
 	return false
 }
 
-func (h *HyperLedger) getBlockData(URL string) (offer Offer) {
+func (h *HyperLedger) getBlockData() {
 	fmt.Println("Starting the application...")
-	response, err := http.Get(URL)
+	response, err := http.Get(h.URL)
 	var responseData []byte
 	if err != nil {
 		fmt.Printf("The HTTP request failed with error %s\n", err)
+		return
 	} else {
 		responseData, err = ioutil.ReadAll(response.Body)
 		if err != nil {
 			log.Fatal(err)
+			return
 		}
 		fmt.Println(string(responseData))
 	}
-	offer = Offer{} // Slice of Offer instances
-	json.Unmarshal(responseData, &offer)
-	h.offer = offer
-	return offer
+	var offer Offer
+	err = json.Unmarshal(responseData, &offer)
+	if err != nil {
+		fmt.Print("Object name " + offer.ObjectName)
+		fmt.Print("Unmarshalling did not work")
+		log.Fatal(err)
+		return
+	}
+	fmt.Print(&offer)
+	h.offer = &offer
+	fmt.Print(h.offer)
 }
 func (o *Offer) getRenterID() {
 	// if h.offer == nil {
