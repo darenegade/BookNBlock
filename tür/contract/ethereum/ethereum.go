@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
@@ -34,7 +35,8 @@ func (e *Ethereum) IsAllowedAt(bookingID *big.Int, renterID common.Address, t *b
 		fmt.Print("Contract not initialized yet.")
 		return
 	}
-	allowed, err := e.contract.IsAllowedAt(nil, bookingID, renterID, t)
+	callOpts := bind.CallOpts{Pending: true}
+	allowed, err := e.contract.IsAllowedAt(&callOpts, bookingID, renterID, t)
 	if err != nil {
 		fmt.Print("RPC-Call isAllowedAt did not work.")
 		return
@@ -63,13 +65,4 @@ func (e *Ethereum) createConnection() (connected bool) {
 	}
 	e.contract = contract
 	return true
-}
-
-func main() {
-	ethCon := Ethereum{gethPath: "https://rinkeby.infura.io/VhXic4UDRfv5w86p2hq7", contractAddress: "0xEe86D8d8163844517676C918556CDf42310c1671"}
-	// ethCon.setPath("https://rinkeby.infura.io/VhXic4UDRfv5w86p2hq7")
-	// ethCon.setContractAddress("0xEe86D8d8163844517676C918556CDf42310c1671")
-	ethCon.createConnection()
-	//ethCon.isAllowedAt()
-
 }
