@@ -49,19 +49,18 @@ func (h *HyperLedger) getBlockData() {
 			log.Fatal(err)
 			return
 		}
-		fmt.Println(string(responseData))
+
 	}
 	var offer Offer
 	err = json.Unmarshal(responseData, &offer)
 	if err != nil {
-		fmt.Print("Object name " + offer.ObjectName)
 		fmt.Print("Unmarshalling did not work")
 		log.Fatal(err)
 		return
 	}
-	fmt.Print(&offer)
+
 	h.offer = &offer
-	fmt.Print(h.offer)
+
 }
 func (o *Offer) getRenterID() {
 	// if h.offer == nil {
