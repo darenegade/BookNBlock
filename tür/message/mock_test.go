@@ -12,7 +12,7 @@ func TestMock_Subscribe(t *testing.T) {
 	c, _ := m.Subscribe()
 	time.Sleep(time.Millisecond)
 	message := <-c
-	if message.Mieter != tür.MieterID("franz") {
+	if message.RenterID != tür.RenterID("franz") {
 		t.Error("Nachricht war nicht für franz :(")
 	}
 }
