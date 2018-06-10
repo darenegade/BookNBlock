@@ -62,22 +62,3 @@ func (h *HyperLedger) getBlockData() {
 	h.offer = &offer
 
 }
-func (o *Offer) getRenterID() {
-	// if h.offer == nil {
-	// 	return
-	// }
-}
-func (p *Offer) getTenantPK() {
-
-}
-
-//Needed for decrypting the encrypted message from the user (over the mqqt broker)
-func (o *Offer) decryptPayload(renterPK string, encryptedPayload string) (decryptedPayload string) {
-	//publickey := o.TenantPk
-
-	return
-}
-
-// 	key, _ := hex.DecodeString(renterPK)
-// 	ciphertext, _ := hex.DecodeString(encryptedPayload)
-// 	return

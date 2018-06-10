@@ -29,14 +29,14 @@ type Offer struct {
 	DoorID     string
 }
 
-func (e *Ethereum) IsAllowedAt(bookingID *big.Int, renterID common.Address, t *big.Int) (allowed bool) {
+func (e *Ethereum) IsAllowedAt(bookingID *big.Int, renterID common.Address, reqTime *big.Int) (allowed bool) {
 	//Annahme: Es existiert ein Contract mit der Methode 'isAllowed(doorID string, renterID string, time time.Time)'
 	if e.contract == nil {
 		fmt.Print("Contract not initialized yet.")
 		return
 	}
 	callOpts := bind.CallOpts{Pending: true}
-	allowed, err := e.contract.IsAllowedAt(&callOpts, bookingID, renterID, t)
+	allowed, err := e.contract.IsAllowedAt(&callOpts, bookingID, renterID, reqTime)
 	if err != nil {
 		fmt.Print("RPC-Call isAllowedAt did not work.")
 		return
