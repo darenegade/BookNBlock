@@ -60,24 +60,29 @@ export class EthereumConnector extends BlockchainConnector {
   async getAllOffers(from: Date, to: Date): Promise<Offer[]> {
     this.log.debug(`EthereumConnector.getAllOffers()`);
     return this.contract.methods.getFreeOfferIDs(from.getTime(), to.getTime()).call().then(ids => {
-      return ids.map(i => {
+      const promises: Promise<Offer>[] = [];
+      ids.map(i => {
         const id = Number.parseInt(i);
-        return this.contract.methods.getOffer(id).call().then(o => {
-          const offer = new Offer();
-          offer.id = id;
-          offer.doorId = o.door;
-          offer.prize  = o.priceInWei;
-          offer.fromDate = o.validFrom;
-          offer.toDate = o.validUntil;
-          offer.address = o.objectAddress;
-          offer.name = o.objectName;
-          offer.nameLandlord = o.ownerName;
+        const p = new Promise<Offer>((resolve, reject) => {
+          this.contract.methods.getOffer(id).call().then(o => {
+            const offer = new Offer();
+            offer.id = id;
+            offer.doorId = o.door;
+            offer.prize  = o.priceInWei;
+            offer.fromDate = o.validFrom;
+            offer.toDate = o.validUntil;
+            offer.address = o.objectAddress;
+            offer.name = o.objectName;
+            offer.nameLandlord = o.ownerName;
 
-          return (offer);
-        }).catch(error => {
-          return Promise.reject(error);
+            resolve(offer);
+          }).catch(error => {
+            reject(error);
+          });
         });
+        promises.push(p);
       });
+      return Promise.all(promises);
     }).catch(error => {
       return Promise.reject(error);
     });
