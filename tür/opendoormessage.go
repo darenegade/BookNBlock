@@ -2,6 +2,8 @@ package tür
 
 import (
 	"crypto/rsa"
+	"crypto/x509"
+	"encoding/pem"
 	"strconv"
 	"strings"
 )
@@ -10,19 +12,23 @@ type (
 	OpenDoorMessage struct {
 		DoorID       DoorID
 		RenterPubkey RenterPubkey
-		Timestamp    int64
+		Timestamp    int
 	}
 
 	OpenDoorMessageHyperledger struct {
 		DoorID       DoorID
 		Payload      []byte
 		RenterPubkey RenterPubkey
-		Timestamp    int64
+		Timestamp    int
 	}
 )
 
-func (msg *OpenDoorMessageHyperledger) Decrypt(pub *rsa.PrivateKey) {
-	decryptText, err := rsa.DecryptPKCS1v15(nil, pub, msg.Payload)
+func (msg *OpenDoorMessageHyperledger) Decrypt(pemString string) {
+	var tmp int64
+	block, _ := pem.Decode([]byte(pemString))
+	key, _ := x509.ParsePKCS1PrivateKey(block.Bytes)
+
+	decryptText, err := rsa.DecryptPKCS1v15(nil, key, msg.Payload)
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +37,8 @@ func (msg *OpenDoorMessageHyperledger) Decrypt(pub *rsa.PrivateKey) {
 	if len(data) != 2 {
 		panic("Reviced Paylod is invalid")
 	}
-	msg.Timestamp, err = strconv.ParseInt(data[0], 10, 64)
+	tmp, err = strconv.ParseInt(data[0], 10, 64)
+	msg.Timestamp = int(tmp)
 	if err != nil {
 		panic(err)
 	}
