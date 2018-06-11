@@ -46,15 +46,19 @@ export class MockConnector extends BlockchainConnector {
     throw new Error('Method not implemented.');
   }
 
-  insertOffer(offer: Offer): Promise<void> {
+  insertOffer(offer: Offer): Promise<number> {
     this.log.debug(`MockConnector.insertOffer(${JSON.stringify(offer)})`);
     this.offers.push(offer);
-    return Promise.resolve();
+    return Promise.resolve(offer.id);
   }
 
-  rentOffer(offerId: number, checkIn?: Date, checkOut?: Date): Promise<boolean> {
+  rentOffer(offerId: number, checkIn?: Date, checkOut?: Date): Promise<void> {
     this.log.debug(`MockConnector.rentOffer(${offerId})`);
-    return Promise.resolve(this.offers.find(offer => offer.id === offerId) !== undefined);
+    if (this.offers.find(offer => (offer.id === offerId) !== undefined)) {
+      return Promise.resolve();
+    } else {
+      Promise.reject(`No offer with id ${offerId}.`);
+    }
   }
 
   sendMessage(message: OpenDoorMessage): Promise<void> {

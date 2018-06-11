@@ -14,7 +14,7 @@ export class TransactionService {
   ) { }
 
   insertOffer(doorId: string, prize: number, fromDate: Date, toDate: Date,
-    address: string, name: string, nameLandlord: string, description: string, image?: any): Promise<void> {
+    address: string, name: string, nameLandlord: string, description: string, image?: any): Promise<Offer> {
     const offer: Offer = {
       id: undefined,
       doorId: doorId,
@@ -29,10 +29,13 @@ export class TransactionService {
       image: image,
       title: ''
     } as Offer;
-    return this.factory.get().insertOffer(offer);
+    return this.factory.get().insertOffer(offer).then(id => {
+      offer.id = id;
+      return Promise.resolve(offer);
+    });
   }
 
-  rentOffer(offerId: number, checkIn: Date, checkOut: Date): Promise<boolean> {
+  rentOffer(offerId: number, checkIn: Date, checkOut: Date): Promise<void> {
     return this.factory.get().rentOffer(offerId, checkIn, checkOut);
   }
 
