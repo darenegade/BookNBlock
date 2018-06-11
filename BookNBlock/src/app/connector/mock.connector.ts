@@ -36,7 +36,7 @@ export class MockConnector extends BlockchainConnector {
     return Promise.resolve(undefined);
   }
 
-  getAllOffers(): Promise<Offer[]> {
+  getAllOffers(from: Date, to: Date): Promise<Offer[]> {
     this.log.debug(`MockConnector.getAllOffers()`);
     return Promise.resolve(this.offers);
   }

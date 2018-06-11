@@ -17,7 +17,7 @@ export abstract class BlockchainConnector {
   /**
    * Get all free offers from the blockchain.
    */
-  abstract getAllOffers(): Promise<Offer[]>;
+  abstract getAllOffers(from: Date, to: Date): Promise<Offer[]>;
 
   /**
    * Search for offers meeting one criterion.

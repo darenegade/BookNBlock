@@ -57,11 +57,9 @@ export class EthereumConnector extends BlockchainConnector {
     });
   }
 
-  async getAllOffers(from?: Date, to?: Date): Promise<Offer[]> {
+  async getAllOffers(from: Date, to: Date): Promise<Offer[]> {
     this.log.debug(`EthereumConnector.getAllOffers()`);
-    const fromDate = from || new Date(2018, 0, 5).getTime();
-    const toDate = to || new Date(2018, 0, 15).getTime();
-    return this.contract.methods.getFreeOfferIDs(fromDate, toDate).call().then(ids => {
+    return this.contract.methods.getFreeOfferIDs(from.getTime(), to.getTime()).call().then(ids => {
       return ids.map(i => {
         const id = Number.parseInt(i);
         return this.contract.methods.getOffer(id).call().then(o => {

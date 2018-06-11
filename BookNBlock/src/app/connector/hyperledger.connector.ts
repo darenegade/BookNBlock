@@ -17,7 +17,7 @@ export class HyperledgerConnector extends BlockchainConnector {
     throw new Error('Method not implemented.');
   }
 
-  getAllOffers(): Promise<Offer[]> {
+  getAllOffers(from: Date, to: Date): Promise<Offer[]> {
     throw new Error('Method not implemented.');
   }
 
