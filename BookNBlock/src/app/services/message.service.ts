@@ -19,7 +19,7 @@ export class MessageService {
     const message: OpenDoorMessage = {
       doorId: doorId,
       renterId: privateEncrypt(this.user.privateKey, new Buffer(String(this.user.walletId))).toString(),
-      renterPK: this.user.publicKey,
+      renterPubkey: this.user.publicKey,
       timestemp: privateEncrypt(this.user.privateKey, new Buffer(Date.now().toString())).toString()
     } as OpenDoorMessage;
     return this.factory.get().sendMessage(message);
