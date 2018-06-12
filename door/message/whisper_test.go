@@ -27,7 +27,7 @@ func TestWhisper_Subscribe(t *testing.T) {
 		t.Fatal(err)
 	}
 	err = w.Post(door.OpenDoorMessage{
-		DoorPublicKey: door.DoorPublicKey(hexPublicKey),
+		DoorID: door.DoorID(hexPublicKey),
 	}, privateKey)
 	if err != nil {
 		t.Fatal(err)

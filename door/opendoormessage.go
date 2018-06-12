@@ -11,13 +11,13 @@ import (
 
 type (
 	OpenDoorMessage struct {
-		DoorPublicKey  DoorPublicKey
+		DoorID       DoorID
 		RenterPubkey RenterPubkey
 		Timestamp    int
 	}
 
 	OpenDoorMessageHyperledger struct {
-		DoorPublicKey       DoorPublicKey
+		DoorID       DoorID
 		Payload      []byte
 		RenterPubkey RenterPubkey
 		Timestamp    int

@@ -146,7 +146,7 @@ func (w Whisper) Post(openDoorMessage door.OpenDoorMessage, privateKey *ecdsa.Pr
 	if err != nil {
 		return err
 	}
-	data, err := hex.DecodeString(string(openDoorMessage.DoorPublicKey))
+	data, err := hex.DecodeString(string(openDoorMessage.DoorID))
 	if err != nil {
 		return err
 	}

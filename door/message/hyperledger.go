@@ -55,7 +55,7 @@ func (h *Hyperledger) Subscribe() (<-chan door.OpenDoorMessageHyperledger, error
 		}
 
 		c <- door.OpenDoorMessageHyperledger{
-			DoorPublicKey:  door.DoorPublicKey(dat["doorPublicKey"].(string)),
+			DoorID:  door.DoorID(dat["doorID"].(string)),
 			Payload: dat["payload"].([]byte),
 		}
 
