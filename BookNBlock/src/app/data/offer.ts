@@ -7,6 +7,8 @@ export class Offer {
   toDate: Date;
   address: string;
   name: string;
+  description: string;
   walletId: number;
+  title: string;
   image?: any;
 }
