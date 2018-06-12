@@ -43,26 +43,18 @@ func NewHyperledger(config Config) *Hyperledger {
 }
 
 // Subscribe listen to messages entend for this door
-func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessage, error) {
-	c := make(chan tür.OpenDoorMessage)
+func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessageHyperledger, error) {
+	c := make(chan tür.OpenDoorMessageHyperledger)
 	if token := h.client.Subscribe(TOPIC, 0, func(client mqtt.Client, msg mqtt.Message) {
 		var dat map[string]interface{}
-		fmt.Println(msg.Payload())
 
 		if err := json.Unmarshal(msg.Payload(), &dat); err != nil {
 			panic(err)
 		}
-		fmt.Println(dat)
 
-		// request publicKey from Hyperledgerblock
-
-		renterPK, timestamp := h.decryptPaylpad(dat["payload"].(string), "")
-
-		c <- tür.OpenDoorMessage{
-			DoorID:    tür.DoorID(dat["doorID"].(string)),
-			RenterID:  tür.RenterID(dat["renterID"].(string)),
-			RenterPK:  renterPK,
-			Timestamp: timestamp,
+		c <- tür.OpenDoorMessageHyperledger{
+			DoorID:  tür.DoorID(dat["doorID"].(string)),
+			Payload: dat["payload"].([]byte),
 		}
 
 	}); token.Wait() && token.Error() != nil {
@@ -72,7 +64,7 @@ func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessage, error) {
 	return c, nil
 }
 
-func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK tür.RenterPK, timestamp int64) {
+func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK tür.RenterPubkey, timestamp int64) {
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
 	ciphertext, _ := hex.DecodeString(payload)
 	nonce := []byte("64a9433eae7c")
@@ -94,7 +86,7 @@ func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK
 
 	fmt.Printf("%s\n", plaintext)
 	words := strings.Split(string(plaintext), ",")
-	renterPK = tür.RenterPK(words[0])
+	renterPK = tür.RenterPubkey(words[0])
 
 	i, err := strconv.ParseInt(words[1], 10, 64)
 	if err != nil {
@@ -106,7 +98,7 @@ func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK
 
 // SendtestMessage for sending testmessage
 func (h *Hyperledger) SendtestMessage() (testMsg string) {
-	testMsg = fmt.Sprintf("{ \"doorID\": \"008457\", \"renterID\": \"4286f4\", \"payload\": \"%x\" }", h.test_encrypt())
+	testMsg = fmt.Sprintf("{ \"doorID\": \"008457\", \"payload\": \"%x\" }", h.test_encrypt())
 	if token := h.client.Publish(TOPIC, 0, false, testMsg); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
