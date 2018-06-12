@@ -2,6 +2,7 @@ package message
 
 import (
 	"crypto/ecdsa"
+	"encoding/hex"
 	"encoding/json"
 	"log"
 	"os"
@@ -138,6 +139,39 @@ func (w *Whisper) Subscribe(doorID door.DoorPrivateKey) (<-chan door.OpenDoorMes
 	}()
 
 	return c, nil
+}
+
+func (w Whisper) Post(openDoorMessage door.OpenDoorMessage, privateKey *ecdsa.PrivateKey) error {
+	payload, err := json.Marshal(openDoorMessage)
+	if err != nil {
+		return err
+	}
+	data, err := hex.DecodeString(string(openDoorMessage.DoorPublicKey))
+	if err != nil {
+		return err
+	}
+	destination := crypto.ToECDSAPub(data)
+	if err != nil {
+		return err
+	}
+	params := &whisper.MessageParams{
+		Dst:      destination,
+		Payload:  payload,
+		PoW:      whisper.DefaultMinimumPoW,
+		Src:      privateKey,
+		Topic:    whisper.BytesToTopic(TopicBookNBlock),
+		TTL:      whisper.DefaultTTL,
+		WorkTime: 1,
+	}
+	message, err := whisper.NewSentMessage(params)
+	if err != nil {
+		return err
+	}
+	envelope, err := message.Wrap(params)
+	if err != nil {
+		return err
+	}
+	return w.shh.Send(envelope)
 }
 
 func (c WhisperConfig) privateKey() *ecdsa.PrivateKey {
