@@ -1,12 +1,13 @@
 package door
 
 type (
-	DoorPublicKey   string
-	DoorPrivateKey  string
-	RenterPublicKey string
+	RenterID string
+	RenterPubkey string
+	DoorPublicKey string
+	DoorPrivateKey string
 
 	Door struct {
-		PublicKey  DoorPublicKey
 		PrivateKey DoorPrivateKey
+		PublicKey  DoorPublicKey
 	}
 )

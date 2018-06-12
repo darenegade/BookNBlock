@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>Whisper sender example/tester</title>
+  <meta name="description" content="app description">
+
+  <script type="module">
+    const RENTER_PRIVATE_KEY =
+      `0xc81803c093599fb7a4bba473ed74a2209fa53fcb59a7a7bcc6e8226157e87cb5`;
+
+
+    const DOOR_PRIVATE_KEY = 
+    `0x6ecd6756d5e9d9df44be83b82d99b17983ae5ce9d0f2de9dcd68c80197aafc4a`;
+    const DOOR_PUBLIC_KEY =
+      `0x04f0f871df7b11b3a186210ef251d10837ccfb757de9d8669225bcf73632853def72ae7680f8acdfa1ac94345017d2b4c185275a1ea2f7bbe03e939146ba355889`;
+
+
+    import { LitElement, html } from './node_modules/@polymer/lit-element';
+    import './web3'
+
+    export class WhisperSender extends LitElement {
+
+      static get properties() {
+        return {
+          web3: Object,
+          renterIdentity: Object
+        }
+      }
+
+      constructor() {
+        super();
+
+
+        this.web3 = new Web3('http://localhost:8545');
+
+
+        console.log(this.web3);
+        console.log(this.web3.shh)
+        this.web3.shh.addPrivateKey(RENTER_PRIVATE_KEY).then(
+          id => this.renterIdentity = id
+          );
+        /*this.web3.shh.subscribe('messages', {
+            symKeyID: this.identity,
+            ttl: 20,
+            topics: ["0x426f6f6b"],
+            minPow: 0.8,
+        }, function (error, message, subscription) {
+            console.log(error + message);
+        })*/
+      }
+
+      _render({ identity, messages }) {
+        return html`
+        <style>
+          :host {
+              display: flex;
+              flex-direction: column;
+            }
+            div {
+              white-space: pre-wrap;
+              font-family: monospace;
+            }
+          </style>
+        <div>identity: ${identity}</div>
+        
+        <label for="to">Door Public Key</label>
+        <div id="to" >${DOOR_PUBLIC_KEY}</div>
+        
+        <label for="from">Renter Private Key</label>
+        <div id="from" >${RENTER_PRIVATE_KEY}</div>
+        
+        <button on-click="${() => this.sendMessage()}" id="submit">Send</button>
+    `;
+      }
+
+      sendMessage() {
+        const message = {
+          message: 'asdf',
+          to: 'TürID'
+        }
+        const toPublicKey = this.shadowRoot.getElementById('to').value;
+        const fromPrivateKey = this.shadowRoot.getElementById('from').value;
+
+        console.log(message);
+
+        const web3 = this.web3;
+        const shh = this.web3.shh;
+        web3.shh.post({
+          sig: this.renterIdentity, // signs using the private key ID
+          pubKey: DOOR_PUBLIC_KEY,
+          ttl: 10,
+          topic: "0x426f6f6b",
+          payload: web3.utils.asciiToHex(JSON.stringify(message)),
+          powTime: 3,
+          powTarget: 0.5
+        }).then(h => {
+          console.log(`Message with hash ${h} was successfuly sent`)
+        }).catch(err => {
+          throw new Error(err)
+        });
+
+      }
+    }
+
+    customElements.define('whisper-sender', WhisperSender);
+
+  </script>
+</head>
+
+<body>
+  <whisper-sender></whisper-sender>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="frame">
+    <div class="nav">
+      <ul class="links">
+        <li [ngClass]="{'signin-active': signIn, 'signin-inactive':  !signIn}">
+          <a class="btn"  (click)="signIn = true">Login</a>
+        </li>
+        <li [ngClass]="{'signup-active': !signIn, 'signup-inactive':  signIn}">
+          <a class="btn" (click)="signIn = false">Registrieren</a>
+        </li>
+      </ul>
+    </div>
+    <div>
+
+      <app-sign-in *ngIf="signIn" (onLogin)="login()"></app-sign-in>
+      <app-sign-up *ngIf="!signIn" (onRegister)="register()"></app-sign-up>
+
+
+      <div class="forgot">
+        <a href="#">Forgot your password?</a>
+      </div>
+    </div>
+  </div>

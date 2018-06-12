@@ -1,0 +1,24 @@
+@import "../assets/scss/varriables";
+html,
+body * {
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.navbar {
+    background: transparent;
+    background-size: cover;
+}
+
+.nav-item {
+    font-size: 16px;
+    color: #444444;
+    text-transform: uppercase;
+    border: 3px solid rgba(255, 193, 7, 0.5);
+    margin: 5px;
+    border-radius: 5px;
+    &:hover {
+      background-color: rgba(255, 193, 7, 0.5);
+    }
+}
+

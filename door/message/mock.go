@@ -15,7 +15,7 @@ func (Mock) Subscribe() (<-chan door.OpenDoorMessage, error) {
 	go func() {
 		for {
 			c <- door.OpenDoorMessage{
-				RenterPublicKey: door.RenterPublicKey("franz"),
+				RenterPubkey: door.RenterPubkey("franz"),
 			}
 			time.Sleep(time.Second * 10)
 		}

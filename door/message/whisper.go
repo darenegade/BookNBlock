@@ -91,10 +91,10 @@ func StartNode(config WhisperConfig) *Whisper {
 
 // Subscribe to OpenDoorMessages sent to the door (defined by private key).
 // Messages that land in the channel are proofen to be from the real sender.
-func (w *Whisper) Subscribe(doorID door.DoorPrivateKey) (<-chan door.OpenDoorMessage, error) {
-	privateKey, err := crypto.HexToECDSA(string(doorID))
+func (w *Whisper) Subscribe(doorPrivateKey door.DoorPrivateKey) (<-chan door.OpenDoorMessage, error) {
+	privateKey, err := crypto.HexToECDSA(string(doorPrivateKey))
 	if err != nil {
-		log.Fatalf("failed to parse private key : %s, error: %s", doorID, err)
+		log.Fatalf("failed to parse private key : %s, error: %s", doorPrivateKey, err)
 	}
 	filter := whisper.Filter{
 		PoW:      whisper.DefaultMinimumPoW,

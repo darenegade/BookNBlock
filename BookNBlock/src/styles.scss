@@ -1,0 +1,75 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~bulma/css/bulma.css";
+@import "assets/scss/varriables";
+
+html {
+    height: 100%;
+}
+
+h1 {
+    font-family: $font-playfair;
+    font-size: 50px;
+    color: #444444;
+}
+
+body {
+    min-height: 100%;
+    background: linear-gradient( rgba(255, 236, 179, 1), rgba(255, 193, 7, 0.5));
+    background-size: cover;
+}
+
+html, body * { box-sizing: border-box; font-family: 'Open Sans', sans-serif; }
+
+
+input {
+  padding: 15px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+label {
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 13px;
+  padding-left: 15px;
+  padding-bottom: 10px;
+  color: #444444;
+  display: block;
+}
+
+button, input :focus {
+  outline: none;
+}
+
+.frame {
+  border: 1px solid rgba(248, 248, 248, 0.99);
+    margin: 5px;
+    -webkit-box-shadow: 2px 2px 29px 0px rgba(75, 74, 74, 0.63);
+    -moz-box-shadow: 2px 2px 29px 0px  rgba(75, 74, 74, 0.63);
+    box-shadow: 2px 2px 29px 0px  rgba(75, 74, 74, 0.63);
+    background: linear-gradient( rgba(248, 248, 248, 0.99), rgba(236, 243, 243, 0.99));
+  background-size: cover;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: all .5s ease;
+}
+
+.button {
+  border: 3px solid rgba(255, 193, 7, 0.5);
+  border-radius: 5px;
+  background-color: transparent;
+  text-transform: uppercase;
+ &:active {
+  background-color: rgba(255, 193, 7, 0.5);
+  border-color:  rgba(255, 193, 7, 0.5);
+ }
+ &:focus{
+  background-color: rgba(255, 193, 7, 0.5);
+  border-color:  rgba(255, 193, 7, 0.5);
+ }
+ &:focus {outline: none;}
+}
