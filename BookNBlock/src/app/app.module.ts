@@ -21,8 +21,9 @@ import { SignUpComponent } from './ui/login/sign-up/sign-up.component';
 import { HomeComponent } from './ui/home/home.component';
 import { MockConnector } from './connector/mock.connector';
 
-const privateKey = `diet asthma equip loan jealous twist divorce cloth gym ramp stomach noise`;
+const passphrase = `diet asthma equip loan jealous twist divorce cloth gym ramp stomach noise`;
 const publicKey = 'VhXic4UDRfv5w86p2hq7';
+const privateKey = 'f3813f7438c5cb4ce4ad706b0e7a0196e786e5432c6e59763f50ff3aefa26323';
 const walletId = '0xADF900e582b34EC29DF534e32db6250cf9529FB9';
 
 @NgModule({
@@ -43,7 +44,7 @@ const walletId = '0xADF900e582b34EC29DF534e32db6250cf9529FB9';
     RouterModule.forRoot(routes)
   ],
   providers: [
-    { provide: User, useValue: {walletId: walletId, privateKey: privateKey, publicKey: publicKey, ethereum: true} as User },
+    { provide: User, useValue: {passphrase: passphrase, privateKey: privateKey, publicKey: publicKey, walletId: walletId, ethereum: true} as User },
     BlockchainConnectorFactory,
     MockConnector,
     HyperledgerConnector,

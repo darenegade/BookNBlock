@@ -23,7 +23,7 @@ export class EthereumConnector extends BlockchainConnector {
     super();
 
     const provider = new HDWalletProvider(
-      `${this.user.privateKey}`,
+      `${this.user.passphrase}`,
       `${environment.ethereumAddress}/${this.user.publicKey}`
     );
 

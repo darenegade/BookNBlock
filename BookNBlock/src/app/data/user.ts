@@ -7,4 +7,5 @@ export class User {
   privateKey: string;
   publicKey: string;
   ethereum: boolean;
+  passphrase: string;
 }
