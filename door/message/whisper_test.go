@@ -8,6 +8,7 @@ import (
 	"github.com/darenegade/BookNBlock/door"
 
 	"github.com/ethereum/go-ethereum/crypto"
+	"time"
 )
 
 func TestWhisper_Subscribe(t *testing.T) {
@@ -26,11 +27,21 @@ func TestWhisper_Subscribe(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	now := time.Now()
 	err = w.Post(door.OpenDoorMessage{
 		DoorID: door.DoorID(hexPublicKey),
+		Timestamp: now,
 	}, privateKey)
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Printf("%s hello", <-c)
+
+	message := <-c
+	if message.DoorID != door.DoorID(hexPublicKey) {
+		t.Fail()
+	}
+	if !message.Timestamp.Equal(now) {
+		t.Fail()
+	}
+	fmt.Printf("%#v", message)
 }

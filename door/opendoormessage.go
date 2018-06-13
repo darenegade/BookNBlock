@@ -7,13 +7,14 @@ import (
 	"encoding/pem"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type (
 	OpenDoorMessage struct {
 		DoorID       DoorID
 		RenterPubkey RenterPubkey
-		Timestamp    int
+		Timestamp    time.Time
 	}
 
 	OpenDoorMessageHyperledger struct {

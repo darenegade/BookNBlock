@@ -21,7 +21,7 @@ func TestHyperledger_Subscribe(t *testing.T) {
 	if message.DoorID != "008457" {
 		t.Error("DoorId war nicht 008457.")
 	}
-	if message.Payload != "5fb72a1c804906d8d4d799e6d2fa7414085fc4d3687e462ac256f18c0dfe06f5d79a70" {
+	if string(message.Payload) != "5fb72a1c804906d8d4d799e6d2fa7414085fc4d3687e462ac256f18c0dfe06f5d79a70" {
 		t.Error("Payload ist nicht 5fb72a1c804906d8d4d799e6d2fa7414085fc4d3687e462ac256f18c0dfe06f5d79a70.")
 	}
 
