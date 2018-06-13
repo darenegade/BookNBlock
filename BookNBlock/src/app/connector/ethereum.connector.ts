@@ -104,13 +104,34 @@ export class EthereumConnector extends BlockchainConnector {
 
   rentOffer(offerId: number, checkIn?: Date, checkOut?: Date): Promise<void> {
     this.log.debug(`EthereumConnector.rentOffer()`);
-    return this.contract.methods.rentAnOffer(offerId, checkIn.getTime(), checkOut.getTime()).send()
-      .then(receipt => Promise.resolve())
-      .catch(error => Promise.reject(error));
+    return this.getOffer(offerId).then(offer => {
+      return this.contract.methods.rentAnOffer(offerId, checkIn.getTime(), checkOut.getTime()).send({value: offer.prize})
+      .then(receipt => {
+        return Promise.resolve();
+      })
+      .catch(error => {
+        return Promise.reject(error);
+      });
+    });
   }
 
   sendMessage(message: OpenDoorMessage): Promise<void> {
-    throw new Error('Method not implemented.');
+    return this.web3.shh.addPrivateKey(this.user.privateKey).then(id => {
+      return this.web3.shh.post({
+        sig: id, // signs using the private key ID
+        pubKey: message.doorId,
+        ttl: 10,
+        topic: '0x426f6f6b',
+        payload: this.web3.utils.asciiToHex(JSON.stringify(message)),
+        powTime: 3,
+        powTarget: 0.5
+      }).then(h => {
+        console.log(`Message with hash ${h} was successfuly sent`);
+        return Promise.resolve();
+      }).catch(error => {
+        return Promise.reject(error);
+      });
+    });
   }
 
   authenticateUser(user: any): Promise<boolean> {
