@@ -1,22 +1,3 @@
-/*
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE file
-distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
-to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance
-with the License.  You may obtain a copy of the License at
-
-  http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.  See the License for the
-specific language governing permissions and limitations
-under the License.
-*/
-
 package main
 
 import (
@@ -33,20 +14,20 @@ import (
 type SimpleChaincode struct {
 }
 
+// This is the structure of an offer from BookAndBlock.
+// It is based on the official documentation, see: https://github.com/darenegade/BookNBlock/blob/master/Aufgabenbeschreibung.pdf
 type offer struct {
-	OfferId    int64     `json:"offerId"`
-	Free       bool      `json:"free"`
-	Price      float64   `json:"price"`
-	CheckIn    time.Time `json:"checkIn"`
-	CheckOut   time.Time `json:"checkOut"`
-	ObjectName string    `json:"objectName"`
-	OwnerName  string    `json:"ownerName"`
-	TenantPk   string    `json:"tenantPk"`
-	LandlordPk string    `json:"landlordPk"`
+	OfferId    int64   `json:"offerId"`
+	Price      float64 `json:"price"`
+	CheckIn    string  `json:"checkIn"`
+	CheckOut   string  `json:"checkOut"`
+	ObjectName string  `json:"objectName"`
+	OwnerName  string  `json:"ownerName"`
+	TenantPk   string  `json:"tenantPk"`
+	LandlordPk string  `json:"landlordPk"`
+	CheckInM   string  `json:"checkInM"`
+	CheckOutM  string  `json:"checkOutM"`
 }
-
-// Maybe change this to unixtime , see time.Unix
-const datelayout = "2006-01-02T15:04:05.000Z"
 
 func main() {
 	err := shim.Start(new(SimpleChaincode))
@@ -59,10 +40,13 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	return shim.Success(nil)
 }
 
+// The Invoke function is always the first call of an invocation of the Chaincode, it redirects the request to the correct
+// function.
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	function, args := stub.GetFunctionAndParameters()
 	fmt.Println("invoke is running " + function)
 
+	// All available functions of the Chaincode are called from this Invoke function.
 	if function == "insertOffer" {
 		return t.insertOffer(stub, args)
 	} else if function == "transferOffer" {
@@ -85,17 +69,23 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	return shim.Error("Received unknown function invocation")
 }
 
+// This function rents an available offer. Handling of availability should be done by the frontend.
+// Parameters in the correct order are:
+// "12324354" <- the id of the offer (should be unique)
+// "PKM" <- public Key of the tenant
+// "CheckInM" <- checkIn of the tenant
+// "CheckOutM" checkOut of the tenant
 func (t *SimpleChaincode) rentAnOffer(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	if len(args) != 2 {
-		return shim.Error("Incorrect number of arguments. Expecting 3")
+	if len(args) != 4 {
+		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}
 
 	offerId := args[0]
 	tenantPk := args[1]
-	checkIn := time.Now()
-	free := false
+	checkIn := args[2]
+	checkOut := args[3]
 
-	fmt.Println("- start rentOffer ", offerId, checkIn, free, tenantPk)
+	fmt.Println("- start rentOffer ", offerId, checkIn, tenantPk)
 
 	offerAsBytes, err := stub.GetState(offerId)
 	if err != nil {
@@ -110,8 +100,12 @@ func (t *SimpleChaincode) rentAnOffer(stub shim.ChaincodeStubInterface, args []s
 		return shim.Error(err.Error())
 	}
 
-	offerToRent.Free = free
-	offerToRent.CheckIn = checkIn
+	if !isNotOverlapping(stub, args[0], checkIn, checkOut) {
+		return shim.Error("Overlapping got triggered")
+	}
+
+	offerToRent.CheckInM = checkIn
+	offerToRent.CheckOutM = checkOut
 	offerToRent.TenantPk = tenantPk
 
 	offerJSONasBytes, _ := json.Marshal(offerToRent)
@@ -124,15 +118,21 @@ func (t *SimpleChaincode) rentAnOffer(stub shim.ChaincodeStubInterface, args []s
 	return shim.Success(nil)
 }
 
+// This function inserts an offer with various parameters as the code below shows.
+// Parameters in the correct order are:
+// "12324354" <- the id of the offer (should be unique)
+// "20" <- the price of the offer
+// "1528053733" <- the start date of the booking (as unixtime format)
+// "1528053734" <- the end date of the booking (as unixtime format)
+// "LuxusHotel" <- the name of the offer
+// "hans" <- the name of the owner
+// "PKM" <- the public key of the tenant (pay attention for the correct format, for example base64)
+// "PKV" <- the public key of the landlord (pay attention for the correct format, for example base64)
 func (t *SimpleChaincode) insertOffer(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var err error
 
-	for i := 0; i < len(args); i++ {
-		fmt.Println(args[i])
-	}
-
-	if len(args) != 9 {
-		return shim.Error("Incorrect number of arguments. Expecting 10")
+	if len(args) != 8 {
+		return shim.Error("Incorrect number of arguments. Expecting 8")
 	}
 
 	fmt.Println("- start init offer")
@@ -160,34 +160,22 @@ func (t *SimpleChaincode) insertOffer(stub shim.ChaincodeStubInterface, args []s
 	if len(args[7]) <= 0 {
 		return shim.Error("8th argument must be a non-empty string")
 	}
-	if len(args[8]) <= 0 {
-		return shim.Error("9th argument must be a non-empty string")
-	}
 
 	offerId, err := strconv.ParseInt(args[0], 10, 64)
-	if (err != nil) {
+	if err != nil {
 		return shim.Error(fmt.Sprintf("failed by parsing offerId: %s", err))
 	}
-	free, err := strconv.ParseBool(args[1])
-	if (err != nil) {
-		return shim.Error(fmt.Sprintf("failed by parsing free: %s", err))
-	}
-	price, err := strconv.ParseFloat(args[2], 64)
-	if (err != nil) {
+
+	price, err := strconv.ParseFloat(args[1], 64)
+	if err != nil {
 		return shim.Error(fmt.Sprintf("failed by parsing price: %s", err))
 	}
-	checkIn, err := time.Parse(datelayout, args[3])
-	if (err != nil) {
-		return shim.Error(fmt.Sprintf("failed by parsing checkIn: %s", err))
-	}
-	checkOut, err := time.Parse(datelayout, args[4])
-	if (err != nil) {
-		return shim.Error(fmt.Sprintf("failed by parsing checkOut: %s", err))
-	}
-	objectName := args[5]
-	ownerName := args[6]
-	tenantPk := args[7]
-	landlordPk := args[8]
+	checkIn := args[2]
+	checkOut := args[3]
+	objectName := args[4]
+	ownerName := args[5]
+	tenantPk := args[6]
+	landlordPk := args[7]
 
 	offerAsBytes, err := stub.GetState(strconv.FormatInt(offerId, 10))
 	if err != nil {
@@ -197,7 +185,7 @@ func (t *SimpleChaincode) insertOffer(stub shim.ChaincodeStubInterface, args []s
 		return shim.Error("This offer already exists: " + strconv.FormatInt(offerId, 10))
 	}
 
-	offer := &offer{offerId, free, price, checkIn, checkOut, objectName, ownerName, tenantPk, landlordPk}
+	offer := &offer{offerId, price, checkIn, checkOut, objectName, ownerName, tenantPk, landlordPk, "", ""}
 	offerJSONasBytes, err := json.Marshal(offer)
 	if err != nil {
 		return shim.Error(err.Error())
@@ -221,6 +209,46 @@ func (t *SimpleChaincode) insertOffer(stub shim.ChaincodeStubInterface, args []s
 	return shim.Success(nil)
 }
 
+// This function may fail due to the character of a Blockchain. Especially something like a race condition may be seen when using
+// this function. In order to minimize issues, adjust the transaction batch timeout and the number of transactions collected in the configuration file configtx.yaml
+// Check the parameters MaxMessageCount and BatchTimeout especially.
+func isNotOverlapping(stub shim.ChaincodeStubInterface, offerId string, checkIn string, checkOut string) bool {
+	resultsIterator, err := stub.GetHistoryForKey(offerId)
+	if err != nil {
+		fmt.Println("- Fail ")
+		return false
+	}
+	defer resultsIterator.Close()
+
+	for resultsIterator.HasNext() {
+		response, err := resultsIterator.Next()
+
+		offerInBlockchain := offer{}
+		err = json.Unmarshal(response.Value, &offerInBlockchain)
+		if err != nil {
+			fmt.Println("- Fail ")
+			return false
+		}
+
+		in, err := strconv.ParseInt(checkIn, 10, 64)
+		out, err := strconv.ParseInt(checkOut, 10, 64)
+		inBlockchain, err := strconv.ParseInt(offerInBlockchain.CheckIn, 10, 64)
+		outBlockchain, err := strconv.ParseInt(offerInBlockchain.CheckOut, 10, 64)
+		if in > out || in < inBlockchain || out > outBlockchain {
+			return false
+		}
+
+		inBlockchainM, err := strconv.ParseInt(offerInBlockchain.CheckInM, 10, 64)
+		outBlockchainM, err := strconv.ParseInt(offerInBlockchain.CheckOutM, 10, 64)
+		if (inBlockchainM != 0 && outBlockchainM != 0) && !(out < inBlockchainM || outBlockchainM < in) {
+			return false
+		}
+	}
+	return true
+
+}
+
+// This function returns an offer for a given offer id. An example parameter could be "12324354" as the function above this one describes.
 func (t *SimpleChaincode) getOffer(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var jsonResp, offerIdAsString string
 	var err error
@@ -243,6 +271,8 @@ func (t *SimpleChaincode) getOffer(stub shim.ChaincodeStubInterface, args []stri
 	return shim.Success(valAsbytes)
 }
 
+// This function "deletes" an offer for a given id, which could be "12324354".
+// The deletion call in the Blockchain provided by Hyperledger is an internal mechanism.
 func (t *SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var jsonResp string
 	var offerJSON offer
@@ -284,6 +314,11 @@ func (t *SimpleChaincode) delete(stub shim.ChaincodeStubInterface, args []string
 	return shim.Success(nil)
 }
 
+// This function transfers an offer.
+// Parameters in the correct order are:
+// "12324354" <- the id of the offer (should be unique)
+// "martin" <- the new name of the owner
+// "PKV" <- the public key of the new landlord (pay attention for the correct format, for example base64)
 func (t *SimpleChaincode) transferOffer(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	if len(args) != 3 {
@@ -322,6 +357,8 @@ func (t *SimpleChaincode) transferOffer(stub shim.ChaincodeStubInterface, args [
 	return shim.Success(nil)
 }
 
+// This function gets all offers specified by the public key of a landlord. (pay attention for the correct format, for example base64)
+// "PKV" <- the public key of the new landlord (pay attention for the correct format, for example base64)
 func (t *SimpleChaincode) queryOffersByPk(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	if len(args) != 1 {
@@ -341,8 +378,11 @@ func (t *SimpleChaincode) queryOffersByPk(stub shim.ChaincodeStubInterface, args
 	return shim.Success(queryResults)
 }
 
+// This function gives the possibility to create a rich query for filtering values in the Blockchain.
+// Parameters in the correct order are:
+// "queryString" <- the query string, see for example: https://hyperledger-fabric.readthedocs.io/en/release-1.1/couchdb_as_state_database.html
+// This allows very extensive queries against the state db (currently CouchDB) of the Blockchain and shouldn't be underestimated for complex scenarios.
 func (t *SimpleChaincode) queryOffers(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
@@ -356,6 +396,7 @@ func (t *SimpleChaincode) queryOffers(stub shim.ChaincodeStubInterface, args []s
 	return shim.Success(queryResults)
 }
 
+// This function handles the logic of the rich query. See the function queryOffers above.
 func getQueryResultForQueryString(stub shim.ChaincodeStubInterface, queryString string) ([]byte, error) {
 
 	fmt.Printf("- getQueryResultForQueryString queryString:\n%s\n", queryString)
@@ -395,6 +436,8 @@ func getQueryResultForQueryString(stub shim.ChaincodeStubInterface, queryString 
 	return buffer.Bytes(), nil
 }
 
+// This function gets the history for an offer of a given id, which could be "12324354".
+// The values should be in a chronological order and illustrate the functionality of a Blockchain.
 func (t *SimpleChaincode) getHistoryForOffer(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	if len(args) != 1 {
@@ -417,6 +460,13 @@ func (t *SimpleChaincode) getHistoryForOffer(stub shim.ChaincodeStubInterface, a
 	bArrayMemberAlreadyWritten := false
 	for resultsIterator.HasNext() {
 		response, err := resultsIterator.Next()
+
+		offerToRent := offer{}
+		err = json.Unmarshal(response.Value, &offerToRent)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
 		if err != nil {
 			return shim.Error(err.Error())
 		}
@@ -454,4 +504,3 @@ func (t *SimpleChaincode) getHistoryForOffer(stub shim.ChaincodeStubInterface, a
 
 	return shim.Success(buffer.Bytes())
 }
-

@@ -3,7 +3,14 @@
 #  bookandblockhyperledgerstartscript.sh
 #
 #  Created on 28.04.18.
+#  
+
+
 #
+#peer chaincode invoke -o orderer.bookandblock.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bookandblock.com/orderers/orderer.bookandblock.com/msp/tlscacerts/tlsca.bookandblock.com-cert.pem -C bookchannel -n bookandblockcc -c '{"Args":["insertOffer", "12324354","20", "1","10","LH","hans","PKM","PKV"]}'
+#
+#
+
 
 # Todo:
 #   persist data on the local storage in order to keep the ledgers
@@ -16,10 +23,10 @@
 # Various notes:
 #{
 #   "proposal" : {
-#	"chaincodeId" : "bookandblockcc",
-#	"fcn": "insertOffer",
-#	"args": ["12345678910", "0", "20", "2014-11-12T11:45:26.371Z", "2017-11-12T11:45:26.371Z", #"LuxusHotel","Hans","MieterPublicKey","VermieterPublicKey"]
-#	}
+#        "chaincodeId" : "bookandblockcc",
+#        "fcn": "insertOffer",
+#        "args": ["12345678910", "0", "20", "2014-11-12T11:45:26.371Z", "2017-11-12T11:45:26.371Z", #"LuxusHotel","Hans","MieterPublicKey","VermieterPublicKey"]
+#        }
 #}
 #{ "status": "SUCCESS",
 #  "transactionID": "5d2c1b1b3386ae92757bb9df9e4b52e87c575c43993f55e4802eb770d59939e1"
@@ -70,7 +77,7 @@ echo "COMPOSE_PROJECT_NAME=net" > .env
 echo "IMAGE_TAG=latest" >> .env
 fi
 }
-
+                        
 getAllImagesAndFiles() {
 if [ ! -d "fabric-samples" ]; then
 curl -sSL https://goo.gl/6wtTN5 | bash -s 1.1.0
@@ -227,7 +234,7 @@ processChaincode() {
 #docker exec cli peer chaincode $1 -l ${LANGUAGE} -o orderer.bookandblock.com:7050 --tls ${CORE_PEER_TLS_ENABLED} --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bookandblock.com/orderers/orderer.bookandblock.com/msp/tlscacerts/tlsca.bookandblock.com-cert.pem -C ${CHANNEL_NAME} -n ${CC_NAME} -v 0.1 -c '{"Args": []}'
 
 #peer chaincode instantiate -n mycc -v 0 -c '{"Args":[""]}' -C myc
-#${CORE_PEER_TLS_ENABLED}
+#${CORE_PEER_TLS_ENABLED} 
 echo "peer chaincode $1 -o orderer.bookandblock.com:7050 --tls ${CORE_PEER_TLS_ENABLED} --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bookandblock.com/orderers/orderer.bookandblock.com/msp/tlscacerts/tlsca.bookandblock.com-cert.pem -C ${CHANNEL_NAME} -n ${CC_NAME} -v 0.1 -l ${LANGUAGE} -c '{\"Args\": [\"\"]}'" | docker exec --interactive cli /bin/bash -
 }
 
@@ -268,19 +275,14 @@ git clone -b dev https://github.com/hyperledger/fabric-sdk-rest.git
 cd fabric-sdk-rest/
 #--unsafe-perm=true --allow-root
 #sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
-# npm install fabric --save
-#a current version of node.js must be used in order for the service to work
-#curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
-#sudo apt-get install -y nodejs
 #maybe put the ReST service into a docker container
-cd packages/loopback-connector-fabric && npm link --unsafe-perm=true --allow-root && cd ..
-#sudo npm link && cd ..
+cd packages/loopback-connector-fabric && sudo npm link && cd ..
 cd packages/fabric-rest && npm link loopback-connector-fabric && cd ..
 cd packages/fabric-rest && npm install && cd ..
 cd ..
 
 # start the rest service here and don't forget to modify datasource.json
-#./fabric-rest-server -l '{"debug":"console"}' -d
+# ./fabric-rest-server -l '{"debug":"console"}' -d
 
 #https://hub.docker.com/r/maxxx1313/fabric-rest/
 }
@@ -325,3 +327,5 @@ fi
 }
 
 main "$@"
+
+
