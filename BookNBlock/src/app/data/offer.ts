@@ -5,7 +5,6 @@ export class Offer {
   fromDate: Date;
   toDate: Date;
   address: string;
-  name: string;
   nameLandlord: string;
   description: string;
   walletId: string;

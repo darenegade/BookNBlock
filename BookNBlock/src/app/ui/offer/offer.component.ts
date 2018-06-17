@@ -20,7 +20,7 @@ export class OfferComponent implements OnInit {
 
   private createOfferForm() {
     this.offerForm = new FormGroup({
-      name: new FormControl('', Validators.required),
+      nameLandlord: new FormControl('', Validators.required),
       title: new FormControl('', [Validators.required, Validators.minLength(10)]),
       description: new FormControl('', Validators.required),
       date: new FormControl('', Validators.required),
@@ -49,8 +49,7 @@ export class OfferComponent implements OnInit {
       toDate: formModel.toDate,
       // TODO: concat address
       address: '',
-      name: formModel.name,
-      nameLandlord: formModel.name,
+      nameLandlord: formModel.nameLandlord,
       // TODO: get walletId from user
       walletId: '6',
       description: formModel.title,

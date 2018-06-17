@@ -44,7 +44,7 @@ export class EthereumConnector extends BlockchainConnector {
           offer.fromDate = o.validFrom;
           offer.toDate = o.validUntil;
           offer.address = o.objectAddress;
-          offer.name = o.objectName;
+          offer.title = o.objectName;
           offer.nameLandlord = o.ownerName;
 
           return Promise.resolve(offer);
@@ -72,7 +72,7 @@ export class EthereumConnector extends BlockchainConnector {
             offer.fromDate = o.validFrom;
             offer.toDate = o.validUntil;
             offer.address = o.objectAddress;
-            offer.name = o.objectName;
+            offer.title = o.objectName;
             offer.nameLandlord = o.ownerName;
 
             resolve(offer);
@@ -94,7 +94,7 @@ export class EthereumConnector extends BlockchainConnector {
 
   async insertOffer(offer: Offer): Promise<number> {
     this.log.debug('EthereumConnector.insertOffer()');
-    return this.contract.methods.insertOffer(offer.prize, offer.name, offer.address, offer.nameLandlord,
+    return this.contract.methods.insertOffer(offer.prize, offer.title, offer.address, offer.nameLandlord,
       offer.description, offer.doorId, offer.fromDate.getTime(), offer.toDate.getTime()).send().then(receipt => {
         return 0;
       }).catch(error => {

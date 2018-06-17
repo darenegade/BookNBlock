@@ -12,14 +12,14 @@ export class MockConnector extends BlockchainConnector {
 
   private offers: Offer[] = [
     { id: 1, doorId: '1', prize: 100, fromDate: new Date(2018, 0, 1), toDate: new Date(2018, 0, 31),
-      address: 'World Disney', name: 'Maeusebau', nameLandlord: 'Mickey Mouse', description: 'Mickey\'s house', walletId: '10000',
+      address: 'World Disney', nameLandlord: 'Mickey Mouse', description: 'Mickey\'s house', walletId: '10000',
       title: 'Wohnen in Mickey\'s house' },
     { id: 2, doorId: '1', prize: 100, fromDate: new Date(2018, 8, 1), toDate: new Date(2018, 8, 10),
-      address: 'World Disney', name: 'Maeusebau', nameLandlord: 'Mickey Mouse', description: 'Mickey\'s house', walletId: '10000',
+      address: 'World Disney', nameLandlord: 'Mickey Mouse', description: 'Mickey\'s house', walletId: '10000',
       title: 'Wohnen in Mickey\'s house' },
     { id: 3, doorId: '1', prize: 100, fromDate: new Date(2018, 11, 24), toDate: new Date(2018, 11, 30),
-      address: 'Entenhausen', name: 'Entennest', nameLandlord: 'Donald Duck', description: 'Donalds\'s house', walletId: '20000',
-      title: 'Wohnen in Mickey\'s house' }
+      address: 'Entenhausen', nameLandlord: 'Donald Duck', description: 'Donald\'s house', walletId: '20000',
+      title: 'Wohnen in Donald\'s house' }
   ];
 
   constructor(private log: Logger) {
