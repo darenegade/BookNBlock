@@ -1,6 +1,7 @@
 package hyperledger
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -14,6 +15,7 @@ type (
 		URL          string
 		offer        *Offer
 		offerHistory *[]Offer
+		DoorID       string
 	}
 	//In this case OfferID corresponds to DoorID
 	Offer struct {
@@ -39,7 +41,9 @@ func (h *HyperLedger) isAllowedAt(requestPointofTime time.Time, startTime time.T
 
 func (h *HyperLedger) getHistoryForOffer() {
 	fmt.Println("Starting the application...")
-	response, err := http.Get(h.URL)
+	jsonData := map[string]string{"args": h.DoorID, "fcn": "getHistoryForOffer"}
+	jsonValue, _ := json.Marshal(jsonData)
+	response, err := http.Post(h.URL, "application/json", bytes.NewBuffer(jsonValue))
 	var responseData []byte
 	if err != nil {
 		fmt.Printf("The HTTP request failed with error %s\n", err)
