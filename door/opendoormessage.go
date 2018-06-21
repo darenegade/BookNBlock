@@ -1,4 +1,4 @@
-package tür
+package door
 
 import (
 	"crypto/rand"
@@ -11,16 +11,18 @@ import (
 
 type (
 	OpenDoorMessage struct {
-		DoorID       DoorID
-		RenterPubkey RenterPubkey
+		DoorID       DoorPublicKey
+		RenterPubkey RenterPublicKey
 		Timestamp    int
+		Booking      BookingID
 	}
 
 	OpenDoorMessageHyperledger struct {
-		DoorID       DoorID
+		DoorID       DoorPublicKey
 		Payload      []byte
-		RenterPubkey RenterPubkey
+		RenterPubkey RenterPublicKey
 		Timestamp    int
+		Booking      BookingID
 	}
 )
 
@@ -49,5 +51,5 @@ func (msg *OpenDoorMessageHyperledger) Decrypt(pemString string) {
 		panic(err)
 	}
 
-	msg.RenterPubkey = RenterPubkey(data[1])
+	msg.RenterPubkey = RenterPublicKey(data[1])
 }
