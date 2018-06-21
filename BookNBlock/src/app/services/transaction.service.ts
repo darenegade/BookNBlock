@@ -3,15 +3,20 @@ import { Logger } from '@nsalaun/ng-logger';
 import { User } from '../data/user';
 import { Offer } from '../data/offer';
 import { BlockchainConnectorFactory } from '../connector/connector.factory';
+import {UserService} from './user.service';
 
 @Injectable()
 export class TransactionService {
 
+  user: User;
+
   constructor(
     private factory: BlockchainConnectorFactory,
-    private user: User,
-    private log: Logger
-  ) { }
+    private log: Logger,
+    private userService: UserService
+  ) {
+    this.user = this.userService.getCurrentLoginUser();
+  }
 
   insertOffer(doorId: number, prize: number, fromDate: Date, toDate: Date,
     address: string, name: string, description: string, image?: any): Promise<void> {

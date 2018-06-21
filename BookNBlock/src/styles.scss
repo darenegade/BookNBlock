@@ -1,32 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "~bulma/css/bulma.css";
+@import "~bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/functions";
 @import "assets/scss/varriables";
+$navbar-item-color: $secondary-color;
+$navbar-item-hover-color: $secondary-color;
+$navbar-item-hover-background-color: $secondary-color;
+$navbar-item-active-color: $secondary-color;
+@import "~bulma";
+@font-face {
+  font-family: "booknblock1";
+  src: url("assets/fonts/booknblock1.eot");
+  src: url("assets/fonts/booknblock1.eot?#iefix") format("embedded-opentype"), url("assets/fonts/booknblock1.woff") format("woff"), url("assets/fonts/booknblock1.ttf") format("truetype"), url("assets/fonts/booknblock1.svg#untitled-font-1") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
 
 html {
-    height: 100%;
+  height: 100%;
 }
 
 h1 {
-    font-family: $font-playfair;
-    font-size: 50px;
-    color: #444444;
+  font-family: $font-playfair;
+  font-size: 50px;
+  color: #444444;
 }
 
 body {
-    min-height: 100%;
-    background: linear-gradient( rgba(255, 236, 179, 1), rgba(255, 193, 7, 0.5));
-    background-size: cover;
+  min-height: 100%;
 }
 
-html, body * { box-sizing: border-box; font-family: 'Open Sans', sans-serif; }
-
+html,
+body * {
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
 
 input {
   padding: 15px;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  -webkit-box-sizing: border-box;
+  /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;
+  /* Firefox, other Gecko */
+  box-sizing: border-box;
+  /* Opera/IE 8+ */
 }
 
 label {
@@ -39,37 +56,74 @@ label {
   display: block;
 }
 
-button, input :focus {
+button,
+input :focus {
   outline: none;
 }
 
-.frame {
-  border: 1px solid rgba(248, 248, 248, 0.99);
-    margin: 5px;
-    -webkit-box-shadow: 2px 2px 29px 0px rgba(75, 74, 74, 0.63);
-    -moz-box-shadow: 2px 2px 29px 0px  rgba(75, 74, 74, 0.63);
-    box-shadow: 2px 2px 29px 0px  rgba(75, 74, 74, 0.63);
-    background: linear-gradient( rgba(248, 248, 248, 0.99), rgba(236, 243, 243, 0.99));
-  background-size: cover;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 5px;
-  overflow: hidden;
-  transition: all .5s ease;
-}
-
 .button {
-  border: 3px solid rgba(255, 193, 7, 0.5);
+  border: 3px solid $secondary-color;
   border-radius: 5px;
   background-color: transparent;
   text-transform: uppercase;
- &:active {
-  background-color: rgba(255, 193, 7, 0.5);
-  border-color:  rgba(255, 193, 7, 0.5);
- }
- &:focus{
-  background-color: rgba(255, 193, 7, 0.5);
-  border-color:  rgba(255, 193, 7, 0.5);
- }
- &:focus {outline: none;}
+  color: #ffffff;
+  &:active {
+    background-color: $secondary-color;
+    border-color: $secondary-color;
+    color: #ffffff;
+  }
+  &:focus {
+    background-color: $secondary-color;
+    border-color: $secondary-color;
+    outline: none;
+    color: #ffffff;
+  }
+}
+
+[data-icon]:before {
+  font-family: "booknblock1" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "booknblock1" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-key:before {
+  content: "\61";
+  font-size: 46px;
+}
+
+.icon-iphone-streamline:before {
+  content: "\62";
+  font-size: 46px;
+}
+
+.icon-user:before {
+  content: "\64";
+}
+
+app-login,
+app-home,
+app-booking,
+app-offer,
+app-user {
+  width: 100%;
 }

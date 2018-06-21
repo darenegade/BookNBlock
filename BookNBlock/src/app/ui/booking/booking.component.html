@@ -1,33 +1,76 @@
-<div class="container-fluid">
-  <div class="container" style="margin-top: 40px">
-    <div class="tile is-ancestor">
-      <div class="tile is-vertical is-12">
+<section class="hero is-medium booking-banner">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title offer-tile">
+        Buchen
+      </h1>
+      <h2 class="subtitle">
+        Buche deine unvergessliche Unterkunft sicher und einfach mittels Blockchain Technologie
+      </h2>
 
-        <div *ngFor="let offer of allOffers" class="tile is-parent">
-          <article class="tile is-child box">
-            <p class="title">{{offer.title}}</p>
-            <p class="subtitle">{{offer.address}}</p>
-            <div class="content">
-              <h4>Details</h4>
-              <label>Mietdauer</label>
-              <p> von {{offer.fromDate | date:'shortDate'}} bis {{offer.toDate | date:'shortDate'}}  </p>
-              <label>Preis für die gesamte Mietdauer</label>
-              <p>{{offer.prize}} Euro </p>
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <div class="columns">
+              <div class="column">
+                <input class="input" [(ngModel)]="fromDate" type="text" placeholder="Von">
+              </div>
+              <div class="column">
+                <input class="input" type="text" [(ngModel)]="toDate" placeholder="Bis">
+              </div>
             </div>
-            <div class="content">
-              <h4>Beschreibung</h4>
-              <p>
-                {{offer.description}}
-              </p>
+          </div>
+          <div class="column">
+            <input class="input" type="text" placeholder="Location">
+          </div>
+        </div>
+        <div class="columns" *ngFor="let offer of allOffers">
+          <div class="column">
+            <div class="card">
+              <div class="card-content">
+                <div class="columns">
+                  <div class="column is-one-fifth">
+                    <figure class="image is-128x128">
+                      <img src="https://bulma.io/images/placeholders/128x128.png">
+                    </figure>
+                  </div>
+                  <div ngclass="column">
+                    <div class="user-col">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Beschreibung</th>
+                            <th>Adresse</th>
+                            <th>Mietdauer</th>
+                            <th>Preis für die gesamte Mietdauer</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{offer?.description}}</td>
+                            <td>{{offer?.address}}</td>
+                            <td>{{offer.fromDate | date:'shortDate'}} / {{offer.toDate | date:'shortDate'}} </td>
+                            <td>{{offer?.prize}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <a style="width: 100%" class="button" type="submit">Angebot buchen</a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div style="margin-bottom: 1em">
-              <button style="width: 100%" type="submit" class="button">Angebot buchen</button>
-            </div>
-          </article>
-
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
+
+<!--  <app-datepicker [locale]="locale" (emitSelectedDate)="setSelectedDate($event)" [canChangeNavMonthLogic]="canChangeMonthLogic"
+                  [isAvailableLogic]="isAvailableLogic"></app-datepicker> -->

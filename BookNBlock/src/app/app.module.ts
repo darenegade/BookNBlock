@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgLoggerModule, Logger } from '@nsalaun/ng-logger';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { EthereumConnector } from './connector/ethereum.connector';
@@ -15,11 +15,24 @@ import { LoginComponent } from './ui/login/login.component';
 import { BookingComponent } from './ui/booking/booking.component';
 import { OfferComponent } from './ui/offer/offer.component';
 import { BlockchainConnectorFactory } from './connector/connector.factory';
-import { User } from './data/user';
 import { SignInComponent } from './ui/login/sign-in/sign-in.component';
 import { SignUpComponent } from './ui/login/sign-up/sign-up.component';
 import { HomeComponent } from './ui/home/home.component';
 import { MockConnector } from './connector/mock.connector';
+import { AuthService } from './auth/auth.service';
+import { AuthGuard } from './auth/auth.guard';
+import { UserService } from './services/user.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { fakeBackendProvider } from './helpers/fake-backend';
+import { AlertService } from './services/alert.service';
+import { AlertComponent } from './ui/alert/alert.component';
+import { UserComponent } from './ui/user/user.component';
+import { LoginService } from './ui/login/login.service';
+import { QuestionableBooleanPipe } from './ui/shared/questionableBoolean.pipe';
+import { ModalComponent } from './ui/user/modal/modal.component';
+import { DatepickerComponent } from './ui/booking/datepicker/datepicker.component';
+
 
 const privateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIICXAIBAAKBgQCqGKukO1De7zhZj6+H0qtjTkVxwTCpvKe4eCZ0FPqri0cb2JZfXJ/DgYSF6vUp
@@ -48,24 +61,43 @@ FPqri0cb2JZfXJ/DgYSF6vUpwmJG8wVQZKjeGcjDOL5UlsuusFncCzWBQ7RKNUSesmQRMSGkVb1/
     OfferComponent,
     SignInComponent,
     SignUpComponent,
-    HomeComponent
+    HomeComponent,
+    AlertComponent,
+    UserComponent,
+    ModalComponent,
+    QuestionableBooleanPipe,
+    DatepickerComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     NgLoggerModule.forRoot(environment.loglevel),
     RouterModule.forRoot(routes)
   ],
   providers: [
-    { provide: User, useValue: {walletId: 12345, privateKey: privateKey, publicKey: publicKey, ethereum: true} as User },
+    // { provide: User, useValue: {walletId: 12345, privateKey: privateKey, publicKey: publicKey, ethereum: true} as User },
     BlockchainConnectorFactory,
     MockConnector,
     HyperledgerConnector,
     EthereumConnector,
     MessageService,
     QueryService,
-    TransactionService
+    TransactionService,
+    AuthService,
+    AuthGuard,
+    UserService,
+    AlertService,
+    LoginService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+
+    // provider used to create fake backend
+    fakeBackendProvider,
   ],
   bootstrap: [AppComponent]
 })

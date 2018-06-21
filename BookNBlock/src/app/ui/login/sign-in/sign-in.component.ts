@@ -1,5 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {User} from "../../../data/user";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { User } from '../../../data/user';
 
 @Component({
   selector: 'app-sign-in',
@@ -11,7 +11,7 @@ export class SignInComponent implements OnInit {
   user: User;
 
   @Output()
-  onLogin: EventEmitter<User> = new EventEmitter();
+  loginEvent: EventEmitter<User> = new EventEmitter();
 
   constructor() {
     this.user = new User();
@@ -21,8 +21,7 @@ export class SignInComponent implements OnInit {
   }
 
   login() {
-    alert('hello' + this.user.userName);
-    this.onLogin.emit(this.user);
+    this.loginEvent.emit(this.user);
   }
 
 }
