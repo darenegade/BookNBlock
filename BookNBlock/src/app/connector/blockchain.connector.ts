@@ -17,7 +17,7 @@ export abstract class BlockchainConnector {
   /**
    * Get all free offers from the blockchain.
    */
-  abstract getAllOffers(): Promise<Offer[]>;
+  abstract getAllOffers(from: Date, to: Date): Promise<Offer[]>;
 
   /**
    * Search for offers meeting one criterion.
@@ -29,7 +29,7 @@ export abstract class BlockchainConnector {
    * Add a new offer to the blockchain.
    * @param offer The new offer.
    */
-  abstract insertOffer(offer: Offer): Promise<void>;
+  abstract insertOffer(offer: Offer): Promise<number>;
 
   /**
    * Rent an offer.
@@ -37,7 +37,7 @@ export abstract class BlockchainConnector {
    * @param checkIn: Optional. Date of check-in, if none is provided the offer fromDate is used.
    * @param checkOut: Optional. Date of check-out, if none is provided the offer toDate is used.
    */
-  abstract rentOffer(offerId: number, checkIn?: Date, checkOut?: Date): Promise<boolean>;
+  abstract rentOffer(offerId: number, checkIn?: Date, checkOut?: Date): Promise<void>;
 
   /**
    * Send a message to open a door.

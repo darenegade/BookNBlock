@@ -23,7 +23,9 @@ export class BookingComponent implements OnInit {
    * Get all offers.
    */
   getAllOffers(): void {
-    this.queryService.queryAllOffers().then(result => this.allOffers = result);
+    const from = new Date(2018, 0, 5);
+    const to = new Date(2018, 0, 15);
+    this.queryService.queryAllOffers(from, to).then(result => this.allOffers = result);
   }
 
 }
