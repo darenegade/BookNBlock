@@ -55,6 +55,12 @@ func TestGetBlockData(t *testing.T) {
 	}
 }
 
+func TestConnectionToMainState(t *testing.T) {
+	realURL := "http://129.187.110.174:3000/api/fabric/1_0/channels/bookchannel/ledger?chaincodeId=bookandblockcc"
+	hyper := HyperLedger{URL: realURL}
+	hyper.getHistoryForOffer()
+}
+
 func TestIsAllowedAt(t *testing.T) {
 	hyper := HyperLedger{}
 	now, _ := time.Parse(time.RFC3339, "2018-01-01T00:00:00Z")

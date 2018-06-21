@@ -11,8 +11,9 @@ import (
 
 type (
 	HyperLedger struct {
-		URL   string
-		offer *Offer
+		URL          string
+		offer        *Offer
+		offerHistory *[]Offer
 	}
 	//In this case OfferID corresponds to DoorID
 	Offer struct {
@@ -34,6 +35,33 @@ func (h *HyperLedger) isAllowedAt(requestPointofTime time.Time, startTime time.T
 		return true
 	}
 	return false
+}
+
+func (h *HyperLedger) getHistoryForOffer() {
+	fmt.Println("Starting the application...")
+	response, err := http.Get(h.URL)
+	var responseData []byte
+	if err != nil {
+		fmt.Printf("The HTTP request failed with error %s\n", err)
+		return
+	} else {
+		responseData, err = ioutil.ReadAll(response.Body)
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+	}
+	var offerHistory []Offer
+	err = json.Unmarshal(responseData, &offerHistory)
+	if err != nil {
+		fmt.Print("Unmarshalling did not work")
+		log.Fatal(err)
+		return
+	}
+
+	h.offerHistory = &offerHistory
+
 }
 
 func (h *HyperLedger) getBlockData() {
