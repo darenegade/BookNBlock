@@ -22,7 +22,7 @@ func init() {
 		panic(err)
 	}
 
-	PinLock.pin.Out(gpio.Low)
+	Lock.pin.Out(gpio.Low)
 }
 
 var Lock = Pin{
