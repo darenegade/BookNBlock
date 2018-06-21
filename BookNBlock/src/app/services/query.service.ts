@@ -11,8 +11,8 @@ export class QueryService {
     private log: Logger
   ) { }
 
-  queryAllOffers(): Promise<Offer[]> {
-    return this.factory.get().getAllOffers();
+  queryAllOffers(from: Date, to: Date): Promise<Offer[]> {
+    return this.factory.get().getAllOffers(from, to);
   }
 
   queryOffer(offerId: number): Promise<Offer> {

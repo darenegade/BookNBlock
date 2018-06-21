@@ -65,7 +65,7 @@ contract LockContract {
 
     event OfferSaved(uint offerID);
     event OfferDeleted(uint offerID);
-    event BookingAccepted(uint bookingID);
+    event BookingAccepted(uint offerID, uint bookingID);
 
     constructor() public {
 
@@ -142,26 +142,19 @@ contract LockContract {
 
         Offer storage offer = offers[offerID];
         require(checkIn >= offer.validFrom && checkOut <= offer.validUntil);
+        require(isFree(offerID, checkIn, checkOut));
 
-        uint[] storage bookingIndexes = offer.bookingIndexes;
-
-        for(uint i = 0; i < bookingIndexes.length; i++) {
-            Booking storage b = bookings[bookingIndexes[i]];
-            if(b.offerID == offerID){
-                require(b.checkIn > checkOut || b.checkOut < checkIn);
-            }
-        }
-
-        bookingIndexes.push(bookings.length);
+        offer.bookingIndexes.push(bookings.length);
         bookings.push(Booking(offerID, checkIn, checkOut, msg.sender));
         offer.owner.transfer(offer.priceInWei);
 
-        emit BookingAccepted(bookings.length - 1);
+        emit BookingAccepted(offerID, bookings.length - 1);
     }
 
     function getOffer(uint offerID) public view offerAvailable(offerID) 
         returns (
-            uint, string, string, string, string, address, uint256, uint256){
+            uint priceInWei, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+            ){
         Offer storage offer = offers[offerID];
         return (
             offer.priceInWei,
@@ -176,7 +169,7 @@ contract LockContract {
     }
 
     function getBooking(uint bookingID) public view bookingAvailable(bookingID) 
-        returns (uint,uint256, uint256) {
+        returns (uint offerID, uint256 checkIn, uint256 checkOut) {
         Booking storage booking = bookings[bookingID];
         return (
             booking.offerID,
@@ -185,8 +178,30 @@ contract LockContract {
             );
     }
 
-    function getOfferIDs() public view returns(uint[]) {
+    function getOfferIDs() public view returns(uint[] offerIDs) {
         return offerIDs;
+    }
+
+    function getFreeOfferIDs(uint256 from, uint256 to) public view returns (uint[]) {
+        uint[] memory freeOffers = new uint[](offerIDs.length);
+        uint freeOffersCounter = 0;
+
+        require(from < to);
+
+        for(uint i = 0; i < offerIDs.length; i++) {
+            Offer storage offer = offers[offerIDs[i]];
+            if ( from >= offer.validFrom && to <= offer.validUntil && isFree(offerIDs[i], from, to) ) {
+                freeOffers[freeOffersCounter] = offerIDs[i];
+                freeOffersCounter++;
+            }
+        }
+
+        uint[] memory freeOffersStripped = new uint[](freeOffersCounter);
+        for(uint k = 0; k < freeOffersCounter; k++) {
+            freeOffersStripped[k] = freeOffers[k];
+        }
+
+        return freeOffersStripped;
     }
 
     function getBookingIDsForOffer(uint offerID) public view offerAvailable(offerID) returns(uint[]) {
@@ -194,11 +209,34 @@ contract LockContract {
         return offer.bookingIndexes;
     }
 
+    function isAllowedAt(uint bookingID, address tenant, uint256 time) public view bookingAvailable(bookingID) returns ( bool) {
+        Booking storage booking = bookings[bookingID];
+
+        require(booking.tenant == tenant);
+
+        return booking.checkIn <= time && booking.checkOut >= time;
+    }
+
     function getOffersLength() public view returns(uint) {
         return offerIDs.length;
     }
 
-    function getNextID() private returns(uint) {
+    function getNextID() private returns(uint nextID) {
         return nextID++;
+    }
+
+    function isFree(uint offerID, uint256 from, uint256 to) private view returns(bool) {
+        bool free = true;
+
+        uint[] storage bookingIndexes = offers[offerID].bookingIndexes;
+        for(uint i = 0; free && i < bookingIndexes.length; i++) {
+            Booking storage b = bookings[bookingIndexes[i]];
+
+            if( ! ( (b.checkIn < from && b.checkOut < from) || (b.checkIn > to && b.checkOut > to) ) ) {
+                free = false;
+            }
+        }
+
+        return free;
     }
 }

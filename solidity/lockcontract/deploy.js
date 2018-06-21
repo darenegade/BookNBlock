@@ -1,6 +1,7 @@
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 const { interface, bytecode } = require('./compile');
+const fs = require('fs');
 
 const provider = new HDWalletProvider(
     'diet asthma equip loan jealous twist divorce cloth gym ramp stomach noise',
@@ -15,11 +16,17 @@ const deploy = async () => {
 
     const result = await new web3.eth.Contract(JSON.parse(interface))
     .deploy({ data: '0x' + bytecode })
-    .send({ gas: '2000000', from: accounts[0] });
+    .send({ gas: '3000000', from: accounts[0] });
 
     //you can check the deployed contract on rinkeby.etherscan.io
     //contract can be interacted with via remix IDE
     // 0xEe86D8d8163844517676C918556CDf42310c1671
     console.log('Contract deployed to', result.options.address);
+    const file = `/* tslint:disable */
+export const abi = ${interface};
+
+export const address = '${result.options.address}';
+    `
+    fs.writeFile('src/app/connector/LockContract.ts', file);
 };
 deploy();
