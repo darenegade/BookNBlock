@@ -12,7 +12,7 @@ type (
 	}
 
 	ContractInfoer interface {
-		IsAllowedAt(mieter RenterPubkey, t time.Time) (bool, error)
+		IsAllowedAt(booking BookingID, renter RenterPublicKey, timestamp int)  (bool, error)
 	}
 	Lock interface {
 		Open()
@@ -21,7 +21,7 @@ type (
 
 func (v *Validator) Handle(m OpenDoorMessage) error {
 	now := time.Now()
-	ok, err := v.ContractInfoer.IsAllowedAt(m.RenterPubkey, now)
+	ok, err := v.ContractInfoer.IsAllowedAt(m.Booking, m.RenterPubkey, int(now.Unix()))
 	if err != nil {
 		log.Println("Failed to confirm contract.")
 		return err

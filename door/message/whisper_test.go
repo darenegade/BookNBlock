@@ -27,20 +27,20 @@ func TestWhisper_Subscribe(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	now := time.Now()
+	now := time.Now().Unix()
 	err = w.Post(door.OpenDoorMessage{
-		DoorID: door.DoorID(hexPublicKey),
-		Timestamp: now,
+		DoorID: door.DoorPublicKey(hexPublicKey),
+		Timestamp: int(now),
 	}, privateKey)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	message := <-c
-	if message.DoorID != door.DoorID(hexPublicKey) {
+	if message.DoorID != door.DoorPublicKey(hexPublicKey) {
 		t.Fail()
 	}
-	if !message.Timestamp.Equal(now) {
+	if message.Timestamp != int(now) {
 		t.Fail()
 	}
 	fmt.Printf("%#v", message)

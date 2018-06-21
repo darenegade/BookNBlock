@@ -1,6 +1,6 @@
 // +build !rpi
 
-package driver
+package lock
 
 func ExampleMock_Open() {
 	m := Mock{}

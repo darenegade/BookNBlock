@@ -55,7 +55,7 @@ func (h *Hyperledger) Subscribe() (<-chan door.OpenDoorMessageHyperledger, error
 		}
 
 		c <- door.OpenDoorMessageHyperledger{
-			DoorID:  door.DoorID(dat["doorID"].(string)),
+			DoorID:  door.DoorPublicKey(dat["doorID"].(string)),
 			Payload: dat["payload"].([]byte),
 		}
 
@@ -66,7 +66,7 @@ func (h *Hyperledger) Subscribe() (<-chan door.OpenDoorMessageHyperledger, error
 	return c, nil
 }
 
-func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK door.RenterPubkey, timestamp int64) {
+func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK door.RenterPublicKey, timestamp int64) {
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
 	ciphertext, _ := hex.DecodeString(payload)
 	nonce := []byte("64a9433eae7c")
@@ -88,7 +88,7 @@ func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK
 
 	fmt.Printf("%s\n", plaintext)
 	words := strings.Split(string(plaintext), ",")
-	renterPK = door.RenterPubkey(words[0])
+	renterPK = door.RenterPublicKey(words[0])
 
 	i, err := strconv.ParseInt(words[1], 10, 64)
 	if err != nil {

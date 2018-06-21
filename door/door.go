@@ -1,14 +1,16 @@
 package door
 
 type (
-	RenterID string
-	RenterPubkey string
-	// DoorID is used to identify the door. Might be the doors public key
-	DoorID string
+	RenterPrivateKey string
+	RenterPublicKey string
+	// DoorPublicKey is used to identify the door. Might be the doors public key
+	DoorPublicKey string
 	DoorPrivateKey string
+
+	BookingID int
 
 	Door struct {
 		PrivateKey DoorPrivateKey
-		PublicKey  DoorID
+		PublicKey  DoorPublicKey
 	}
 )
