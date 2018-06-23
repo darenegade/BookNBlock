@@ -178,7 +178,7 @@ contract LockContract {
             );
     }
 
-    function getOfferIDs() public view returns(uint[] offerIDs) {
+    function getOfferIDs() public view returns(uint[] ids) {
         return offerIDs;
     }
 
@@ -209,6 +209,26 @@ contract LockContract {
         return offer.bookingIndexes;
     }
 
+    function getOwnBookingIDs() public view returns(uint[]) {
+        uint[] memory ownBookings = new uint[](bookings.length);
+        uint ownBookingsCounter = 0;
+
+        for(uint i = 0; i < bookings.length; i++) {
+            Booking storage booking = bookings[i];
+            if(booking.tenant == msg.sender){
+                ownBookings[ownBookingsCounter] = i;
+                ownBookingsCounter++;
+            }
+        }
+
+        uint[] memory ownBookingsStripped = new uint[](ownBookingsCounter);
+        for(uint k = 0; k < ownBookingsCounter; k++) {
+            ownBookingsStripped[k] = ownBookings[k];
+        }
+
+        return ownBookingsStripped;
+    }
+
     function isAllowedAt(uint bookingID, address tenant, uint256 time) public view bookingAvailable(bookingID) returns ( bool) {
         Booking storage booking = bookings[bookingID];
 
@@ -221,7 +241,7 @@ contract LockContract {
         return offerIDs.length;
     }
 
-    function getNextID() private returns(uint nextID) {
+    function getNextID() private returns(uint id) {
         return nextID++;
     }
 
