@@ -8,6 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/darenegade/BookNBlock/door"
 )
 
 type Ethereum struct {
@@ -29,19 +30,19 @@ type Offer struct {
 	DoorID     string
 }
 
-func (e *Ethereum) IsAllowedAt(bookingID *big.Int, renterID common.Address, reqTime *big.Int) (allowed bool) {
+func (e *Ethereum) IsAllowedAt(booking door.BookingID, renter door.RenterPublicKey, timestamp int) (allowed bool,err  error) {
 	//Annahme: Es existiert ein Contract mit der Methode 'isAllowed(doorID string, renterID string, time time.Time)'
 	if e.contract == nil {
 		fmt.Print("Contract not initialized yet.")
 		return
 	}
 	callOpts := bind.CallOpts{Pending: true}
-	allowed, err := e.contract.IsAllowedAt(&callOpts, bookingID, renterID, reqTime)
+
+	allowed, err = e.contract.IsAllowedAt(&callOpts, big.NewInt(int64(booking)), common.HexToAddress(string(renter)), big.NewInt(int64(timestamp)))
 	if err != nil {
 		fmt.Print("RPC-Call isAllowedAt did not work.")
-		return
 	}
-	return
+	return allowed, err
 }
 
 func (e *Ethereum) setPath(path string) {

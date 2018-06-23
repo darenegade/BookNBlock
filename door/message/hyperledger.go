@@ -9,7 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	".."
+
+	"github.com/darenegade/BookNBlock/door"
+
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 )
 
@@ -43,8 +45,8 @@ func NewHyperledger(config Config) *Hyperledger {
 }
 
 // Subscribe listen to messages entend for this door
-func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessageHyperledger, error) {
-	c := make(chan tür.OpenDoorMessageHyperledger)
+func (h *Hyperledger) Subscribe() (<-chan door.OpenDoorMessageHyperledger, error) {
+	c := make(chan door.OpenDoorMessageHyperledger)
 	if token := h.client.Subscribe(TOPIC, 0, func(client mqtt.Client, msg mqtt.Message) {
 		var dat map[string]interface{}
 
@@ -52,8 +54,8 @@ func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessageHyperledger, error
 			panic(err)
 		}
 
-		c <- tür.OpenDoorMessageHyperledger{
-			DoorID:  tür.DoorID(dat["doorID"].(string)),
+		c <- door.OpenDoorMessageHyperledger{
+			DoorID:  door.DoorPublicKey(dat["doorID"].(string)),
 			Payload: dat["payload"].([]byte),
 		}
 
@@ -64,7 +66,7 @@ func (h *Hyperledger) Subscribe() (<-chan tür.OpenDoorMessageHyperledger, error
 	return c, nil
 }
 
-func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK tür.RenterPubkey, timestamp int64) {
+func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK door.RenterPublicKey, timestamp int64) {
 	key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
 	ciphertext, _ := hex.DecodeString(payload)
 	nonce := []byte("64a9433eae7c")
@@ -86,7 +88,7 @@ func (h *Hyperledger) decryptPaylpad(payload string, publicKey string) (renterPK
 
 	fmt.Printf("%s\n", plaintext)
 	words := strings.Split(string(plaintext), ",")
-	renterPK = tür.RenterPubkey(words[0])
+	renterPK = door.RenterPublicKey(words[0])
 
 	i, err := strconv.ParseInt(words[1], 10, 64)
 	if err != nil {

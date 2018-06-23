@@ -1,6 +1,6 @@
 // +build !rpi
 
-package driver
+package lock
 
 import (
 	"fmt"
@@ -9,6 +9,8 @@ import (
 type (
 	Mock struct{}
 )
+
+var Lock = Mock{}
 
 func (Mock) Open() {
 	fmt.Println("Opened Lock")
