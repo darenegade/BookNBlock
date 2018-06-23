@@ -6,7 +6,7 @@ export class User {
   password: string;
   email: string;
   token?: any;
-  walletId: number;
+  walletId: string;
   privateKey: string;
   publicKey: string;
   ethereum: boolean;

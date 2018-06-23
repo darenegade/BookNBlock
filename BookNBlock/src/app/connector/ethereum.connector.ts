@@ -9,6 +9,7 @@ import { abi, address } from './LockContract';
 import { environment } from '../../environments/environment';
 import { Contract, BatchRequest } from 'web3/types';
 import { User } from '../data/user';
+import { UserService } from '../services/user.service';
 
 /**
  * A connector to the Ethereum Blockchain.
@@ -17,11 +18,12 @@ import { User } from '../data/user';
 export class EthereumConnector extends BlockchainConnector {
 
   private web3: any;
+  private user: User;
   private contract: Contract;
 
-  constructor(private log: Logger, private user: User) {
+  constructor(private log: Logger, private userService: UserService) {
     super();
-
+    this.user = this.userService.getCurrentLoginUser();
     const provider = new HDWalletProvider(
       `${this.user.passphrase}`,
       `${environment.ethereumAddress}/${this.user.publicKey}`
@@ -38,7 +40,7 @@ export class EthereumConnector extends BlockchainConnector {
       const offer = new Offer();
       offer.id = id;
       offer.doorId = o.door;
-      offer.prize  = o.priceInWei;
+      offer.prize = o.priceInWei;
       offer.fromDate = o.validFrom;
       offer.toDate = o.validUntil;
       offer.address = o.objectAddress;
@@ -62,7 +64,7 @@ export class EthereumConnector extends BlockchainConnector {
             const offer = new Offer();
             offer.id = id;
             offer.doorId = o.door;
-            offer.prize  = o.priceInWei;
+            offer.prize = o.priceInWei;
             offer.fromDate = o.validFrom;
             offer.toDate = o.validUntil;
             offer.address = o.objectAddress;
@@ -99,13 +101,13 @@ export class EthereumConnector extends BlockchainConnector {
   rentOffer(offerId: number, checkIn?: Date, checkOut?: Date): Promise<void> {
     this.log.debug(`EthereumConnector.rentOffer()`);
     return this.getOffer(offerId).then(offer => {
-      return this.contract.methods.rentAnOffer(offerId, checkIn.getTime(), checkOut.getTime()).send({value: offer.prize})
-      .then(receipt => {
-        return Promise.resolve();
-      })
-      .catch(error => {
-        return Promise.reject(error);
-      });
+      return this.contract.methods.rentAnOffer(offerId, checkIn.getTime(), checkOut.getTime()).send({ value: offer.prize })
+        .then(receipt => {
+          return Promise.resolve();
+        })
+        .catch(error => {
+          return Promise.reject(error);
+        });
     });
   }
 
