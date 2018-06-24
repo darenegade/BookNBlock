@@ -12,7 +12,7 @@ export class UserService {
    * Get the current logged in user.
    */
   getCurrentLoginUser(): User {
-    return JSON.parse(localStorage.getItem('currentUser'));
+    return JSON.parse(localStorage.getItem('currentUser')).user;
   }
 
   /**

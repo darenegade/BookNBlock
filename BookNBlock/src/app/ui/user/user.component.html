@@ -10,7 +10,7 @@
           <div class="columns">
             <div class="column">
               <p class="account-col">
-                {{this.user.user.email}}
+                {{this.user.email}}
               </p>
             </div>
           </div>
@@ -30,12 +30,12 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{{user.user.fullName}}</td>
-                      <td>{{user.user.ethereum | questionableBoolean}}</td>
-                      <td>{{user.user.privateKey}}</td>
-                      <td>{{user.user.publicKey}}</td>
-                      <td>{{user.user.walletId}}</td>
-                      <td>{{user.user.passphrase}}</td>
+                      <td>{{user.fullName}}</td>
+                      <td>{{user.ethereum | questionableBoolean}}</td>
+                      <td>{{user.privateKey}}</td>
+                      <td>{{user.publicKey}}</td>
+                      <td>{{user.walletId}}</td>
+                      <td>{{user.passphrase}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -51,4 +51,4 @@
   </div>
 </section>
 
-<app-modal #editModal [currentUser]="user.user" (close)="updatedUser($event)"></app-modal>
+<app-modal #editModal [currentUser]="user" (close)="updatedUser($event)"></app-modal>

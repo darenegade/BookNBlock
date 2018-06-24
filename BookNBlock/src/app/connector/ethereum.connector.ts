@@ -21,9 +21,14 @@ export class EthereumConnector extends BlockchainConnector {
   private user: User;
   private contract: Contract;
 
-  constructor(private log: Logger, private userService: UserService) {
+  constructor(private log: Logger) {
     super();
-    this.user = this.userService.getCurrentLoginUser();
+
+  }
+
+  init(user: User) {
+    this.user = user;
+
     const provider = new HDWalletProvider(
       `${this.user.passphrase}`,
       `${environment.ethereumAddress}/${this.user.publicKey}`
@@ -32,6 +37,8 @@ export class EthereumConnector extends BlockchainConnector {
     this.web3 = new Web3(provider);
     this.contract = new this.web3.eth.Contract(abi, address);
     this.contract.options.from = this.user.walletId;
+
+    return this;
   }
 
   async getOffer(id: number): Promise<Offer> {
