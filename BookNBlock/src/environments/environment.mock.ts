@@ -7,5 +7,6 @@ import { Level } from '@nsalaun/ng-logger';
 export const environment = {
   production: false,
   mock: true,
-  loglevel: Level.DEBUG
+  loglevel: Level.DEBUG,
+  ethereumAddress: 'http://localhost:8545'
 };

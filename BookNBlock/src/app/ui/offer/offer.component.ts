@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Offer } from '../../data/offer';
+import {User} from '../../data/user';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-offer',
@@ -10,9 +12,11 @@ import { Offer } from '../../data/offer';
 export class OfferComponent implements OnInit {
 
   offerForm: FormGroup;
+  user: User;
 
-  constructor() {
+  constructor(private userService: UserService) {
     this.createOfferForm();
+
   }
 
   ngOnInit() {
@@ -20,7 +24,7 @@ export class OfferComponent implements OnInit {
 
   private createOfferForm() {
     this.offerForm = new FormGroup({
-      name: new FormControl('', Validators.required),
+      nameLandlord: new FormControl('', Validators.required),
       title: new FormControl('', [Validators.required, Validators.minLength(10)]),
       description: new FormControl('', Validators.required),
       date: new FormControl('', Validators.required),
@@ -42,16 +46,16 @@ export class OfferComponent implements OnInit {
     const saveOffer: Offer = {
       // TODO: how we handle this id
       id: 333,
-      doorId: 3,
-      isBooked: false,
+      doorId: '3',
+      // isBooked: false,
       prize: formModel.prize,
       fromDate: formModel.fromDate,
       toDate: formModel.toDate,
       // TODO: concat address
       address: '',
-      name: formModel.name,
+      nameLandlord: formModel.nameLandlord,
       // TODO: get walletId from user
-      walletId: 6,
+      walletId: '6',
       description: formModel.title,
       title: formModel.title,
       image: ''

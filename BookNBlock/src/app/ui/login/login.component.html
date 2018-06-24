@@ -1,23 +1,38 @@
-<div class="container">
-  <div class="frame">
-    <div class="nav">
-      <ul class="links">
-        <li [ngClass]="{'signin-active': signIn, 'signin-inactive':  !signIn}">
-          <a class="btn"  (click)="signIn = true">Login</a>
-        </li>
-        <li [ngClass]="{'signup-active': !signIn, 'signup-inactive':  signIn}">
-          <a class="btn" (click)="signIn = false">Registrieren</a>
-        </li>
-      </ul>
-    </div>
-    <div>
+<section class="hero is-medium login-banner">
+  <div class="hero-body">
+    <div class="container">
 
-      <app-sign-in *ngIf="signIn" (onLogin)="login()"></app-sign-in>
-      <app-sign-up *ngIf="!signIn" (onRegister)="register()"></app-sign-up>
+      <div class="columns">
+        <div class="column has-text-centered">
+          <h1 class="title">
+            Sesam öffne dich.
+          </h1>
+          <h4 *ngIf="signIn" class="subtitle">
+            Melde dich an und buche jetzt deine unvergessliche Unterkunft mit BookNBlock
+          </h4>
+          <h4 *ngIf="!signIn" class="subtitle">
+            Registriere dich um deine unvergessliche Unterkunft mit BookNBlock zu finden.
+          </h4>
+        </div>
+        <div class="column">
+          <div class="nav">
+            <ul class="links">
+              <li [ngClass]="{'signin-active': signIn, 'signin-inactive':  !signIn}">
+                <a (click)="signIn = true">Login</a>
+              </li>
+              <li [ngClass]="{'signup-active': !signIn, 'signup-inactive':  signIn}">
+                <a (click)="signIn = false">Registrieren</a>
+              </li>
+            </ul>
+          </div>
+          <div>
 
+            <app-sign-in *ngIf="signIn" (loginEvent)="login($event)"></app-sign-in>
+            <app-sign-up *ngIf="!signIn" (registerEvent)="register($event)"></app-sign-up>
 
-      <div class="forgot">
-        <a href="#">Forgot your password?</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</section>

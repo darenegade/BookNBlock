@@ -1,0 +1,23 @@
+@import "../../../assets/scss/varriables";
+
+.user-banner {
+  background-color: $fourth-color;
+}
+
+.account-col {
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 1.25rem 0;
+  position: relative;
+  text-align: center;
+  background-color: $secondary-color;
+  color: #fff;
+}
+
+.user-col {
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 1.25rem 0;
+  position: relative;
+  text-align: center;
+}

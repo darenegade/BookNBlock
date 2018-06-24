@@ -5,20 +5,15 @@ body * {
     font-family: 'Open Sans', sans-serif;
 }
 
-.navbar {
-    background: transparent;
-    background-size: cover;
+.hero.is-light a:not(.button):not(.dropdown-item):not(.tag), .hero.is-light strong {
+  background-color: $secondary-color;
+  margin: 5px;
+  border-radius: 10px;
+  color: #ffffff;
+  font-weight: 100;
+  font-size: 15px;
+  text-transform: uppercase;
+
 }
 
-.nav-item {
-    font-size: 16px;
-    color: #444444;
-    text-transform: uppercase;
-    border: 3px solid rgba(255, 193, 7, 0.5);
-    margin: 5px;
-    border-radius: 5px;
-    &:hover {
-      background-color: rgba(255, 193, 7, 0.5);
-    }
-}
 

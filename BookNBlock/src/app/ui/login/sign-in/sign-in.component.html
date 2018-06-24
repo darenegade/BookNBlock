@@ -1,16 +1,16 @@
-<form class="form-signin">
-  <div class="form-group">
-    <label for="uname">Username</label>
-    <input type="text" class="form-styling" [(ngModel)]="user.userName" name="uname" id="uname" required>
-    <div class="invalid-feedback">Oops, you missed this one.</div>
+<form class="form-signin" name="signInForm" #f="ngForm" (ngSubmit)="f.form.valid && login()" novalidate>
+  <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !emailAddress.valid }">
+    <label for="emailAddress">Email Adresse</label>
+    <input type="text" class="input" [(ngModel)]="user.email" #emailAddress="ngModel" name="emailAddress" id="emailAddress" required>
+    <div *ngIf="f.submitted && !emailAddress.valid" class="help-block">Email is required</div>
   </div>
-  <div class="form-group">
+  <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
     <label for="password">Passwort</label>
-    <input type="password" class="form-styling" [(ngModel)]="user.password" name="password" id="password"
+    <input type="password" class="input" [(ngModel)]="user.password" #password="ngModel" name="password" id="password"
            required>
-    <div class="invalid-feedback">Enter your password too!</div>
+    <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
   </div>
-  <div>
-    <a class="btn-signin" (click)="login()">Login</a>
+  <div class="form-group">
+    <button class="button">Login</button>
   </div>
 </form>

@@ -1,6 +1,7 @@
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 const { interface, bytecode } = require('./compile');
+const fs = require('fs');
 
 const provider = new HDWalletProvider(
     'diet asthma equip loan jealous twist divorce cloth gym ramp stomach noise',
@@ -21,5 +22,11 @@ const deploy = async () => {
     //contract can be interacted with via remix IDE
     // 0xEe86D8d8163844517676C918556CDf42310c1671
     console.log('Contract deployed to', result.options.address);
+    const file = `/* tslint:disable */
+export const abi = ${interface};
+
+export const address = '${result.options.address}';
+    `
+    fs.writeFile('src/app/connector/LockContract.ts', file);
 };
 deploy();

@@ -1,0 +1,54 @@
+<section class="hero is-medium user-banner">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        Dein Profil
+      </h1>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="columns">
+            <div class="column">
+              <p class="account-col">
+                {{this.user.user.email}}
+              </p>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <div class="user-col">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Ethereum</th>
+                      <th>Private Key</th>
+                      <th>Public Key</th>
+                      <th>WalletID</th>
+                      <th>10 private random words</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{user.user.fullName}}</td>
+                      <td>{{user.user.ethereum | questionableBoolean}}</td>
+                      <td>{{user.user.privateKey}}</td>
+                      <td>{{user.user.publicKey}}</td>
+                      <td>{{user.user.walletId}}</td>
+                      <td>{{user.user.passphrase}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a (click)="openEditModal()" class="card-footer-item">Edit</a>
+        </footer>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-modal #editModal [currentUser]="user.user" (close)="updatedUser($event)"></app-modal>

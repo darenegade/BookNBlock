@@ -8,6 +8,8 @@ const web3 = new Web3(provider);
 const { interface, bytecode } = require('../compile');
 const GAS = '3000000'
 
+require('events').EventEmitter.prototype._maxListeners = 100;
+
 let accounts;
 let lockContract;
 
@@ -130,7 +132,7 @@ describe('lockContract', () => {
     })
 
     it('free offer can be seen', async () => {
-
+        
         let id = -1; 
 
         await lockContract.methods
@@ -149,6 +151,12 @@ describe('lockContract', () => {
                 assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
                 id = tx.events["OfferSaved"].returnValues.offerID
             });
+
+        let offers = await lockContract.methods
+            .getOfferIDs()
+            .call({from: accounts[0], gas: GAS})
+
+        assert.deepEqual(offers, [0]);
 
         await lockContract.methods
             . insertOffer(
@@ -249,6 +257,58 @@ describe('lockContract', () => {
             .call({from: accounts[0], gas: GAS})
 
         assert.deepEqual(allowed, false);
+            
+    })
+
+    it('can see own bookings', async () => {
+
+        await lockContract.methods
+            . insertOffer(
+                1, 
+                'Cool Flat Offer',
+                'Teststraße 1, München', 
+                'Hans', 
+                'Very Cool Flat', 
+                accounts[0], 
+                1514764800, 
+                1546214400
+                )
+            .send({ from: accounts[0], gas: GAS})
+            .then(function (tx) {
+                assert.equal(tx.events["OfferSaved"].returnValues.offerID, 0);
+            });
+
+        await lockContract.methods
+            .rentAnOffer(
+                0,
+                1520035200,
+                1520121600
+            )
+            .send({value: 1, from: accounts[0], gas: GAS})
+            .then(function (tx) {
+                assert.notEqual(tx.events["BookingAccepted"], undefined);
+                assert.equal(tx.events["BookingAccepted"].returnValues.offerID, 0);
+                assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 0);
+                })
+
+                await lockContract.methods
+                .rentAnOffer(
+                    0,
+                    1520121700,
+                    1520122600
+                )
+                .send({value: 1, from: accounts[1], gas: GAS})
+                .then(function (tx) {
+                    assert.notEqual(tx.events["BookingAccepted"], undefined);
+                    assert.equal(tx.events["BookingAccepted"].returnValues.offerID, 0);
+                    assert.equal(tx.events["BookingAccepted"].returnValues.bookingID, 1);
+                    })
+                
+        let ownBookings = await lockContract.methods
+            .getOwnBookingIDs( )
+            .call({from: accounts[0], gas: GAS})
+
+        assert.deepEqual(ownBookings, [0]);
             
     })
 
