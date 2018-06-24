@@ -133,4 +133,18 @@ export class EthereumConnector extends BlockchainConnector {
   authenticateUser(user: any): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
+
+
+  /**
+   * Get all offers where the current logged in User has booked.
+   * @returns {Promise<Offer[]>} promise that conatins array of all offers
+   */
+  getBookedOfferForUser(): Promise<Offer[]> {
+    return this.contract.methods.getOwnBookingIDs().call().then(offers => {
+      return Promise.resolve(offers);
+    }).catch(error => {
+      return Promise.reject(error);
+    });
+  }
+
 }
