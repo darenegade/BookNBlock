@@ -1,9 +1,6 @@
 .form-signin {
-  width: 430px;
-  height: 375px;
   font-size: 16px;
   font-weight: 300;
-  padding-left: 10%;
   padding-top: 55px;
   transition: opacity .5s ease, transform .5s ease;
 }
@@ -13,23 +10,10 @@
   opacity: .0;
 }
 
-
-
-.form-signin input, .form-signup input {
-  color: #ffffff;
+.form-signin input {
   font-size: 13px;
 }
 
-.form-styling {
-  width: 100%;
-  height: 35px;
-  padding-left: 15px;
-  border: none;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  background: rgba(255,255,255,.2);
-}
 
 label {
   font-weight: 400;
@@ -37,8 +21,8 @@ label {
   font-size: 13px;
   padding-left: 15px;
   padding-bottom: 10px;
-  color: rgba(255,255,255,.7);
   display: block;
+  color: #ffffff;
 }
 
 :focus {outline: none;
@@ -49,151 +33,6 @@ label {
   border: none;
   padding-right: 40px;
   transition: background .5s ease;
-}
-
-[type="checkbox"]:not(:checked),
-[type="checkbox"]:checked {
-  position: absolute;
-  display: none;
-}
-
-[type="checkbox"]:not(:checked) + label,
-[type="checkbox"]:checked + label {
-  position: relative;
-  padding-left: 85px;
-  padding-top: 2px;
-  cursor: pointer;
-  margin-top: 8px;
-}
-
-[type="checkbox"]:not(:checked) + label:before,
-[type="checkbox"]:checked + label:before,
-[type="checkbox"]:not(:checked) + label:after,
-[type="checkbox"]:checked + label:after {
-  content: '';
-  position: absolute;
-}
-
-[type="checkbox"]:not(:checked) + label:before,
-[type="checkbox"]:checked + label:before {
-  width: 65px;
-  height: 30px;
-  background: rgba(255,255,255,.2);
-  border-radius: 15px;
-  left: 0;
-  top: -3px;
-  transition: all .2s ease;
-}
-
-[type="checkbox"]:not(:checked) + label:after,
-[type="checkbox"]:checked + label:after {
-  width: 10px;
-  height: 10px;
-  background: rgba(255,255,255,.7);
-  border-radius: 50%;
-  top: 7px;
-  left: 10px;
-  transition: all .2s ease;
-}
-
-/* on checked */
-[type="checkbox"]:checked + label:before {
-  background: #dcc638;
-}
-
-[type="checkbox"]:checked + label:after {
-  background: #ffffff;
-  top: 7px;
-  left: 45px;
-}
-
-[type="checkbox"]:checked + label .ui,
-[type="checkbox"]:not(:checked) + label .ui:before,
-[type="checkbox"]:checked + label .ui:after {
-  position: absolute;
-  left: 6px;
-  width: 65px;
-  border-radius: 15px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 22px;
-  transition: all .2s ease;
-}
-
-[type="checkbox"]:not(:checked) + label .ui:before {
-  content: "no";
-  left: 32px;
-  color: rgba(255,255,255,.7);
-}
-
-[type="checkbox"]:checked + label .ui:after {
-  content: "yes";
-  color: #ffffff;
-}
-
-[type="checkbox"]:focus + label:before {
-  box-sizing: border-box;
-  margin-top: -1px;
-}
-
-.btn-signin {
-  float: left;
-  padding-top: 8px;
-  width: 100%;
-  border: none;
-  border-radius: 20px;
-  margin-top: -8px;
-  text-align: center;
-  background-color: #ffffff;
-  height: 40px;
-  text-transform: uppercase;
-}
-
-a.btn-signup:hover, a.btn-signin:hover {
-  cursor: pointer;
-  background-color: #c3a71f;
-  transition: background-color .5s;
-}
-
-.success {
-  width: 80%;
-  height: 150px;
-  text-align: center;
-  position: relative;
-  top: -890px;
-  left: 450px;
-  opacity: .0;
-  transition: all .8s .4s ease;
-}
-
-.success-left {
-  transform: translateX(-406px);
-  opacity: 1;
-}
-
-.successtext {
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 300;
-  margin-top: -35px;
-  padding-left: 37px;
-  padding-right: 37px;
-}
-
-#check path {
-  stroke: #ffffff;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  stroke-width: 1px;
-  stroke-dasharray: 60px 300px;
-  stroke-dashoffset: -166px;
-  fill: rgba(255,255,255,.0);
-  transition: stroke-dashoffset 2s ease .5s, fill 1.5s ease 1.0s;
-}
-
-#check.checked path {
-  stroke-dashoffset: 33px;
-  fill: rgba(255,255,255,.03);
 }
 
 

@@ -1,95 +1,92 @@
-<div class="container-fluid">
+<section class="hero is-medium offer-banner">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title offer-tile">
+        Anbieten
+      </h1>
+      <h2 class="subtitle">
+        Erstelle dein Angebot heute noch
+      </h2>
 
-  <div class="container" style="margin-top: 40px">
-    <div class="frame">
+      <div class="container">
+        <div class="columns">
+          <div class="column general-info-form">
+            <div class="form-container">
+              <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
 
-
-      <div class="columns">
-        <div class="column general-info-form">
-          <div class="form-container">
-            <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
-
-              <div class="form-group">
-                <label>Titel</label>
-                <input class="input" type="text" formControlName="title">
-                <div *ngIf="offerForm.controls['title'].errors && !offerForm.controls['title'].pristine"
-                     class="error-msg">
-                  <div [hidden]="!offerForm.controls['title'].errors.required">Bitte geben einen Titel für dein Angebot
-                    an
+                <div class="form-group">
+                  <label>Titel</label>
+                  <input class="input" type="text" formControlName="title">
+                  <div *ngIf="offerForm.controls['title'].errors && !offerForm.controls['title'].pristine" class="error-msg">
+                    <div [hidden]="!offerForm.controls['title'].errors.required">Bitte geben einen Titel für dein Angebot an
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label>Beschreibung</label>
-                <textarea class="textarea" placeholder="Füge eine Beschreibung ein..." rows="10"
-                          formControlName="description"></textarea>
-              </div>
+                <div class="form-group">
+                  <label>Beschreibung</label>
+                  <textarea class="textarea" placeholder="Füge eine Beschreibung ein..." rows="10" formControlName="description"></textarea>
+                </div>
 
-              <div class="form-group">
-                <label>Von
-                </label>
-                <input type="date" class="input" formControlName="date">
-              </div>
+                <div class="form-group">
+                  <label>Von
+                  </label>
+                  <input type="date" class="input" formControlName="date">
+                </div>
 
-              <div class="form-group">
-                <label>Bis</label>
-                <input type="date" class="input" formControlName="toDate">
-              </div>
+                <div class="form-group">
+                  <label>Bis</label>
+                  <input type="date" class="input" formControlName="toDate">
+                </div>
 
-              <div class="form-group">
-                <label>Preis</label>
-                <input class="input" type="number" formControlName="prize">
-              </div>
-            </form>
+                <div class="form-group">
+                  <label>Preis für die Mietdauer</label>
+                  <input class="input" type="number" formControlName="prize">
+                </div>
+              </form>
+            </div>
           </div>
-
-
-        </div>
-        <div class="column address-form">
-          <div class="form-container">
-            <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
-              <div class="form-group">
-                <label>Dein Name</label>
-                <input id="nameLandlord" class="input" type="text" formControlName="nameLandlord">
-              </div>
-              <div class="form-group">
-                <label>Straße</label>
-                <input class="input" type="text" formControlName="street">
-                <div *ngIf="offerForm.controls['street'].errors && !offerForm.controls['street'].pristine"
-                     class="error-msg">
-                  <div [hidden]="!offerForm.controls['street'].errors.required">Bitte geben Sie die Adresse ein
+          <div class="column address-form">
+            <div class="form-container">
+              <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                  <label>Dein Name</label>
+                  <input id="name" class="input" type="text" formControlName="name">
+                </div>
+                <div class="form-group">
+                  <label>Straße</label>
+                  <input class="input" type="text" formControlName="street">
+                  <div *ngIf="offerForm.controls['street'].errors && !offerForm.controls['street'].pristine" class="error-msg">
+                    <div [hidden]="!offerForm.controls['street'].errors.required">Bitte geben Sie die Adresse ein
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label>Hausnummer</label>
-                <input class="input" type="text" formControlName="number">
-                <div *ngIf="offerForm.controls['number'].errors && !offerForm.controls['number'].pristine"
-                     class="error-msg">
-                  <div [hidden]="!offerForm.controls['number'].errors.required">Bitte geben Sie die Hausnummer ein
+                <div class="form-group">
+                  <label>Hausnummer</label>
+                  <input class="input" type="text" formControlName="number">
+                  <div *ngIf="offerForm.controls['number'].errors && !offerForm.controls['number'].pristine" class="error-msg">
+                    <div [hidden]="!offerForm.controls['number'].errors.required">Bitte geben Sie die Hausnummer ein
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label>Stadt</label>
-                <input class="input" type="text" formControlName="city">
-              </div>
-              <div class="form-group">
-                <label>Postleitzahl</label>
-                <input type="number" class="input" formControlName="zip">
-              </div>
+                <div class="form-group">
+                  <label>Stadt</label>
+                  <input class="input" type="text" formControlName="city">
+                </div>
+                <div class="form-group">
+                  <label>Postleitzahl</label>
+                  <input type="number" class="input" formControlName="zip">
+                </div>
 
-              <div style="margin-bottom: 1em">
-                <button style="width: 100%" type="submit" [disabled]="offerForm.errors" class="button save-button">Angebot speichern</button>
-              </div>
+                <div style="margin-bottom: 1em">
+                  <a style="width: 100%" class="button" type="submit">Angebot speichern</a>
+                </div>
 
-            </form>
-
-
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>

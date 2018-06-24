@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Offer } from '../../data/offer';
+import {User} from '../../data/user';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-offer',
@@ -10,9 +12,11 @@ import { Offer } from '../../data/offer';
 export class OfferComponent implements OnInit {
 
   offerForm: FormGroup;
+  user: User;
 
-  constructor() {
+  constructor(private userService: UserService) {
     this.createOfferForm();
+
   }
 
   ngOnInit() {

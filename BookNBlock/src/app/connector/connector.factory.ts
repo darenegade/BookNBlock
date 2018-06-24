@@ -1,19 +1,26 @@
-import { BlockchainConnector } from './blockchain.connector';
-import { Logger } from '@nsalaun/ng-logger';
-import { environment } from '../../environments/environment';
-import { MockConnector } from './mock.connector';
-import { AppComponent } from '../app.component';
-import { EthereumConnector } from './ethereum.connector';
-import { HyperledgerConnector } from './hyperledger.connector';
-import { User } from '../data/user';
-import { Injectable } from '@angular/core';
+import {BlockchainConnector} from './blockchain.connector';
+import {Logger} from '@nsalaun/ng-logger';
+import {environment} from '../../environments/environment';
+import {MockConnector} from './mock.connector';
+import {AppComponent} from '../app.component';
+import {EthereumConnector} from './ethereum.connector';
+import {HyperledgerConnector} from './hyperledger.connector';
+import {User} from '../data/user';
+import {Injectable} from '@angular/core';
+import {UserService} from '../services/user.service';
 
 @Injectable()
 export class BlockchainConnectorFactory {
 
-  constructor(private log: Logger, private user: User,
-    private mock: MockConnector, private ethereum: EthereumConnector,
-    private hyperledger: HyperledgerConnector) {}
+  user: User;
+
+  constructor(private log: Logger,
+              private userService: UserService,
+              private mock: MockConnector,
+              private ethereum: EthereumConnector,
+              private hyperledger: HyperledgerConnector) {
+    this.user = this.userService.getCurrentLoginUser();
+  }
 
   get(): BlockchainConnector {
     if (environment.mock) {

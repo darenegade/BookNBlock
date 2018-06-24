@@ -1,5 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {User} from "../../../data/user";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { User } from '../../../data/user';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,9 +13,9 @@ export class SignUpComponent implements OnInit {
   confirmPassword: string;
 
   @Output()
-  onRegister: EventEmitter<User> = new EventEmitter();
+  registerEvent: EventEmitter<User> = new EventEmitter();
 
-  constructor() {
+  constructor(private alertSerive: AlertService) {
     this.newUser = new User();
   }
 
@@ -22,10 +23,11 @@ export class SignUpComponent implements OnInit {
   }
 
   register() {
-    if(this.newUser.password === this.confirmPassword) {
+    if (this.newUser.password === this.confirmPassword) {
       this.newUser.userName = this.newUser.email;
-      // TODO: generate WalletId
-      this.onRegister.emit(this.newUser);
+      this.registerEvent.emit(this.newUser);
+    } else {
+      this.alertSerive.warn('Passwords does not match!');
     }
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Offer } from '../../data/offer';
-import {MockConnector} from '../../connector/mock.connector';
-import {QueryService} from '../../services/query.service';
+import * as moment from 'moment';
+import { QueryService } from '../../services/query.service';
 
 @Component({
   selector: 'app-booking',
@@ -11,8 +11,15 @@ import {QueryService} from '../../services/query.service';
 export class BookingComponent implements OnInit {
 
   allOffers: Offer[] = [];
+  fromDate: string;
+  toDate: string;
+  locale = 'de';
+  selectedDate: any;
+
 
   constructor(private queryService: QueryService) {
+    this.fromDate = new Date().toDateString();
+    this.toDate = new Date().toDateString();
   }
 
   ngOnInit() {
@@ -26,6 +33,26 @@ export class BookingComponent implements OnInit {
     const from = new Date(2018, 0, 5);
     const to = new Date(2018, 0, 15);
     this.queryService.queryAllOffers(from, to).then(result => this.allOffers = result);
+  }
+
+  setSelectedDate(date) {
+    this.selectedDate = date;
+  }
+
+  canChangeMonthLogic(num, currentDate) {
+    currentDate.add(num, 'month');
+    const minDate = moment().add(-1, 'month');
+    const maxDate = moment().add(1, 'year');
+
+    return currentDate.isBetween(minDate, maxDate);
+  }
+
+  isAvailableLogic(dateToCheck: any) {
+    if (dateToCheck.isBefore(moment(), 'day')) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }

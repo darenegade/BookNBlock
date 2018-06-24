@@ -1,14 +1,13 @@
+@import "../../../assets/scss/varriables";
+.offer-banner {
+  background-color: $fourth-color;
+}
 
-
-.headline-group {
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: rgba(0, 150, 136, 1);;
+.offer-tile {
+  color: #ffffff;
 }
 
 .general-info-form {
-
   margin-right: .90rem;
   .form-container {
     margin: 15px;
@@ -21,5 +20,3 @@
     margin: 15px;
   }
 }
-
-
