@@ -9,7 +9,6 @@ import { abi, address } from './LockContract';
 import { environment } from '../../environments/environment';
 import { Contract, BatchRequest } from 'web3/types';
 import { User } from '../data/user';
-import { UserService } from '../services/user.service';
 
 /**
  * A connector to the Ethereum Blockchain.

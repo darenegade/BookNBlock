@@ -13,15 +13,18 @@
           <div class="column">
             <div class="columns">
               <div class="column">
-                <input class="input" [(ngModel)]="fromDate" type="text" placeholder="Von">
+                <input class="input" [(ngModel)]="fromDate" type="date" placeholder="Von">
               </div>
               <div class="column">
-                <input class="input" type="text" [(ngModel)]="toDate" placeholder="Bis">
+                <input class="input" type="date" [(ngModel)]="toDate" placeholder="Bis">
               </div>
             </div>
           </div>
           <div class="column">
             <input class="input" type="text" placeholder="Location">
+          </div>
+          <div class="column">
+            <button (click)="getAllOffers()">Angebote suchen</button>
           </div>
         </div>
         <div class="columns" *ngFor="let offer of allOffers">
@@ -49,7 +52,7 @@
                           <tr>
                             <td>{{offer?.description}}</td>
                             <td>{{offer?.address}}</td>
-                            <td>{{offer.fromDate | date:'shortDate'}} / {{offer.toDate | date:'shortDate'}} </td>
+                            <td>{{offer.fromDate | date:'dd.MM.yyyy'}} / {{offer.toDate | date:'dd.MM.yyyy'}} </td>
                             <td>{{offer?.prize}}</td>
                           </tr>
                         </tbody>

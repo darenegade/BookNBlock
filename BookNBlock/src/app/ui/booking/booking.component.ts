@@ -18,8 +18,11 @@ export class BookingComponent implements OnInit {
 
 
   constructor(private queryService: QueryService) {
-    this.fromDate = new Date().toDateString();
-    this.toDate = new Date().toDateString();
+    const d = new Date();
+    this.fromDate = d.toISOString().substring(0, 10);
+    d.setDate(d.getDate() + 10);
+    this.toDate = d.toISOString().substring(0, 10);
+    this.getAllOffers();
   }
 
   ngOnInit() {
@@ -30,8 +33,8 @@ export class BookingComponent implements OnInit {
    * Get all offers.
    */
   getAllOffers(): void {
-    const from = new Date(2018, 0, 5);
-    const to = new Date(2018, 0, 15);
+    const from = new Date(this.fromDate);
+    const to = new Date(this.toDate);
     this.queryService.queryAllOffers(from, to).then(result => this.allOffers = result);
   }
 
