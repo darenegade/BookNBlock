@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Offer } from '../../data/offer';
 import * as moment from 'moment';
 import { QueryService } from '../../services/query.service';
+import { BookingModalComponent } from './booking-modal/booking-modal.component';
 
 @Component({
   selector: 'app-booking',
@@ -15,6 +16,9 @@ export class BookingComponent implements OnInit {
   toDate: string;
   locale = 'de';
   selectedDate: any;
+
+  @ViewChild(BookingModalComponent)
+  bookModal: BookingModalComponent;
 
 
   constructor(private queryService: QueryService) {
@@ -56,6 +60,13 @@ export class BookingComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  /**
+   * Open the modal dialog to edit the current user.
+   */
+  openBookModal(offer: Offer) {
+    this.bookModal.isActive(offer);
   }
 
 }

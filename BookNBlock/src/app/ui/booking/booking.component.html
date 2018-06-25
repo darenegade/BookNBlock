@@ -62,7 +62,7 @@
                 </div>
                 <div class="columns">
                   <div class="column">
-                    <a style="width: 100%" class="button" type="submit">Angebot buchen</a>
+                    <a style="width: 100%" class="button" type="submit" (click)="openBookModal(offer)">Angebot buchen</a>
                   </div>
                 </div>
               </div>
@@ -74,6 +74,6 @@
   </div>
 </section>
 
-
+<app-booking-modal #bookModal></app-booking-modal>
 <!--  <app-datepicker [locale]="locale" (emitSelectedDate)="setSelectedDate($event)" [canChangeNavMonthLogic]="canChangeMonthLogic"
                   [isAvailableLogic]="isAvailableLogic"></app-datepicker> -->
