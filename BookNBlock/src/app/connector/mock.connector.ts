@@ -3,6 +3,7 @@ import { BlockchainConnector } from './blockchain.connector';
 import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
 import { Logger } from '@nsalaun/ng-logger';
+import { User } from '../data/user';
 
 /**
  * A connector for testing.
@@ -24,6 +25,11 @@ export class MockConnector extends BlockchainConnector {
 
   constructor(private log: Logger) {
     super();
+  }
+
+  init(user: User) {
+    this.log.debug(`MockConnector.init()`);
+    return this;
   }
 
   getOffer(id: number): Promise<Offer> {

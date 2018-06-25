@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BlockchainConnector } from './blockchain.connector';
 import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
+import { User } from '../data/user';
 
 /**
  * A connector to the Hyperledger Blockchain.
@@ -11,6 +12,10 @@ export class HyperledgerConnector extends BlockchainConnector {
 
   constructor() {
     super();
+  }
+
+  init(user: User) {
+    return this;
   }
 
   getOffer(id: number): Promise<Offer> {
