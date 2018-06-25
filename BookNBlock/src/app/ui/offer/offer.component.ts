@@ -3,6 +3,9 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { Offer } from '../../data/offer';
 import {User} from '../../data/user';
 import {UserService} from '../../services/user.service';
+import { TransactionService } from '../../services/transaction.service';
+import { AlertService } from '../../services/alert.service';
+import { Logger } from '@nsalaun/ng-logger';
 
 @Component({
   selector: 'app-offer',
@@ -14,9 +17,9 @@ export class OfferComponent implements OnInit {
   offerForm: FormGroup;
   user: User;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private transactionService: TransactionService,
+    private alert: AlertService, private log: Logger) {
     this.createOfferForm();
-
   }
 
   ngOnInit() {
@@ -38,28 +41,15 @@ export class OfferComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(JSON.stringify(this.offerForm.value));
-  }
-
-  prepareOffer() {
     const formModel = this.offerForm.value;
-    const saveOffer: Offer = {
-      // TODO: how we handle this id
-      id: 333,
-      doorId: '3',
-      // isBooked: false,
-      prize: formModel.prize,
-      fromDate: formModel.fromDate,
-      toDate: formModel.toDate,
-      // TODO: concat address
-      address: '',
-      nameLandlord: formModel.nameLandlord,
-      // TODO: get walletId from user
-      walletId: '6',
-      description: formModel.title,
-      title: formModel.title,
-      image: ''
-    };
+    const address = `${formModel.street} ${formModel.number}
+    ${formModel.zip} ${formModel.city}`;
+    this.transactionService.insertOffer('', formModel.prize, new Date(formModel.date), new Date(formModel.toDate), address, formModel.title,
+      formModel.nameLandlord, formModel.description).then(offer => {
+      this.alert.success('Zimmer erfolgreich angelegt.');
+    }).catch(err => {
+      this.log.error(err);
+      this.alert.error('Zimmer konnte nicht angelegt werden.');
+    });
   }
-
 }
