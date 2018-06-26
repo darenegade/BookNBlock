@@ -19,4 +19,8 @@ export class QueryService {
     return this.factory.get().getOffer(offerId);
   }
 
+  queryOffersForUser(): Promise<Offer[]> {
+    return this.factory.get().getOfferForUser();
+  }
+
 }

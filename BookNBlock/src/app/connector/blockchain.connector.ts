@@ -58,4 +58,9 @@ export abstract class BlockchainConnector {
    */
   abstract authenticateUser(user: any): Promise<boolean>;
 
+  /**
+   * Get all offers for the asking user.
+   */
+  abstract getOfferForUser(): Promise<Offer[]>;
+
 }

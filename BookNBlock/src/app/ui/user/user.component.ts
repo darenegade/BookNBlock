@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../data/user';
 import { UserService } from '../../services/user.service';
 import { ModalComponent } from './modal/modal.component';
+import { BlockchainConnectorFactory } from '../../connector/connector.factory';
 
 /**
  * The user management component.
@@ -18,7 +19,10 @@ export class UserComponent implements OnInit {
   @ViewChild(ModalComponent)
   editModal: ModalComponent;
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private blockchainFactory: BlockchainConnectorFactory
+  ) { }
 
   ngOnInit() {
     this.user = this.userService.getCurrentLoginUser();
@@ -38,6 +42,10 @@ export class UserComponent implements OnInit {
   updatedUser(updatedUser: User) {
     console.log('UpdatedUser', updatedUser);
     this.userService.update(updatedUser).subscribe();
+  }
+
+  private getOffersForUser() {
+
   }
 
 }
