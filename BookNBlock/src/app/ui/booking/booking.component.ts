@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Offer } from '../../data/offer';
 import * as moment from 'moment';
 import { QueryService } from '../../services/query.service';
+import { BookingModalComponent } from './booking-modal/booking-modal.component';
 
 @Component({
   selector: 'app-booking',
@@ -16,10 +17,16 @@ export class BookingComponent implements OnInit {
   locale = 'de';
   selectedDate: any;
 
+  @ViewChild(BookingModalComponent)
+  bookModal: BookingModalComponent;
+
 
   constructor(private queryService: QueryService) {
-    this.fromDate = new Date().toDateString();
-    this.toDate = new Date().toDateString();
+    const d = new Date();
+    this.fromDate = d.toISOString().substring(0, 10);
+    d.setDate(d.getDate() + 10);
+    this.toDate = d.toISOString().substring(0, 10);
+    this.getAllOffers();
   }
 
   ngOnInit() {
@@ -30,8 +37,8 @@ export class BookingComponent implements OnInit {
    * Get all offers.
    */
   getAllOffers(): void {
-    const from = new Date(2018, 0, 5);
-    const to = new Date(2018, 0, 15);
+    const from = new Date(this.fromDate);
+    const to = new Date(this.toDate);
     this.queryService.queryAllOffers(from, to).then(result => this.allOffers = result);
   }
 
@@ -53,6 +60,13 @@ export class BookingComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  /**
+   * Open the modal dialog to edit the current user.
+   */
+  openBookModal(offer: Offer) {
+    this.bookModal.isActive(offer);
   }
 
 }

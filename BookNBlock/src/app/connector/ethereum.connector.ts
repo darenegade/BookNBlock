@@ -9,7 +9,6 @@ import { abi, address } from './LockContract';
 import { environment } from '../../environments/environment';
 import { Contract, BatchRequest } from 'web3/types';
 import { User } from '../data/user';
-import { UserService } from '../services/user.service';
 
 /**
  * A connector to the Ethereum Blockchain.
@@ -21,9 +20,14 @@ export class EthereumConnector extends BlockchainConnector {
   private user: User;
   private contract: Contract;
 
-  constructor(private log: Logger, private userService: UserService) {
+  constructor(private log: Logger) {
     super();
-    this.user = this.userService.getCurrentLoginUser();
+
+  }
+
+  init(user: User) {
+    this.user = user;
+
     const provider = new HDWalletProvider(
       `${this.user.passphrase}`,
       `${environment.ethereumAddress}/${this.user.publicKey}`
@@ -32,6 +36,8 @@ export class EthereumConnector extends BlockchainConnector {
     this.web3 = new Web3(provider);
     this.contract = new this.web3.eth.Contract(abi, address);
     this.contract.options.from = this.user.walletId;
+
+    return this;
   }
 
   async getOffer(id: number): Promise<Offer> {
@@ -146,9 +152,9 @@ export class EthereumConnector extends BlockchainConnector {
     const offer = new Offer();
     offer.id = id;
     offer.doorId = offerFromBC.door;
-    offer.prize = offerFromBC.priceInWei;
-    offer.fromDate = offerFromBC.validFrom;
-    offer.toDate = offerFromBC.validUntil;
+    offer.prize = Number.parseFloat(offerFromBC.priceInWei);
+    offer.fromDate = new Date(Number.parseInt(offerFromBC.validFrom));
+    offer.toDate = new Date(Number.parseInt(offerFromBC.validUntil));
     offer.address = offerFromBC.objectAddress;
     offer.title = offerFromBC.objectName;
     offer.nameLandlord = offerFromBC.ownerName;

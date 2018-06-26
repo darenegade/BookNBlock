@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
+import { User } from '../data/user';
 
 /**
  * Interface for all blockchains.
  */
 @Injectable()
 export abstract class BlockchainConnector {
+
+  /**
+   * Configure the connector to work with the user.
+   * @param user The user.
+   */
+  abstract init(user: User): BlockchainConnector;
 
   /**
    * Get one offer from the blockchain.

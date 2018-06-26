@@ -25,13 +25,13 @@ export class BlockchainConnectorFactory {
   get(): BlockchainConnector {
     if (environment.mock) {
       this.log.debug('Use mock connector');
-      return this.mock;
+      return this.mock.init(this.user);
     } else if (this.user.ethereum) {
       this.log.debug('Use ethereum connector');
-      return this.ethereum;
+      return this.ethereum.init(this.user);
     } else {
       this.log.debug('Use hyperledger connector');
-      return this.hyperledger;
+      return this.hyperledger.init(this.user);
     }
   }
 }
