@@ -1,0 +1,28 @@
+<div class="modal" [ngClass]="{'is-active': active }">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="card is-large">
+        <div class="card-content">
+          <form #f="ngForm" (ngSubmit)="submitChanges()">
+            <div class="field">
+              <label class="label">Von</label>
+              <div class="control">
+                <input class="input" name="from" [(ngModel)]="fromDate" type="date" required>
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Bis</label>
+              <input class="input" name="to" [(ngModel)]="toDate" type="date" required>
+            </div>
+          </form>
+        </div>
+        <footer class="card-footer">
+          <div class="control">
+            <button class="button is-link" style="padding-bottom: 30px" (click)="submitChanges()" type="submit">Kostenpflichtig Buchen</button>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <button class="modal-close is-large " aria-label="close " (click)="closeModal() "></button>
+  </div>
+  

@@ -9,7 +9,6 @@ import { abi, address } from './LockContract';
 import { environment } from '../../environments/environment';
 import { Contract, BatchRequest } from 'web3/types';
 import { User } from '../data/user';
-import { UserService } from '../services/user.service';
 
 /**
  * A connector to the Ethereum Blockchain.
@@ -47,9 +46,9 @@ export class EthereumConnector extends BlockchainConnector {
       const offer = new Offer();
       offer.id = id;
       offer.doorId = o.door;
-      offer.prize = o.priceInWei;
-      offer.fromDate = o.validFrom;
-      offer.toDate = o.validUntil;
+      offer.prize = Number.parseFloat(o.priceInWei);
+      offer.fromDate = new Date(Number.parseInt(o.validFrom));
+      offer.toDate = new Date(Number.parseInt(o.validUntil));
       offer.address = o.objectAddress;
       offer.title = o.objectName;
       offer.nameLandlord = o.ownerName;
@@ -71,9 +70,9 @@ export class EthereumConnector extends BlockchainConnector {
             const offer = new Offer();
             offer.id = id;
             offer.doorId = o.door;
-            offer.prize = o.priceInWei;
-            offer.fromDate = o.validFrom;
-            offer.toDate = o.validUntil;
+            offer.prize = Number.parseFloat(o.priceInWei);
+            offer.fromDate = new Date(Number.parseInt(o.validFrom));
+            offer.toDate = new Date(Number.parseInt(o.validUntil));
             offer.address = o.objectAddress;
             offer.title = o.objectName;
             offer.nameLandlord = o.ownerName;

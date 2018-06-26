@@ -12,7 +12,7 @@
         <div class="columns">
           <div class="column general-info-form">
             <div class="form-container">
-              <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+              <form [formGroup]="offerForm">
 
                 <div class="form-group">
                   <label>Titel</label>
@@ -29,8 +29,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label>Von
-                  </label>
+                  <label>Von</label>
                   <input type="date" class="input" formControlName="date">
                 </div>
 
@@ -51,7 +50,7 @@
               <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                   <label>Dein Name</label>
-                  <input id="name" class="input" type="text" formControlName="name">
+                  <input id="name" class="input" type="text" formControlName="nameLandlord">
                 </div>
                 <div class="form-group">
                   <label>Straße</label>
@@ -79,7 +78,7 @@
                 </div>
 
                 <div style="margin-bottom: 1em">
-                  <a style="width: 100%" class="button" type="submit">Angebot speichern</a>
+                  <button style="width: 100%" type="submit" [disabled]="!offerForm.valid">Angebot speichern</button>
                 </div>
 
               </form>
