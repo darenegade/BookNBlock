@@ -45,13 +45,13 @@ func (e *Ethereum) IsAllowedAt(booking door.BookingID, renter door.RenterPublicK
 	return allowed, err
 }
 
-func (e *Ethereum) setPath(path string) {
+func (e *Ethereum) SetPath(path string) {
 	e.gethPath = path
 }
-func (e *Ethereum) setContractAddress(contractAddress string) {
+func (e *Ethereum) SetContractAddress(contractAddress string) {
 	e.contractAddress = contractAddress
 }
-func (e *Ethereum) createConnection() (connected bool) {
+func (e *Ethereum) CreateConnection() (connected bool) {
 	//  IPC basierte RPC-Verbindung wird zur entfernten Node hergestellt
 	conn, err := ethclient.Dial(e.gethPath)
 	if err != nil {

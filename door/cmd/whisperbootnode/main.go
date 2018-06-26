@@ -3,7 +3,21 @@ package main
 import (
 	"github.com/darenegade/BookNBlock/door"
 	"github.com/darenegade/BookNBlock/door/message"
+	"bufio"
+	"os"
+	"time"
+	"github.com/ethereum/go-ethereum/crypto"
+	"log"
+	"fmt"
+	"strconv"
 )
+
+const RENTER_PRIVATE_KEY =
+	`c81803c093599fb7a4bba473ed74a2209fa53fcb59a7a7bcc6e8226157e87cb5`;
+const DOOR_PRIVATE_KEY =
+	`6ecd6756d5e9d9df44be83b82d99b17983ae5ce9d0f2de9dcd68c80197aafc4a`;
+const DOOR_PUBLIC_KEY =
+	`04f0f871df7b11b3a186210ef251d10837ccfb757de9d8669225bcf73632853def72ae7680f8acdfa1ac94345017d2b4c185275a1ea2f7bbe03e939146ba355889`;
 
 // main used to start an bootnode for the whisper protocol. It is used to provide an initial
 // central network point for door or renter to join.
@@ -14,6 +28,29 @@ func main() {
 		HTTPPort:   9945,
 	}
 	w := message.StartNode(c)
-	w.Subscribe(door.DoorPrivateKey("6ecd6756d5e9d9df44be83b82d99b17983ae5ce9d0f2de9dcd68c80197aafc4a"))
-	w.Node.Wait()
+	mess,_ := w.Subscribe(door.DoorPrivateKey(DOOR_PRIVATE_KEY))
+	go func() {
+		for m := range mess {
+			fmt.Printf("received %#v\n", m)
+		}
+	}()
+
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Println("input bookinID and press enter")
+	for scanner.Scan() {
+		booking, _ := strconv.Atoi(scanner.Text())
+		opendoormessage := door.OpenDoorMessage{
+			DoorID: DOOR_PUBLIC_KEY,
+			Timestamp: int(time.Now().Unix()),
+			Booking: door.BookingID(booking),
+		}
+
+		privateKey, err := crypto.HexToECDSA(RENTER_PRIVATE_KEY)
+		if err != nil {
+			log.Println(err)
+		}
+		w.Post(opendoormessage,privateKey )
+		fmt.Printf("posted with booking %d\n", booking)
+	}
+	w.Node.Stop()
 }
