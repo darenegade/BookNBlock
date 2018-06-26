@@ -122,7 +122,7 @@ func (h *HyperLedger) getHistoryForOffer() []Response {
 		log.Fatal(err)
 		return nil
 	}
-	fmt.Println(queryResult) // prints: map[foo:1]
+	fmt.Println(queryResult)
 
 	defer resp.Body.Close()
 	return queryResult.QueryResult
