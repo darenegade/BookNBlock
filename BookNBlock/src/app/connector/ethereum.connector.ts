@@ -37,16 +37,7 @@ export class EthereumConnector extends BlockchainConnector {
   async getOffer(id: number): Promise<Offer> {
     this.log.debug(`EthereumConnector.getOffer(${id})`);
     return this.contract.methods.getOffer(id).call().then(o => {
-      const offer = new Offer();
-      offer.id = id;
-      offer.doorId = o.door;
-      offer.prize = o.priceInWei;
-      offer.fromDate = o.validFrom;
-      offer.toDate = o.validUntil;
-      offer.address = o.objectAddress;
-      offer.title = o.objectName;
-      offer.nameLandlord = o.ownerName;
-
+      const offer = this.mapOffer(o, id);
       return Promise.resolve(offer);
     }).catch(error => {
       return Promise.reject(error);
@@ -61,16 +52,7 @@ export class EthereumConnector extends BlockchainConnector {
         const id = Number.parseInt(i);
         const p = new Promise<Offer>((resolve, reject) => {
           this.contract.methods.getOffer(id).call().then(o => {
-            const offer = new Offer();
-            offer.id = id;
-            offer.doorId = o.door;
-            offer.prize = o.priceInWei;
-            offer.fromDate = o.validFrom;
-            offer.toDate = o.validUntil;
-            offer.address = o.objectAddress;
-            offer.title = o.objectName;
-            offer.nameLandlord = o.ownerName;
-
+            const offer = this.mapOffer(o, id);
             resolve(offer);
           }).catch(error => {
             reject(error);
@@ -139,12 +121,37 @@ export class EthereumConnector extends BlockchainConnector {
    * Get all offers where the current logged in User has booked.
    * @returns {Promise<Offer[]>} promise that conatins array of all offers
    */
-  getBookedOfferForUser(): Promise<Offer[]> {
-    return this.contract.methods.getOwnBookingIDs().call().then(offers => {
-      return Promise.resolve(offers);
+  async getBookedOfferForUser(): Promise<Offer[]> {
+    return this.contract.methods.getOwnBookingIDs().call().then(ids => {
+      const promises: Promise<Offer>[] = [];
+      ids.map(i => {
+        const id = Number.parseInt(i);
+        const p = new Promise<Offer>((resolve, reject) => {
+          this.contract.methods.getOffer(id).call().then(o => {
+            const offer = this.mapOffer(o, id);
+            resolve(offer);
+          }).catch(error => {
+            reject(error);
+          });
+        });
+        promises.push(p);
+      });
+      return Promise.all(promises);
     }).catch(error => {
       return Promise.reject(error);
     });
   }
 
+  private mapOffer(offerFromBC: any, id: number): Offer {
+    const offer = new Offer();
+    offer.id = id;
+    offer.doorId = offerFromBC.door;
+    offer.prize = offerFromBC.priceInWei;
+    offer.fromDate = offerFromBC.validFrom;
+    offer.toDate = offerFromBC.validUntil;
+    offer.address = offerFromBC.objectAddress;
+    offer.title = offerFromBC.objectName;
+    offer.nameLandlord = offerFromBC.ownerName;
+    return offer;
+  }
 }
