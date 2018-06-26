@@ -49,6 +49,10 @@
             <div class="form-container">
               <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
+                  <label>Adresse der Tür</label>
+                  <input id="doorId" class="input" type="text" formControlName="doorId">
+                </div>
+                <div class="form-group">
                   <label>Dein Name</label>
                   <input id="name" class="input" type="text" formControlName="nameLandlord">
                 </div>
@@ -78,7 +82,7 @@
                 </div>
 
                 <div style="margin-bottom: 1em">
-                  <button style="width: 100%" type="submit" [disabled]="!offerForm.valid">Angebot speichern</button>
+                  <button class="button" style="width: 100%" type="submit">Angebot speichern</button>
                 </div>
 
               </form>

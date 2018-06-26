@@ -5,7 +5,7 @@ import { OpenDoorMessage } from '../data/OpenDoorMessage';
 import { User } from '../data/user';
 import { privateEncrypt } from 'crypto-browserify';
 import { Buffer } from 'buffer';
-import {UserService} from './user.service';
+import { UserService } from './user.service';
 
 @Injectable()
 export class MessageService {
@@ -20,12 +20,13 @@ export class MessageService {
     this.user = this.userService.getCurrentLoginUser();
   }
 
-  sendMessage(doorId: number): Promise<void> {
-    const message: OpenDoorMessage = {
-      doorId: doorId,
-      renterPubkey: this.user.publicKey,
-      timestemp: privateEncrypt(this.user.privateKey, new Buffer(Date.now().toString())).toString()
-    } as OpenDoorMessage;
+  sendMessage(doorId: string, bookingId: number): Promise<void> {
+    const message: OpenDoorMessage = new OpenDoorMessage();
+    message.doorId = doorId;
+    message.booking = bookingId;
+    message.renterPubkey = this.user.publicKey;
+    // message.timestamp = privateEncrypt(this.user.privateKey, new Buffer(Date.now().toString())).toString();
+    message.timestamp = Date.now();
     return this.factory.get().sendMessage(message);
   }
 

@@ -2,6 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../data/user';
 import { UserService } from '../../services/user.service';
 import { ModalComponent } from './modal/modal.component';
+import { BlockchainConnectorFactory } from '../../connector/connector.factory';
+import { QueryService } from '../../services/query.service';
+import { Offer } from '../../data/offer';
+import { OpenDoorModalComponent } from './openDoorModal/open-door-modal.component';
+import { MessageService } from '../../services/message.service';
+import { Booking } from '../../data/booking';
+import { BookingResult } from '../booking/booking-item/booking-item.component';
 
 /**
  * The user management component.
@@ -15,14 +22,29 @@ export class UserComponent implements OnInit {
 
   user: User;
 
+  bookings: Booking[];
+
+  offers: Offer[];
+
+  bookingResult: BookingResult;
+
+  @ViewChild(OpenDoorModalComponent)
+  doorModal: OpenDoorModalComponent;
+
   @ViewChild(ModalComponent)
   editModal: ModalComponent;
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private queryService: QueryService,
+    private messageService: MessageService,
+  ) {
+
+  }
 
   ngOnInit() {
     this.user = this.userService.getCurrentLoginUser();
-    console.log(this.user);
+    this.getOfferForUser();
   }
 
   /**
@@ -32,12 +54,29 @@ export class UserComponent implements OnInit {
     this.editModal.isActive();
   }
 
+  openDoorModal(bookingResult: BookingResult) {
+    this.bookingResult = bookingResult;
+    this.doorModal.isActive();
+  }
+
   /**
    * Update the user information.
    */
   updatedUser(updatedUser: User) {
-    console.log('UpdatedUser', updatedUser);
     this.userService.update(updatedUser).subscribe();
+    this.getOfferForUser();
+  }
+
+  openDoorForOffer($event: BookingResult) {
+    this.messageService.sendMessage($event.offer.doorId, $event.booking.id);
+  }
+
+  private getOfferForUser() {
+    this.queryService.queryBookingsForUser().then(
+      result => {
+        console.log(result);
+        this.bookings = result;
+      });
   }
 
 }

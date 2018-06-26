@@ -3,6 +3,7 @@ import { BlockchainConnector } from './blockchain.connector';
 import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
 import { User } from '../data/user';
+import { Booking } from '../data/booking';
 
 /**
  * A connector to the Hyperledger Blockchain.
@@ -43,6 +44,11 @@ export class HyperledgerConnector extends BlockchainConnector {
   }
 
   authenticateUser(user: any): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+
+
+  getBookingsForUser(): Promise<Booking[]> {
     throw new Error('Method not implemented.');
   }
 }

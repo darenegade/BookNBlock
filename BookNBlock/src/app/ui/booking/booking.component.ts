@@ -3,6 +3,7 @@ import { Offer } from '../../data/offer';
 import * as moment from 'moment';
 import { QueryService } from '../../services/query.service';
 import { BookingModalComponent } from './booking-modal/booking-modal.component';
+import { BookingResult } from './booking-item/booking-item.component';
 
 @Component({
   selector: 'app-booking',
@@ -39,7 +40,10 @@ export class BookingComponent implements OnInit {
   getAllOffers(): void {
     const from = new Date(this.fromDate);
     const to = new Date(this.toDate);
-    this.queryService.queryAllOffers(from, to).then(result => this.allOffers = result);
+    this.queryService.queryAllOffers(from, to).then(result => {
+      console.log(result)
+      this.allOffers = result
+    });
   }
 
   setSelectedDate(date) {
@@ -65,8 +69,8 @@ export class BookingComponent implements OnInit {
   /**
    * Open the modal dialog to edit the current user.
    */
-  openBookModal(offer: Offer) {
-    this.bookModal.isActive(offer);
+  openBookModal($event: BookingResult) {
+    this.bookModal.isActive($event.offer);
   }
 
 }

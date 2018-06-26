@@ -9,6 +9,9 @@ import { abi, address } from './LockContract';
 import { environment } from '../../environments/environment';
 import { Contract, BatchRequest } from 'web3/types';
 import { User } from '../data/user';
+import { Booking } from '../data/booking';
+import { resolve } from 'path';
+import { reject } from 'q';
 
 /**
  * A connector to the Ethereum Blockchain.
@@ -34,6 +37,7 @@ export class EthereumConnector extends BlockchainConnector {
     );
 
     this.web3 = new Web3(provider);
+    this.web3.shh.setProvider(environment.nodeAddress);
     this.contract = new this.web3.eth.Contract(abi, address);
     this.contract.options.from = this.user.walletId;
 
@@ -100,7 +104,7 @@ export class EthereumConnector extends BlockchainConnector {
   }
 
   sendMessage(message: OpenDoorMessage): Promise<void> {
-    return this.web3.shh.addPrivateKey(this.user.privateKey).then(id => {
+    return this.web3.shh.addPrivateKey(`0x${this.user.privateKey}`).then(id => {
       return this.web3.shh.post({
         sig: id, // signs using the private key ID
         pubKey: message.doorId,
@@ -127,22 +131,26 @@ export class EthereumConnector extends BlockchainConnector {
    * Get all offers where the current logged in User has booked.
    * @returns {Promise<Offer[]>} promise that conatins array of all offers
    */
-  async getBookedOfferForUser(): Promise<Offer[]> {
+  async getBookingsForUser(): Promise<Booking[]> {
     return this.contract.methods.getOwnBookingIDs().call().then(ids => {
-      const promises: Promise<Offer>[] = [];
+      const bookings: Promise<Booking>[] = [];
       ids.map(i => {
         const id = Number.parseInt(i);
-        const p = new Promise<Offer>((resolve, reject) => {
-          this.contract.methods.getOffer(id).call().then(o => {
-            const offer = this.mapOffer(o, id);
-            resolve(offer);
+        const promise = new Promise<Booking>((resolve, reject) => {
+          this.contract.methods.getBooking(id).call().then(booking => {
+            const b = new Booking();
+            b.id = id;
+            b.offerId = booking.offerID;
+            b.checkIn = booking.checkIn;
+            b.checkOut = booking.checkOut;
+            resolve(b);
           }).catch(error => {
             reject(error);
           });
         });
-        promises.push(p);
+        bookings.push(promise);
       });
-      return Promise.all(promises);
+      return Promise.all(bookings);
     }).catch(error => {
       return Promise.reject(error);
     });

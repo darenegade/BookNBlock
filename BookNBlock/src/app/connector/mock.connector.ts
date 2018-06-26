@@ -4,6 +4,7 @@ import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
 import { Logger } from '@nsalaun/ng-logger';
 import { User } from '../data/user';
+import { Booking } from '../data/booking';
 
 /**
  * A connector for testing.
@@ -12,15 +13,21 @@ import { User } from '../data/user';
 export class MockConnector extends BlockchainConnector {
 
   private offers: Offer[] = [
-    { id: 1, doorId: '1', prize: 100, fromDate: new Date(2018, 0, 1), toDate: new Date(2018, 0, 31),
+    {
+      id: 1, doorId: '1', prize: 100, fromDate: new Date(2018, 0, 1), toDate: new Date(2018, 0, 31),
       address: 'World Disney', nameLandlord: 'Mickey Mouse', description: 'Mickey\'s house', walletId: '10000',
-      title: 'Wohnen in Mickey\'s house' },
-    { id: 2, doorId: '1', prize: 100, fromDate: new Date(2018, 8, 1), toDate: new Date(2018, 8, 10),
+      title: 'Wohnen in Mickey\'s house'
+    },
+    {
+      id: 2, doorId: '1', prize: 100, fromDate: new Date(2018, 8, 1), toDate: new Date(2018, 8, 10),
       address: 'World Disney', nameLandlord: 'Mickey Mouse', description: 'Mickey\'s house', walletId: '10000',
-      title: 'Wohnen in Mickey\'s house' },
-    { id: 3, doorId: '1', prize: 100, fromDate: new Date(2018, 11, 24), toDate: new Date(2018, 11, 30),
+      title: 'Wohnen in Mickey\'s house'
+    },
+    {
+      id: 3, doorId: '1', prize: 100, fromDate: new Date(2018, 11, 24), toDate: new Date(2018, 11, 30),
       address: 'Entenhausen', nameLandlord: 'Donald Duck', description: 'Donald\'s house', walletId: '20000',
-      title: 'Wohnen in Donald\'s house' }
+      title: 'Wohnen in Donald\'s house'
+    }
   ];
 
   constructor(private log: Logger) {
@@ -75,5 +82,9 @@ export class MockConnector extends BlockchainConnector {
   authenticateUser(user: any): Promise<boolean> {
     this.log.debug(`MockConnector.authenticateUser(${JSON.stringify(user)})`);
     return Promise.resolve(true);
+  }
+
+  getBookingsForUser(): Promise<Booking[]> {
+    throw new Error('Method not implemented.');
   }
 }
