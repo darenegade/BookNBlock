@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="columns" *ngFor="let offer of allOffers">
-          <app-booking-item [offer]="offer" [buttonText]="'Angebot buchen'" (confirmButton)="openBookModal(offer)"></app-booking-item>
+          <app-booking-item [offer]="offer" [buttonText]="'Angebot buchen'" (confirmButton)="openBookModal($event)"></app-booking-item>
         </div>
       </div>
     </div>

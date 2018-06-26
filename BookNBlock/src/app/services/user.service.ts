@@ -12,7 +12,11 @@ export class UserService {
    * Get the current logged in user.
    */
   getCurrentLoginUser(): User {
-    return JSON.parse(localStorage.getItem('currentUser')).user;
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+      return JSON.parse(user).user;
+    }
+    return undefined;
   }
 
   /**

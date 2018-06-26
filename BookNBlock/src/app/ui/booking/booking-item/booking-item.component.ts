@@ -1,5 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Offer } from '../../../data/offer';
+import { Booking } from '../../../data/booking';
+import { QueryService } from '../../../services/query.service';
+
+export class BookingResult {
+    offer: Offer;
+    booking: Booking;
+}
 
 @Component({
     selector: 'app-booking-item',
@@ -12,16 +19,28 @@ export class BookingItemComponent implements OnInit {
     offer: Offer;
 
     @Input()
+    booking: Booking;
+
+    @Input()
     buttonText: string;
 
     @Output()
-    confirmButton: EventEmitter<Offer> = new EventEmitter();
+    confirmButton: EventEmitter<BookingResult> = new EventEmitter();
 
-    constructor() { }
+    constructor(private queryService: QueryService) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        if (!this.offer) {
+            this.queryService.queryOffer(this.booking.offerId).then(result => {
+                this.offer = result;
+            });
+        }
+    }
 
-    clickOnButton(offer: Offer) {
-        this.confirmButton.emit(offer);
+    clickOnButton() {
+        const result = new BookingResult();
+        result.offer = this.offer;
+        result.booking = this.booking;
+        this.confirmButton.emit(result);
     }
 }

@@ -16,30 +16,50 @@
           </div>
           <div class="columns">
             <div class="column">
-              <div class="user-col">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Ethereum</th>
-                      <th>Private Key</th>
-                      <th>Public Key</th>
-                      <th>WalletID</th>
-                      <th>10 private random words</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{{user.fullName}}</td>
-                      <td>{{user.ethereum | questionableBoolean}}</td>
-                      <td>{{user.privateKey}}</td>
-                      <td>{{user.publicKey}}</td>
-                      <td>{{user.walletId}}</td>
-                      <td>{{user.passphrase}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <label>Name</label>
+              <p>
+                {{user.fullName}}
+              </p>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <label>Ethereum</label>
+              <p>
+                {{user.ethereum}}
+              </p>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <label>Private Key</label>
+              <p>
+                {{user.privateKey}}
+              </p>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <label>Public Key</label>
+              <p>
+                {{user.publicKey}}
+              </p>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <label>WalletID</label>
+              <p>
+                {{user.walletId}}
+              </p>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <label>10 private random words</label>
+              <p>
+                {{user.passphrase}}
+              </p>
             </div>
           </div>
         </div>
@@ -48,9 +68,15 @@
         </footer>
       </div>
     </div>
-    <div *ngIf="offers" class="container">
-      <div lass="columns" *ngFor="let offer of offers">
-        <app-booking-item [offer]="offer" [buttonText]="'Tür öffnen'" (confirmButton)="openDoorModal(offer)"></app-booking-item>
+  </div>
+  <div class="hero-body">
+    <div *ngIf="bookings" class="container">
+      <div class="card">
+        <div class="card-content">
+          <div class="columns" *ngFor="let booking of bookings">
+            <app-booking-item [booking]="booking" [buttonText]="'Tür öffnen'" (confirmButton)="openDoorModal($event)"></app-booking-item>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -58,4 +84,4 @@
 
 <app-modal #editModal [currentUser]="user" (close)="updatedUser($event)"></app-modal>
 
-<app-open-door-modal [offer]="offerToBook" (doorOpen)="openDoorForOffer($event)" #doorModal></app-open-door-modal>
+<app-open-door-modal [bookingResult]="bookingResult" (doorOpen)="openDoorForOffer($event)" #doorModal></app-open-door-modal>

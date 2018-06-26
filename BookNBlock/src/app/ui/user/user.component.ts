@@ -7,6 +7,8 @@ import { QueryService } from '../../services/query.service';
 import { Offer } from '../../data/offer';
 import { OpenDoorModalComponent } from './openDoorModal/open-door-modal.component';
 import { MessageService } from '../../services/message.service';
+import { Booking } from '../../data/booking';
+import { BookingResult } from '../booking/booking-item/booking-item.component';
 
 /**
  * The user management component.
@@ -20,9 +22,11 @@ export class UserComponent implements OnInit {
 
   user: User;
 
+  bookings: Booking[];
+
   offers: Offer[];
 
-  offerToBook: Offer;
+  bookingResult: BookingResult;
 
   @ViewChild(OpenDoorModalComponent)
   doorModal: OpenDoorModalComponent;
@@ -50,8 +54,8 @@ export class UserComponent implements OnInit {
     this.editModal.isActive();
   }
 
-  openDoorModal(offer: Offer) {
-    this.offerToBook = offer;
+  openDoorModal(bookingResult: BookingResult) {
+    this.bookingResult = bookingResult;
     this.doorModal.isActive();
   }
 
@@ -63,13 +67,16 @@ export class UserComponent implements OnInit {
     this.getOfferForUser();
   }
 
-  openDoorForOffer(offer: Offer) {
-    this.messageService.sendMessage(Number(offer.doorId));
+  openDoorForOffer($event: BookingResult) {
+    this.messageService.sendMessage($event.offer.doorId, $event.booking.id);
   }
 
   private getOfferForUser() {
-    this.queryService.queryOffersForUser().then(
-      result => this.offers = result);
+    this.queryService.queryBookingsForUser().then(
+      result => {
+        console.log(result);
+        this.bookings = result;
+      });
   }
 
 }

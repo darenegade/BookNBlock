@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Offer } from '../../data/offer';
-import {User} from '../../data/user';
-import {UserService} from '../../services/user.service';
+import { User } from '../../data/user';
+import { UserService } from '../../services/user.service';
 import { TransactionService } from '../../services/transaction.service';
 import { AlertService } from '../../services/alert.service';
 import { Logger } from '@nsalaun/ng-logger';
@@ -27,6 +27,7 @@ export class OfferComponent implements OnInit {
 
   private createOfferForm() {
     this.offerForm = new FormGroup({
+      doorId: new FormControl('', Validators.required),
       nameLandlord: new FormControl('', Validators.required),
       title: new FormControl('', [Validators.required, Validators.minLength(10)]),
       description: new FormControl('', Validators.required),
@@ -44,12 +45,13 @@ export class OfferComponent implements OnInit {
     const formModel = this.offerForm.value;
     const address = `${formModel.street} ${formModel.number}
     ${formModel.zip} ${formModel.city}`;
-    this.transactionService.insertOffer('', formModel.prize, new Date(formModel.date), new Date(formModel.toDate), address, formModel.title,
+    this.transactionService.insertOffer(formModel.doorId, formModel.prize, new Date(formModel.date),
+      new Date(formModel.toDate), address, formModel.title,
       formModel.nameLandlord, formModel.description).then(offer => {
-      this.alert.success('Zimmer erfolgreich angelegt.');
-    }).catch(err => {
-      this.log.error(err);
-      this.alert.error('Zimmer konnte nicht angelegt werden.');
-    });
+        this.alert.success('Zimmer erfolgreich angelegt.');
+      }).catch(err => {
+        this.log.error(err);
+        this.alert.error('Zimmer konnte nicht angelegt werden.');
+      });
   }
 }

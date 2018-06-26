@@ -4,6 +4,7 @@ import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
 import { Logger } from '@nsalaun/ng-logger';
 import { User } from '../data/user';
+import { Booking } from '../data/booking';
 
 /**
  * A connector for testing.
@@ -83,7 +84,7 @@ export class MockConnector extends BlockchainConnector {
     return Promise.resolve(true);
   }
 
-  getBookedOfferForUser(): Promise<Offer[]> {
+  getBookingsForUser(): Promise<Booking[]> {
     throw new Error('Method not implemented.');
   }
 }

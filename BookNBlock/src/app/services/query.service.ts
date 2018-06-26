@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 import { Offer } from '../data/offer';
 import { BlockchainConnectorFactory } from '../connector/connector.factory';
+import { Booking } from '../data/booking';
 
 @Injectable()
 export class QueryService {
@@ -19,8 +20,8 @@ export class QueryService {
     return this.factory.get().getOffer(offerId);
   }
 
-  queryOffersForUser(): Promise<Offer[]> {
-    return this.factory.get().getBookedOfferForUser();
+  queryBookingsForUser(): Promise<Booking[]> {
+    return this.factory.get().getBookingsForUser();
   }
 
 }

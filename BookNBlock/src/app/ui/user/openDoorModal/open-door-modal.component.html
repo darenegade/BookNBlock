@@ -1,4 +1,4 @@
-<div class="modal" [ngClass]="{'is-active': active }">
+<div *ngIf="bookingResult" class="modal" [ngClass]="{'is-active': active }">
   <div class="modal-background"></div>
   <div class="modal-content">
     <div class="card is-large">
@@ -7,8 +7,8 @@
           Tür öffnen
         </p>
       </header>
-      <div class="card-content">
-        <p>Möchten Sie die Tür mit der ID {{offer?.doorId}} öffnen?</p>
+      <div *ngIf="bookingResult.offer" class="card-content">
+        <p>Möchten Sie die Tür mit der ID {{bookingResult.offer?.doorId}} öffnen?</p>
       </div>
       <footer class="card-footer">
         <div class="control">

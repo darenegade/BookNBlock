@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
 import { User } from '../data/user';
+import { Booking } from '../data/booking';
 
 /**
  * Interface for all blockchains.
@@ -59,8 +60,8 @@ export abstract class BlockchainConnector {
   abstract authenticateUser(user: any): Promise<boolean>;
 
   /**
-   * Get all offers booked by the asking user.
+   * Get all bookungs for the asking user.
    */
-  abstract getBookedOfferForUser(): Promise<Offer[]>;
+  abstract getBookingsForUser(): Promise<Booking[]>;
 
 }

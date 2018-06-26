@@ -8,5 +8,6 @@ export const environment = {
   production: false,
   mock: true,
   loglevel: Level.DEBUG,
+  nodeAddress: 'http://localhost:9945',
   ethereumAddress: 'http://localhost:8545'
 };

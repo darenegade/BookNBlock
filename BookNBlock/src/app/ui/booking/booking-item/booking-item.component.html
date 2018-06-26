@@ -1,4 +1,4 @@
-<div class="column">
+<div *ngIf="offer" class="column">
   <div class="card">
     <div class="card-content">
       <div class="columns">
@@ -20,10 +20,10 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>{{offer?.description}}</td>
-                  <td>{{offer?.address}}</td>
+                  <td>{{offer.description}}</td>
+                  <td>{{offer.address}}</td>
                   <td>{{offer.fromDate | date:'dd.MM.yyyy'}} / {{offer.toDate | date:'dd.MM.yyyy'}} </td>
-                  <td>{{offer?.prize}}</td>
+                  <td>{{offer.prize}}</td>
                 </tr>
               </tbody>
             </table>
@@ -32,7 +32,7 @@
       </div>
       <div class="columns">
         <div class="column">
-          <a style="width: 100%" class="button" type="submit" (click)="clickOnButton(offer)">{{buttonText}}</a>
+          <a style="width: 100%" class="button" type="submit" (click)="clickOnButton()">{{buttonText}}</a>
         </div>
       </div>
     </div>

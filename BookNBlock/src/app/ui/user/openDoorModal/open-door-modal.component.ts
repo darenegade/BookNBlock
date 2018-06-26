@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from '../../../data/user';
 import { Offer } from '../../../data/offer';
+import { BookingResult } from '../../booking/booking-item/booking-item.component';
 
 /**
  * The modal to edit the user information.
@@ -15,10 +16,10 @@ export class OpenDoorModalComponent implements OnInit {
     active: boolean;
 
     @Input()
-    offer: Offer;
+    bookingResult: BookingResult;
 
     @Output()
-    doorOpen: EventEmitter<Offer> = new EventEmitter<Offer>();
+    doorOpen: EventEmitter<BookingResult> = new EventEmitter();
 
     constructor() { }
 
@@ -42,8 +43,8 @@ export class OpenDoorModalComponent implements OnInit {
      * send the offer that has to opened.
      * @param offer the offer for what the door should be opened
      */
-    openDoor(offer: Offer) {
-        this.doorOpen.emit(offer);
+    openDoor() {
+        this.doorOpen.emit(this.bookingResult);
     }
 
 }
