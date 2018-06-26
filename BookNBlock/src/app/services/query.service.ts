@@ -20,7 +20,7 @@ export class QueryService {
   }
 
   queryOffersForUser(): Promise<Offer[]> {
-    return this.factory.get().getOfferForUser();
+    return this.factory.get().getBookedOfferForUser();
   }
 
 }

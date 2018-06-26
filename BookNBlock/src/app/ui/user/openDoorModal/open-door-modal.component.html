@@ -1,0 +1,22 @@
+<div class="modal" [ngClass]="{'is-active': active }">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="card is-large">
+      <header class="card-header">
+        <p class="card-header-title">
+          Tür öffnen
+        </p>
+      </header>
+      <div class="card-content">
+        <p>Möchten Sie die Tür mit der ID {{offer?.doorId}} öffnen?</p>
+      </div>
+      <footer class="card-footer">
+        <div class="control">
+          <button class="button is-link" style="padding-bottom: 30px" (click)="openDoor()" type="submit">Öffnen</button>
+          <button class="button is-link" style="padding-bottom: 30px" (click)="closeModal()" type="submit">Abbrechen</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <button class="modal-close is-large " aria-label="close " (click)="closeModal() "></button>
+</div>

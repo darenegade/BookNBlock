@@ -33,6 +33,8 @@ import { QuestionableBooleanPipe } from './ui/shared/questionableBoolean.pipe';
 import { ModalComponent } from './ui/user/modal/modal.component';
 import { DatepickerComponent } from './ui/booking/datepicker/datepicker.component';
 import { BookingModalComponent } from './ui/booking/booking-modal/booking-modal.component';
+import { BookingItemComponent } from './ui/booking/booking-item/booking-item.component';
+import { OpenDoorModalComponent } from './ui/user/openDoorModal/open-door-modal.component';
 
 
 const passphrase = `diet asthma equip loan jealous twist divorce cloth gym ramp stomach noise`;
@@ -55,6 +57,8 @@ const walletId = '0xADF900e582b34EC29DF534e32db6250cf9529FB9';
     QuestionableBooleanPipe,
     DatepickerComponent,
     BookingModalComponent,
+    BookingItemComponent,
+    OpenDoorModalComponent,
   ],
   imports: [
     BrowserModule,

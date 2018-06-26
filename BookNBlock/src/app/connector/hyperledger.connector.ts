@@ -45,4 +45,8 @@ export class HyperledgerConnector extends BlockchainConnector {
   authenticateUser(user: any): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
+
+  getBookedOfferForUser(): Promise<Offer[]> {
+    throw new Error('Method not implemented.');
+  }
 }

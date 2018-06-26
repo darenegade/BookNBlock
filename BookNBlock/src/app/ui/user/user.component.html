@@ -48,7 +48,14 @@
         </footer>
       </div>
     </div>
+    <div *ngIf="offers" class="container">
+      <div lass="columns" *ngFor="let offer of offers">
+        <app-booking-item [offer]="offer" [buttonText]="'Tür öffnen'" (confirmButton)="openDoorModal(offer)"></app-booking-item>
+      </div>
+    </div>
   </div>
 </section>
 
 <app-modal #editModal [currentUser]="user" (close)="updatedUser($event)"></app-modal>
+
+<app-open-door-modal [offer]="offerToBook" (doorOpen)="openDoorForOffer($event)" #doorModal></app-open-door-modal>
