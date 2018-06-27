@@ -19,7 +19,7 @@ contract LockContract {
         uint256 validFrom;
         uint256 validUntil;
         address owner;
-        address door;
+        string door;
         uint[] bookingIndexes;
     }
 
@@ -72,7 +72,7 @@ contract LockContract {
     }
 
     function insertOffer(
-        uint priceInWei, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+        uint priceInWei, string objectName, string objectAddress, string ownerName, string description, string door, uint256 validFrom, uint256 validUntil
         ) public {
         
         require(validFrom < validUntil);
@@ -98,7 +98,7 @@ contract LockContract {
     }
 
     function updateOffer(
-        uint offerID, uint priceInWei, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+        uint offerID, uint priceInWei, string objectName, string objectAddress, string ownerName, string description, string door, uint256 validFrom, uint256 validUntil
         )
          public 
          offerAvailable(offerID)
@@ -153,7 +153,7 @@ contract LockContract {
 
     function getOffer(uint offerID) public view offerAvailable(offerID) 
         returns (
-            uint priceInWei, string objectName, string objectAddress, string ownerName, string description, address door, uint256 validFrom, uint256 validUntil
+            uint priceInWei, string objectName, string objectAddress, string ownerName, string description, string door, uint256 validFrom, uint256 validUntil
             ){
         Offer storage offer = offers[offerID];
         return (
