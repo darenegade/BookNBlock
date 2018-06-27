@@ -2,8 +2,11 @@ package contract
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"testing"
+
+	"github.com/darenegade/BookNBlock/door"
 )
 
 var ethCon Ethereum
@@ -31,13 +34,16 @@ func TestCreateConnection(t *testing.T) {
 	}
 }
 
-// func TestIsAllowed(t *testing.T) {
-// 	ethCon.setPath("https://rinkeby.infura.io/VhXic4UDRfv5w86p2hq7")
-// 	ethCon.setContractAddress("0xEe86D8d8163844517676C918556CDf42310c1671")
-// 	ethCon.createConnection()
-// 	var allowed = ethCon.IsAllowedAt("Franz", time.Parse(time.RFC822, "01 Jan 15 10:00 UTC"))
-// 	if !allowed {
-// 		t.Error("IsAllowed method failed.")
-// 	}
+func TestIsAllowed(t *testing.T) {
+	ethCon.SetPath("https://rinkeby.infura.io/VhXic4UDRfv5w86p2hq7")
+	ethCon.SetContractAddress("0xEe86D8d8163844517676C918556CDf42310c1671")
+	ethCon.CreateConnection()
+	allowed, err := ethCon.IsAllowedAt(door.BookingID(123), door.RenterPublicKey("123"), 4)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+	if !allowed {
+		t.Error("IsAllowed method failed.")
+	}
 
-// }
+}

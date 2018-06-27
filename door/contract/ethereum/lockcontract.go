@@ -16,7 +16,7 @@ import (
 )
 
 // LockContractABI is the input ABI used to generate the binding from.
-const LockContractABI = "[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"bookings\",\"outputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"},{\"name\":\"checkIn\",\"type\":\"uint256\"},{\"name\":\"checkOut\",\"type\":\"uint256\"},{\"name\":\"tenant\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"nextID\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"},{\"name\":\"checkIn\",\"type\":\"uint256\"},{\"name\":\"checkOut\",\"type\":\"uint256\"}],\"name\":\"rentAnOffer\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"getOffer\",\"outputs\":[{\"name\":\"priceInWei\",\"type\":\"uint256\"},{\"name\":\"objectName\",\"type\":\"string\"},{\"name\":\"objectAddress\",\"type\":\"string\"},{\"name\":\"ownerName\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"door\",\"type\":\"address\"},{\"name\":\"validFrom\",\"type\":\"uint256\"},{\"name\":\"validUntil\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"bookingID\",\"type\":\"uint256\"},{\"name\":\"tenant\",\"type\":\"address\"},{\"name\":\"time\",\"type\":\"uint256\"}],\"name\":\"isAllowedAt\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"bookingID\",\"type\":\"uint256\"}],\"name\":\"getBooking\",\"outputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"},{\"name\":\"checkIn\",\"type\":\"uint256\"},{\"name\":\"checkOut\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getOffersLength\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"deleteOffer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"getBookingIDsForOffer\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"offers\",\"outputs\":[{\"name\":\"index\",\"type\":\"uint256\"},{\"name\":\"priceInWei\",\"type\":\"uint256\"},{\"name\":\"objectName\",\"type\":\"string\"},{\"name\":\"objectAddress\",\"type\":\"string\"},{\"name\":\"ownerName\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"validFrom\",\"type\":\"uint256\"},{\"name\":\"validUntil\",\"type\":\"uint256\"},{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"door\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"},{\"name\":\"priceInWei\",\"type\":\"uint256\"},{\"name\":\"objectName\",\"type\":\"string\"},{\"name\":\"objectAddress\",\"type\":\"string\"},{\"name\":\"ownerName\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"door\",\"type\":\"address\"},{\"name\":\"validFrom\",\"type\":\"uint256\"},{\"name\":\"validUntil\",\"type\":\"uint256\"}],\"name\":\"updateOffer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"offerIDs\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"from\",\"type\":\"uint256\"},{\"name\":\"to\",\"type\":\"uint256\"}],\"name\":\"getFreeOfferIDs\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getOfferIDs\",\"outputs\":[{\"name\":\"offerIDs\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"priceInWei\",\"type\":\"uint256\"},{\"name\":\"objectName\",\"type\":\"string\"},{\"name\":\"objectAddress\",\"type\":\"string\"},{\"name\":\"ownerName\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"door\",\"type\":\"address\"},{\"name\":\"validFrom\",\"type\":\"uint256\"},{\"name\":\"validUntil\",\"type\":\"uint256\"}],\"name\":\"insertOffer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"OfferSaved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"OfferDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"offerID\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"bookingID\",\"type\":\"uint256\"}],\"name\":\"BookingAccepted\",\"type\":\"event\"}]"
+const LockContractABI = "[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"bookings\",\"outputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"},{\"name\":\"checkIn\",\"type\":\"uint256\"},{\"name\":\"checkOut\",\"type\":\"uint256\"},{\"name\":\"tenant\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"nextID\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"},{\"name\":\"checkIn\",\"type\":\"uint256\"},{\"name\":\"checkOut\",\"type\":\"uint256\"}],\"name\":\"rentAnOffer\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"getOffer\",\"outputs\":[{\"name\":\"priceInWei\",\"type\":\"uint256\"},{\"name\":\"objectName\",\"type\":\"string\"},{\"name\":\"objectAddress\",\"type\":\"string\"},{\"name\":\"ownerName\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"door\",\"type\":\"string\"},{\"name\":\"validFrom\",\"type\":\"uint256\"},{\"name\":\"validUntil\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"bookingID\",\"type\":\"uint256\"},{\"name\":\"tenant\",\"type\":\"address\"},{\"name\":\"time\",\"type\":\"uint256\"}],\"name\":\"isAllowedAt\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"bookingID\",\"type\":\"uint256\"}],\"name\":\"getBooking\",\"outputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"},{\"name\":\"checkIn\",\"type\":\"uint256\"},{\"name\":\"checkOut\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getOwnBookingIDs\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getOffersLength\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"deleteOffer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"getBookingIDsForOffer\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"offers\",\"outputs\":[{\"name\":\"index\",\"type\":\"uint256\"},{\"name\":\"priceInWei\",\"type\":\"uint256\"},{\"name\":\"objectName\",\"type\":\"string\"},{\"name\":\"objectAddress\",\"type\":\"string\"},{\"name\":\"ownerName\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"validFrom\",\"type\":\"uint256\"},{\"name\":\"validUntil\",\"type\":\"uint256\"},{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"door\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"offerIDs\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"offerID\",\"type\":\"uint256\"},{\"name\":\"priceInWei\",\"type\":\"uint256\"},{\"name\":\"objectName\",\"type\":\"string\"},{\"name\":\"objectAddress\",\"type\":\"string\"},{\"name\":\"ownerName\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"door\",\"type\":\"string\"},{\"name\":\"validFrom\",\"type\":\"uint256\"},{\"name\":\"validUntil\",\"type\":\"uint256\"}],\"name\":\"updateOffer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"from\",\"type\":\"uint256\"},{\"name\":\"to\",\"type\":\"uint256\"}],\"name\":\"getFreeOfferIDs\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"priceInWei\",\"type\":\"uint256\"},{\"name\":\"objectName\",\"type\":\"string\"},{\"name\":\"objectAddress\",\"type\":\"string\"},{\"name\":\"ownerName\",\"type\":\"string\"},{\"name\":\"description\",\"type\":\"string\"},{\"name\":\"door\",\"type\":\"string\"},{\"name\":\"validFrom\",\"type\":\"uint256\"},{\"name\":\"validUntil\",\"type\":\"uint256\"}],\"name\":\"insertOffer\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getOfferIDs\",\"outputs\":[{\"name\":\"ids\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"OfferSaved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"offerID\",\"type\":\"uint256\"}],\"name\":\"OfferDeleted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"offerID\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"bookingID\",\"type\":\"uint256\"}],\"name\":\"BookingAccepted\",\"type\":\"event\"}]"
 
 // LockContract is an auto generated Go binding around an Ethereum contract.
 type LockContract struct {
@@ -298,14 +298,14 @@ func (_LockContract *LockContractCallerSession) GetFreeOfferIDs(from *big.Int, t
 
 // GetOffer is a free data retrieval call binding the contract method 0x4579268a.
 //
-// Solidity: function getOffer(offerID uint256) constant returns(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door address, validFrom uint256, validUntil uint256)
+// Solidity: function getOffer(offerID uint256) constant returns(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door string, validFrom uint256, validUntil uint256)
 func (_LockContract *LockContractCaller) GetOffer(opts *bind.CallOpts, offerID *big.Int) (struct {
 	PriceInWei    *big.Int
 	ObjectName    string
 	ObjectAddress string
 	OwnerName     string
 	Description   string
-	Door          common.Address
+	Door          string
 	ValidFrom     *big.Int
 	ValidUntil    *big.Int
 }, error) {
@@ -315,7 +315,7 @@ func (_LockContract *LockContractCaller) GetOffer(opts *bind.CallOpts, offerID *
 		ObjectAddress string
 		OwnerName     string
 		Description   string
-		Door          common.Address
+		Door          string
 		ValidFrom     *big.Int
 		ValidUntil    *big.Int
 	})
@@ -326,14 +326,14 @@ func (_LockContract *LockContractCaller) GetOffer(opts *bind.CallOpts, offerID *
 
 // GetOffer is a free data retrieval call binding the contract method 0x4579268a.
 //
-// Solidity: function getOffer(offerID uint256) constant returns(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door address, validFrom uint256, validUntil uint256)
+// Solidity: function getOffer(offerID uint256) constant returns(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door string, validFrom uint256, validUntil uint256)
 func (_LockContract *LockContractSession) GetOffer(offerID *big.Int) (struct {
 	PriceInWei    *big.Int
 	ObjectName    string
 	ObjectAddress string
 	OwnerName     string
 	Description   string
-	Door          common.Address
+	Door          string
 	ValidFrom     *big.Int
 	ValidUntil    *big.Int
 }, error) {
@@ -342,14 +342,14 @@ func (_LockContract *LockContractSession) GetOffer(offerID *big.Int) (struct {
 
 // GetOffer is a free data retrieval call binding the contract method 0x4579268a.
 //
-// Solidity: function getOffer(offerID uint256) constant returns(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door address, validFrom uint256, validUntil uint256)
+// Solidity: function getOffer(offerID uint256) constant returns(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door string, validFrom uint256, validUntil uint256)
 func (_LockContract *LockContractCallerSession) GetOffer(offerID *big.Int) (struct {
 	PriceInWei    *big.Int
 	ObjectName    string
 	ObjectAddress string
 	OwnerName     string
 	Description   string
-	Door          common.Address
+	Door          string
 	ValidFrom     *big.Int
 	ValidUntil    *big.Int
 }, error) {
@@ -358,7 +358,7 @@ func (_LockContract *LockContractCallerSession) GetOffer(offerID *big.Int) (stru
 
 // GetOfferIDs is a free data retrieval call binding the contract method 0xf6a80192.
 //
-// Solidity: function getOfferIDs() constant returns(offerIDs uint256[])
+// Solidity: function getOfferIDs() constant returns(ids uint256[])
 func (_LockContract *LockContractCaller) GetOfferIDs(opts *bind.CallOpts) ([]*big.Int, error) {
 	var (
 		ret0 = new([]*big.Int)
@@ -370,14 +370,14 @@ func (_LockContract *LockContractCaller) GetOfferIDs(opts *bind.CallOpts) ([]*bi
 
 // GetOfferIDs is a free data retrieval call binding the contract method 0xf6a80192.
 //
-// Solidity: function getOfferIDs() constant returns(offerIDs uint256[])
+// Solidity: function getOfferIDs() constant returns(ids uint256[])
 func (_LockContract *LockContractSession) GetOfferIDs() ([]*big.Int, error) {
 	return _LockContract.Contract.GetOfferIDs(&_LockContract.CallOpts)
 }
 
 // GetOfferIDs is a free data retrieval call binding the contract method 0xf6a80192.
 //
-// Solidity: function getOfferIDs() constant returns(offerIDs uint256[])
+// Solidity: function getOfferIDs() constant returns(ids uint256[])
 func (_LockContract *LockContractCallerSession) GetOfferIDs() ([]*big.Int, error) {
 	return _LockContract.Contract.GetOfferIDs(&_LockContract.CallOpts)
 }
@@ -406,6 +406,32 @@ func (_LockContract *LockContractSession) GetOffersLength() (*big.Int, error) {
 // Solidity: function getOffersLength() constant returns(uint256)
 func (_LockContract *LockContractCallerSession) GetOffersLength() (*big.Int, error) {
 	return _LockContract.Contract.GetOffersLength(&_LockContract.CallOpts)
+}
+
+// GetOwnBookingIDs is a free data retrieval call binding the contract method 0x71e4a951.
+//
+// Solidity: function getOwnBookingIDs() constant returns(uint256[])
+func (_LockContract *LockContractCaller) GetOwnBookingIDs(opts *bind.CallOpts) ([]*big.Int, error) {
+	var (
+		ret0 = new([]*big.Int)
+	)
+	out := ret0
+	err := _LockContract.contract.Call(opts, out, "getOwnBookingIDs")
+	return *ret0, err
+}
+
+// GetOwnBookingIDs is a free data retrieval call binding the contract method 0x71e4a951.
+//
+// Solidity: function getOwnBookingIDs() constant returns(uint256[])
+func (_LockContract *LockContractSession) GetOwnBookingIDs() ([]*big.Int, error) {
+	return _LockContract.Contract.GetOwnBookingIDs(&_LockContract.CallOpts)
+}
+
+// GetOwnBookingIDs is a free data retrieval call binding the contract method 0x71e4a951.
+//
+// Solidity: function getOwnBookingIDs() constant returns(uint256[])
+func (_LockContract *LockContractCallerSession) GetOwnBookingIDs() ([]*big.Int, error) {
+	return _LockContract.Contract.GetOwnBookingIDs(&_LockContract.CallOpts)
 }
 
 // IsAllowedAt is a free data retrieval call binding the contract method 0x614eea3f.
@@ -488,7 +514,7 @@ func (_LockContract *LockContractCallerSession) OfferIDs(arg0 *big.Int) (*big.In
 
 // Offers is a free data retrieval call binding the contract method 0x8a72ea6a.
 //
-// Solidity: function offers( uint256) constant returns(index uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, validFrom uint256, validUntil uint256, owner address, door address)
+// Solidity: function offers( uint256) constant returns(index uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, validFrom uint256, validUntil uint256, owner address, door string)
 func (_LockContract *LockContractCaller) Offers(opts *bind.CallOpts, arg0 *big.Int) (struct {
 	Index         *big.Int
 	PriceInWei    *big.Int
@@ -499,7 +525,7 @@ func (_LockContract *LockContractCaller) Offers(opts *bind.CallOpts, arg0 *big.I
 	ValidFrom     *big.Int
 	ValidUntil    *big.Int
 	Owner         common.Address
-	Door          common.Address
+	Door          string
 }, error) {
 	ret := new(struct {
 		Index         *big.Int
@@ -511,7 +537,7 @@ func (_LockContract *LockContractCaller) Offers(opts *bind.CallOpts, arg0 *big.I
 		ValidFrom     *big.Int
 		ValidUntil    *big.Int
 		Owner         common.Address
-		Door          common.Address
+		Door          string
 	})
 	out := ret
 	err := _LockContract.contract.Call(opts, out, "offers", arg0)
@@ -520,7 +546,7 @@ func (_LockContract *LockContractCaller) Offers(opts *bind.CallOpts, arg0 *big.I
 
 // Offers is a free data retrieval call binding the contract method 0x8a72ea6a.
 //
-// Solidity: function offers( uint256) constant returns(index uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, validFrom uint256, validUntil uint256, owner address, door address)
+// Solidity: function offers( uint256) constant returns(index uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, validFrom uint256, validUntil uint256, owner address, door string)
 func (_LockContract *LockContractSession) Offers(arg0 *big.Int) (struct {
 	Index         *big.Int
 	PriceInWei    *big.Int
@@ -531,14 +557,14 @@ func (_LockContract *LockContractSession) Offers(arg0 *big.Int) (struct {
 	ValidFrom     *big.Int
 	ValidUntil    *big.Int
 	Owner         common.Address
-	Door          common.Address
+	Door          string
 }, error) {
 	return _LockContract.Contract.Offers(&_LockContract.CallOpts, arg0)
 }
 
 // Offers is a free data retrieval call binding the contract method 0x8a72ea6a.
 //
-// Solidity: function offers( uint256) constant returns(index uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, validFrom uint256, validUntil uint256, owner address, door address)
+// Solidity: function offers( uint256) constant returns(index uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, validFrom uint256, validUntil uint256, owner address, door string)
 func (_LockContract *LockContractCallerSession) Offers(arg0 *big.Int) (struct {
 	Index         *big.Int
 	PriceInWei    *big.Int
@@ -549,7 +575,7 @@ func (_LockContract *LockContractCallerSession) Offers(arg0 *big.Int) (struct {
 	ValidFrom     *big.Int
 	ValidUntil    *big.Int
 	Owner         common.Address
-	Door          common.Address
+	Door          string
 }, error) {
 	return _LockContract.Contract.Offers(&_LockContract.CallOpts, arg0)
 }
@@ -575,24 +601,24 @@ func (_LockContract *LockContractTransactorSession) DeleteOffer(offerID *big.Int
 	return _LockContract.Contract.DeleteOffer(&_LockContract.TransactOpts, offerID)
 }
 
-// InsertOffer is a paid mutator transaction binding the contract method 0xf799f97b.
+// InsertOffer is a paid mutator transaction binding the contract method 0xe476035f.
 //
-// Solidity: function insertOffer(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door address, validFrom uint256, validUntil uint256) returns()
-func (_LockContract *LockContractTransactor) InsertOffer(opts *bind.TransactOpts, priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door common.Address, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
+// Solidity: function insertOffer(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door string, validFrom uint256, validUntil uint256) returns()
+func (_LockContract *LockContractTransactor) InsertOffer(opts *bind.TransactOpts, priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door string, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
 	return _LockContract.contract.Transact(opts, "insertOffer", priceInWei, objectName, objectAddress, ownerName, description, door, validFrom, validUntil)
 }
 
-// InsertOffer is a paid mutator transaction binding the contract method 0xf799f97b.
+// InsertOffer is a paid mutator transaction binding the contract method 0xe476035f.
 //
-// Solidity: function insertOffer(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door address, validFrom uint256, validUntil uint256) returns()
-func (_LockContract *LockContractSession) InsertOffer(priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door common.Address, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
+// Solidity: function insertOffer(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door string, validFrom uint256, validUntil uint256) returns()
+func (_LockContract *LockContractSession) InsertOffer(priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door string, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
 	return _LockContract.Contract.InsertOffer(&_LockContract.TransactOpts, priceInWei, objectName, objectAddress, ownerName, description, door, validFrom, validUntil)
 }
 
-// InsertOffer is a paid mutator transaction binding the contract method 0xf799f97b.
+// InsertOffer is a paid mutator transaction binding the contract method 0xe476035f.
 //
-// Solidity: function insertOffer(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door address, validFrom uint256, validUntil uint256) returns()
-func (_LockContract *LockContractTransactorSession) InsertOffer(priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door common.Address, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
+// Solidity: function insertOffer(priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door string, validFrom uint256, validUntil uint256) returns()
+func (_LockContract *LockContractTransactorSession) InsertOffer(priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door string, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
 	return _LockContract.Contract.InsertOffer(&_LockContract.TransactOpts, priceInWei, objectName, objectAddress, ownerName, description, door, validFrom, validUntil)
 }
 
@@ -617,24 +643,24 @@ func (_LockContract *LockContractTransactorSession) RentAnOffer(offerID *big.Int
 	return _LockContract.Contract.RentAnOffer(&_LockContract.TransactOpts, offerID, checkIn, checkOut)
 }
 
-// UpdateOffer is a paid mutator transaction binding the contract method 0xbee817a5.
+// UpdateOffer is a paid mutator transaction binding the contract method 0xd1ee16d9.
 //
-// Solidity: function updateOffer(offerID uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door address, validFrom uint256, validUntil uint256) returns()
-func (_LockContract *LockContractTransactor) UpdateOffer(opts *bind.TransactOpts, offerID *big.Int, priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door common.Address, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
+// Solidity: function updateOffer(offerID uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door string, validFrom uint256, validUntil uint256) returns()
+func (_LockContract *LockContractTransactor) UpdateOffer(opts *bind.TransactOpts, offerID *big.Int, priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door string, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
 	return _LockContract.contract.Transact(opts, "updateOffer", offerID, priceInWei, objectName, objectAddress, ownerName, description, door, validFrom, validUntil)
 }
 
-// UpdateOffer is a paid mutator transaction binding the contract method 0xbee817a5.
+// UpdateOffer is a paid mutator transaction binding the contract method 0xd1ee16d9.
 //
-// Solidity: function updateOffer(offerID uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door address, validFrom uint256, validUntil uint256) returns()
-func (_LockContract *LockContractSession) UpdateOffer(offerID *big.Int, priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door common.Address, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
+// Solidity: function updateOffer(offerID uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door string, validFrom uint256, validUntil uint256) returns()
+func (_LockContract *LockContractSession) UpdateOffer(offerID *big.Int, priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door string, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
 	return _LockContract.Contract.UpdateOffer(&_LockContract.TransactOpts, offerID, priceInWei, objectName, objectAddress, ownerName, description, door, validFrom, validUntil)
 }
 
-// UpdateOffer is a paid mutator transaction binding the contract method 0xbee817a5.
+// UpdateOffer is a paid mutator transaction binding the contract method 0xd1ee16d9.
 //
-// Solidity: function updateOffer(offerID uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door address, validFrom uint256, validUntil uint256) returns()
-func (_LockContract *LockContractTransactorSession) UpdateOffer(offerID *big.Int, priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door common.Address, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
+// Solidity: function updateOffer(offerID uint256, priceInWei uint256, objectName string, objectAddress string, ownerName string, description string, door string, validFrom uint256, validUntil uint256) returns()
+func (_LockContract *LockContractTransactorSession) UpdateOffer(offerID *big.Int, priceInWei *big.Int, objectName string, objectAddress string, ownerName string, description string, door string, validFrom *big.Int, validUntil *big.Int) (*types.Transaction, error) {
 	return _LockContract.Contract.UpdateOffer(&_LockContract.TransactOpts, offerID, priceInWei, objectName, objectAddress, ownerName, description, door, validFrom, validUntil)
 }
 
