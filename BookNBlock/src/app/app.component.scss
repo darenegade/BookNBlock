@@ -1,0 +1,19 @@
+@import "../assets/scss/varriables";
+html,
+body * {
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.hero.is-light a:not(.button):not(.dropdown-item):not(.tag), .hero.is-light strong {
+  background-color: $secondary-color;
+  margin: 5px;
+  border-radius: 10px;
+  color: #ffffff;
+  font-weight: 100;
+  font-size: 15px;
+  text-transform: uppercase;
+
+}
+
+

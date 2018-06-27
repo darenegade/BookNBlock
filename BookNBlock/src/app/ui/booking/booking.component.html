@@ -1,3 +1,40 @@
-<p>
-  booking works!
-</p>
+<section class="hero is-medium booking-banner">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title offer-tile">
+        Buchen
+      </h1>
+      <h2 class="subtitle">
+        Buche deine unvergessliche Unterkunft sicher und einfach mittels Blockchain Technologie
+      </h2>
+
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <div class="columns">
+              <div class="column">
+                <input class="input" [(ngModel)]="fromDate" type="date" placeholder="Von">
+              </div>
+              <div class="column">
+                <input class="input" type="date" [(ngModel)]="toDate" placeholder="Bis">
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <input class="input" type="text" placeholder="Location">
+          </div>
+          <div class="column">
+            <button (click)="getAllOffers()">Angebote suchen</button>
+          </div>
+        </div>
+        <div class="columns" *ngFor="let offer of allOffers">
+          <app-booking-item [offer]="offer" [buttonText]="'Angebot buchen'" (confirmButton)="openBookModal($event)"></app-booking-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-booking-modal #bookModal></app-booking-modal>
+<!--  <app-datepicker [locale]="locale" (emitSelectedDate)="setSelectedDate($event)" [canChangeNavMonthLogic]="canChangeMonthLogic"
+                  [isAvailableLogic]="isAvailableLogic"></app-datepicker> -->

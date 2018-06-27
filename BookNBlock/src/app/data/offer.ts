@@ -1,12 +1,13 @@
 export class Offer {
   id: number;
-  doorId: number;
-  isBooked: boolean;
+  doorId: string;
   prize: number;
   fromDate: Date;
   toDate: Date;
   address: string;
-  name: string;
-  walletId: number;
+  nameLandlord: string;
+  description: string;
+  walletId: string;
+  title: string;
   image?: any;
 }

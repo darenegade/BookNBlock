@@ -1,4 +1,8 @@
 export class OpenDoorMessage {
-    doorId: number;
-    renterId: number;
+    doorId: string;
+    // verschlüsselt (HyperLedger)
+    renterPubkey: string;
+    // verschlüsselt (HyperLedger)
+    timestamp: number;
+    booking: number;
 }

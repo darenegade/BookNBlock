@@ -1,0 +1,49 @@
+<div class="modal" [ngClass]="{'is-active': active }">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="card is-large">
+      <div class="card-content">
+        <form #f="ngForm" (ngSubmit)="submitChanges()">
+          <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+              <input class="input" name="fullName" [(ngModel)]="currentUser.fullName" type="text" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Private Key</label>
+            <textarea class="textarea" name="privateKey" rows="10" [(ngModel)]="currentUser.privateKey"></textarea>
+          </div>
+          <div class="field">
+            <label class="label">Public Key</label>
+            <textarea class="textarea" name="publicKey" rows="10" [(ngModel)]="currentUser.publicKey"></textarea>
+          </div>
+          <div class="field">
+            <label class="checkbox label">
+              <input type="checkbox" name="ethereum" [(ngModel)]="currentUser.ethereum"> Ehtereum
+            </label>
+            <label class="checkbox label">
+              <input type="checkbox" name="hyperledger" [(ngModel)]="!currentUser.ethereum"> Hyperledger
+            </label>
+          </div>
+          <div class="field">
+            <label class="label">Passphrase</label>
+            <textarea class="textarea" name="passphrase" rows="10" [(ngModel)]="currentUser.passphrase"></textarea>
+          </div>
+          <div class="field">
+            <label class="label">WalletId</label>
+            <div class="control">
+              <input class="input" name="WalletId" [(ngModel)]="currentUser.walletId" type="text" required>
+            </div>
+          </div>
+        </form>
+      </div>
+      <footer class="card-footer">
+        <div class="control">
+          <button class="button is-link" style="padding-bottom: 30px" (click)="submitChanges()" type="submit">Speichern</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <button class="modal-close is-large " aria-label="close " (click)="closeModal() "></button>
+</div>

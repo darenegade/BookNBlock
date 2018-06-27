@@ -7,5 +7,8 @@ import { Level } from '@nsalaun/ng-logger';
 export const environment = {
   production: false,
   mock: false,
-  loglevel: Level.DEBUG
+  loglevel: Level.DEBUG,
+  nodeAddress: 'http://localhost:9945',
+  // ethereumAddress: 'wss://rinkeby.infura.io/ws'
+  ethereumAddress: 'https://rinkeby.infura.io'
 };

@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Offer } from '../data/offer';
 import { OpenDoorMessage } from '../data/OpenDoorMessage';
+import { User } from '../data/user';
+import { Booking } from '../data/booking';
 
 /**
  * Interface for all blockchains.
  */
 @Injectable()
 export abstract class BlockchainConnector {
+
+  /**
+   * Configure the connector to work with the user.
+   * @param user The user.
+   */
+  abstract init(user: User): BlockchainConnector;
 
   /**
    * Get one offer from the blockchain.
@@ -17,7 +25,7 @@ export abstract class BlockchainConnector {
   /**
    * Get all free offers from the blockchain.
    */
-  abstract getAllOffers(): Promise<Offer[]>;
+  abstract getAllOffers(from: Date, to: Date): Promise<Offer[]>;
 
   /**
    * Search for offers meeting one criterion.
@@ -29,13 +37,15 @@ export abstract class BlockchainConnector {
    * Add a new offer to the blockchain.
    * @param offer The new offer.
    */
-  abstract insertOffer(offer: Offer): Promise<void>;
+  abstract insertOffer(offer: Offer): Promise<number>;
 
   /**
    * Rent an offer.
    * @param offerId: Id of the offer.
+   * @param checkIn: Optional. Date of check-in, if none is provided the offer fromDate is used.
+   * @param checkOut: Optional. Date of check-out, if none is provided the offer toDate is used.
    */
-  abstract rentOffer(offerId: number): Promise<boolean>;
+  abstract rentOffer(offerId: number, checkIn?: Date, checkOut?: Date): Promise<void>;
 
   /**
    * Send a message to open a door.
@@ -48,5 +58,10 @@ export abstract class BlockchainConnector {
    * @param user The user information.
    */
   abstract authenticateUser(user: any): Promise<boolean>;
+
+  /**
+   * Get all bookungs for the asking user.
+   */
+  abstract getBookingsForUser(): Promise<Booking[]>;
 
 }

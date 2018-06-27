@@ -1,6 +1,6 @@
 // +build rpi
 
-package driver
+package lock
 
 import (
 	"time"
@@ -22,10 +22,10 @@ func init() {
 		panic(err)
 	}
 
-	PinLock.pin.Out(gpio.Low)
+	Lock.pin.Out(gpio.Low)
 }
 
-var PinLock = Pin{
+var Lock = Pin{
 	pin: rpi.P1_38,
 }
 

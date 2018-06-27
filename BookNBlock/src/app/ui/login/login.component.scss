@@ -1,0 +1,65 @@
+@import "../../../assets/scss/varriables";
+
+.nav-up {
+  transform: translateY(-100px);
+  opacity: 0;
+}
+
+li {
+  padding-left: 10px;
+  font-size: 18px;
+  display: inline;
+  text-align: left;
+  text-transform: uppercase;
+  color: #ffffff;
+  padding-right: 10px;
+}
+
+.signin-active a {
+  padding-bottom: 10px;
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: solid 2px $secondary-color;
+  transition: all .25s ease;
+  cursor: pointer;
+}
+
+.signin-inactive a {
+  padding-bottom: 0;
+  color: rgba(255,255,255,.3);
+  text-decoration: none;
+  border-bottom: none;
+  cursor: pointer;
+}
+
+.signup-active a {
+  cursor: pointer;
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: solid 2px $secondary-color;
+  padding-bottom: 10px;
+}
+
+.signup-inactive a {
+  cursor: pointer;
+  color: rgba(255,255,255,.3);
+  text-decoration: none;
+  transition: all .25s ease;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 18px;
+  font-family: 'Open Sans', sans-serif;
+  color: #ffffff;
+}
+
+.hero.is-light .title {
+  color: #ffffff;
+}
+
+.login-banner {
+  background-color: $third-color;
+  position: relative;
+}
+
