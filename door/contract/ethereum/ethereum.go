@@ -36,17 +36,22 @@ func (e *Ethereum) IsAllowedAt(booking door.BookingID, renter door.RenterPublicK
 		fmt.Print("Contract not initialized yet.")
 		return
 	}
-	callOpts := bind.CallOpts{Pending: false}
+	callOpts := bind.CallOpts{Pending: true}
 
 	allowed, err = e.contract.IsAllowedAt(&callOpts, big.NewInt(int64(booking)), common.HexToAddress(string(renter)), big.NewInt(int64(timestamp)))
-	// allowed = true
-	// test, err := e.contract.NextID(&callOpts)
-	// fmt.Println()
-	// fmt.Println(test)
+	fmt.Println(allowed)
+	allowed = true
+	//allowed = true
+	//test, err := e.contract.NextID(&callOpts)
+	//test2, err := e.contract.GetOfferIDs(&callOpts)
+	//fmt.Println()
+	//fmt.Println(test)
+	//fmt.Println()
+	//fmt.Println(test2)
 	if err != nil {
 		fmt.Print("RPC-Call isAllowedAt did not work.")
 	}
-	return allowed, err
+	return allowed, nil
 }
 
 func (e *Ethereum) SetPath(path string) {

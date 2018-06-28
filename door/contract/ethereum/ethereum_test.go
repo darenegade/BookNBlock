@@ -41,7 +41,7 @@ func TestIsAllowed(t *testing.T) {
 	ethCon.SetContractAddress("0x86f7c1a9fc3a143eB85F2d24Fe3bbE8f8A69dB9c")
 	ethCon.CreateConnection()
 	currentTime := big.NewInt(time.Now().Unix())
-	allowed, err := ethCon.IsAllowedAt(door.BookingID(0), door.RenterPublicKey("123"), int(currentTime.Uint64()))
+	allowed, err := ethCon.IsAllowedAt(door.BookingID(1), door.RenterPublicKey("123"), int(currentTime.Uint64()))
 	if err != nil {
 		log.Fatalf("%v", err)
 	}
