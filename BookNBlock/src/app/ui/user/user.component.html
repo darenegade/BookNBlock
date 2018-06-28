@@ -1,86 +1,122 @@
-<section class="hero is-medium user-banner">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        Dein Profil
-      </h1>
-
-      <div class="card">
-        <div class="card-content">
-          <div class="columns">
-            <div class="column">
-              <p class="account-col">
-                {{this.user.email}}
-              </p>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <label>Name</label>
-              <p>
-                {{user.fullName}}
-              </p>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <label>Ethereum</label>
-              <p>
-                {{user.ethereum}}
-              </p>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <label>Private Key</label>
-              <p>
-                {{user.privateKey}}
-              </p>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <label>Public Key</label>
-              <p>
-                {{user.publicKey}}
-              </p>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <label>WalletID</label>
-              <p>
-                {{user.walletId}}
-              </p>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <label>10 private random words</label>
-              <p>
-                {{user.passphrase}}
-              </p>
-            </div>
-          </div>
-        </div>
-        <footer class="card-footer">
-          <a (click)="openEditModal()" class="card-footer-item">Edit</a>
-        </footer>
-      </div>
-    </div>
-  </div>
-  <div class="hero-body">
-    <div *ngIf="bookings" class="container">
-      <div class="card">
-        <div class="card-content">
-          <div class="columns" *ngFor="let booking of bookings">
-            <app-booking-item [booking]="booking" [buttonText]="'Tür öffnen'" (confirmButton)="openDoorModal($event)"></app-booking-item>
-          </div>
-        </div>
+<section>
+  <div class="container">
+    <div class="img-container">
+      <img class="title-image" src="../assets/images/people.jpg">
+      <div class="centered">
+        <h1 class="has-text-centered heading-text">Profil</h1>
       </div>
     </div>
   </div>
 </section>
+
+<hr>
+
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <p class="account-col">
+          Deine Daten
+        </p>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-one-quarter">
+        <figure class="image">
+          <img class="user-img" src="../../../assets/images/profile.jpg">
+        </figure>
+      </div>
+      <div class="column">
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Name</label>
+          </div>
+          <div class="field-body">
+            <p>{{user.fullName}}</p>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Email-Addresse</label>
+          </div>
+          <div class="field-body">
+            <p>{{user.email}}</p>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Ethereum</label>
+          </div>
+          <div class="field-body">
+            <p>{{user.ethereum}}</p>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Private Key</label>
+          </div>
+          <div class="field-body">
+            <p>{{user.privateKey}}</p>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Public Key</label>
+          </div>
+          <div class="field-body">
+            <p>{{user.publicKey}}</p>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">WalletId</label>
+          </div>
+          <div class="field-body">
+            <p>{{user.walletId}}</p>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Passphrase</label>
+          </div>
+          <div class="field-body">
+            <p>
+              {{user.passphrase}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <button style="width: 100%" (click)="openEditModal()" class="button">Anpassen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <p class="account-col">
+          Deine gebuchten Zimmer
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="bookings" class="container">
+    <div class="columns is-centered" *ngFor="let booking of bookings">
+      <app-booking-item [booking]="booking" [buttonText]="'Tür öffnen'" (confirmButton)="openDoorModal($event)"></app-booking-item>
+    </div>
+  </div>
+</section>
+
+
 
 <app-modal #editModal [currentUser]="user" (close)="updatedUser($event)"></app-modal>
 

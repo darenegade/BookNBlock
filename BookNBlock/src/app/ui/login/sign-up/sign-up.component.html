@@ -1,4 +1,4 @@
-<form class="form-signup" action="" >
+<form class="form-signup" action="">
   <div class="form-group">
     <label for="fullName">Vollständiger Name</label>
     <input class="input" type="text" name="fullName" placeholder="" id="fullName" [(ngModel)]="newUser.fullName" required>
@@ -13,9 +13,18 @@
   </div>
   <div class="form-group">
     <label for="confirmPassword">Passwort bestätigen</label>
-    <input class="input" type="password" name="confirmPassword" placeholder="" id="confirmPassword" [(ngModel)]="confirmPassword" required>
+    <input class="input" type="password" name="confirmPassword" placeholder="" id="confirmPassword" [(ngModel)]="confirmPassword"
+      required>
+  </div>
+  <div class="form-group">
+    <label class="checkbox label">
+      <input type="checkbox" name="ethereum" [(ngModel)]="newUser.ethereum"> Ehtereum
+    </label>
+    <label class="checkbox label">
+      <input type="checkbox" name="hyperledger" [(ngModel)]="!newUser.ethereum"> Hyperledger
+    </label>
   </div>
   <div>
-    <a class="button" (click)="register()">Registrieren</a>
+    <button class="button" (click)="register()">Registrieren</button>
   </div>
 </form>

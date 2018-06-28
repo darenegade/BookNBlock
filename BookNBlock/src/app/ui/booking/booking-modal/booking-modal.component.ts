@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Offer } from '../../../data/offer';
 import { TransactionService } from '../../../services/transaction.service';
 import { AlertService } from '../../../services/alert.service';
@@ -11,12 +11,16 @@ import { AlertService } from '../../../services/alert.service';
 export class BookingModalComponent implements OnInit {
 
   active: boolean;
-
   currentOffer: Offer;
   fromDate: string;
   toDate: string;
 
-  constructor(private transactionService: TransactionService, private alert: AlertService) { }
+  @Output()
+  bookingRequest: EventEmitter<any> = new EventEmitter();
+
+  constructor(
+    private transactionService: TransactionService,
+    private alert: AlertService) { }
 
   ngOnInit(): void {
   }
@@ -42,12 +46,6 @@ export class BookingModalComponent implements OnInit {
    * Submit changes to parent component.
    */
   submitChanges() {
-    this.transactionService.rentOffer(this.currentOffer.id, new Date(this.fromDate), new Date(this.toDate)).then(() => {
-      this.alert.success('Zimmer erfolgreich gebucht.');
-      this.closeModal();
-    }).catch(err => {
-      this.alert.error('Leider konnte das Zimmer nicht gebucht werden.');
-      console.error(err);
-    });
+    this.bookingRequest.emit({ offer: this.currentOffer, fromDate: this.fromDate, toDate: this.toDate });
   }
 }

@@ -1,4 +1,7 @@
 @import "../../../assets/scss/varriables";
 .booking-banner {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
   background-color: $fourth-color;
 }

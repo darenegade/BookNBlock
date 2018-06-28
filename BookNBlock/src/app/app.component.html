@@ -1,49 +1,47 @@
-<section class="hero is-light is-fullheight">
-  <!-- Hero head: will stick at the top -->
-  <div class="hero-head">
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="container">
-        <div class="navbar-brand">
-          <a class="nav-link" routerLink="/home">
-            BOOKNBLOCK
-          </a>
-          <span class="navbar-burger burger" data-target="navbarMenuBookNBlock">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </div>
-        <div class="navbar-menu" id="navbarMenuBookNBlock">
-          <div class="navbar-end">
-            <a *ngIf="loggedIn" class="navbar-item"  routerLink="/offer" routerLinkActive="active">Anbieten</a>
-            <a *ngIf="loggedIn" class="navbar-item" routerLink="/booking" routerLinkActive="active">Buchen</a>
-            <a *ngIf="loggedIn" class="navbar-item" routerLink="/userManagement">Dein Profil</a>
-            <a *ngIf="loggedIn" class="navbar-item" routerLink="" (click)="logout()">Logout</a>
-          </div>
-        </div>
+<nav class="navbar is-white is-fixed-top" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="nav-item" routerLink="/home">
+        <img src="../assets/images/BOOKNBLOCK.jpg" alt="BOOKNBLOCK: a modern booking platform" width="64" height="64">
+      </a>
+      <span class="navbar-burger burger" data-target="navbarMenuBookNBlock">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </div>
+    <div class="navbar-menu" id="navbarMenuBookNBlock">
+      <div class="navbar-end">
+        <a *ngIf="loggedIn" class="navbar-item" routerLink="/offer" [routerLinkActive]="['active']">Anbieten</a>
+        <a *ngIf="loggedIn" class="navbar-item" routerLink="/booking" [routerLinkActive]="['active']">Buchen</a>
+        <a *ngIf="loggedIn" class="navbar-item" routerLink="/userManagement" [routerLinkActive]="['active']">Dein Profil</a>
+        <a *ngIf="loggedIn" class="navbar-item " routerLink="/" (click)="logout() ">Logout</a>
       </div>
-    </nav>
+    </div>
   </div>
+</nav>
+
+<section class="hero is-transparent is-fullheight ">
 
   <app-alert></app-alert>
 
-  <div class="hero-body">
+  <div class="hero-body ">
     <router-outlet></router-outlet>
   </div>
 
   <!-- Hero footer: will stick at the bottom -->
-  <!--<div class="hero-foot">-->
-    <!--<nav class="tabs">-->
-      <!--<div class="container">-->
-        <!--<ul>-->
-          <!--<li class="is-active"><a>Overview</a></li>-->
-          <!--<li><a>Modifiers</a></li>-->
-          <!--<li><a>Grid</a></li>-->
-          <!--<li><a>Elements</a></li>-->
-          <!--<li><a>Components</a></li>-->
-          <!--<li><a>Layout</a></li>-->
-        <!--</ul>-->
-      <!--</div>-->
-    <!--</nav>-->
+  <!--<div class="hero-foot ">-->
+  <!--<nav class="tabs ">-->
+  <!--<div class="container ">-->
+  <!--<ul>-->
+  <!--<li class="is-active "><a>Overview</a></li>-->
+  <!--<li><a>Modifiers</a></li>-->
+  <!--<li><a>Grid</a></li>-->
+  <!--<li><a>Elements</a></li>-->
+  <!--<li><a>Components</a></li>-->
+  <!--<li><a>Layout</a></li>-->
+  <!--</ul>-->
+  <!--</div>-->
+  <!--</nav>-->
   <!--</div>-->
 </section>

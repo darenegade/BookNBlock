@@ -1,17 +1,17 @@
 @import "../../../assets/scss/varriables";
-
 .user-banner {
   background-color: $fourth-color;
 }
 
 .account-col {
   border-radius: 4px;
+  border: 3px solid $third-color;
   font-weight: 600;
   padding: 1.25rem 0;
   position: relative;
   text-align: center;
-  background-color: $secondary-color;
-  color: #fff;
+  background-color: transparent;
+  color: $third-color;
 }
 
 .user-col {
@@ -20,4 +20,13 @@
   padding: 1.25rem 0;
   position: relative;
   text-align: center;
+}
+
+.round-img {
+  border-radius: 50%;
+}
+
+.user-img {
+  margin-left: 1em;
+  margin-top: 3em;
 }

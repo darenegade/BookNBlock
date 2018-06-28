@@ -4,6 +4,10 @@ import * as moment from 'moment';
 import { QueryService } from '../../services/query.service';
 import { BookingModalComponent } from './booking-modal/booking-modal.component';
 import { BookingResult } from './booking-item/booking-item.component';
+import { UserService } from '../../services/user.service';
+import { User } from '../../data/user';
+import { AlertService } from '../../services/alert.service';
+import { TransactionService } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-booking',
@@ -22,7 +26,12 @@ export class BookingComponent implements OnInit {
   bookModal: BookingModalComponent;
 
 
-  constructor(private queryService: QueryService) {
+  constructor(
+    private queryService: QueryService,
+    private userService: UserService,
+    private alertService: AlertService,
+    private transactionService: TransactionService
+  ) {
     const d = new Date();
     this.fromDate = d.toISOString().substring(0, 10);
     d.setDate(d.getDate() + 10);
@@ -41,8 +50,7 @@ export class BookingComponent implements OnInit {
     const from = new Date(this.fromDate);
     const to = new Date(this.toDate);
     this.queryService.queryAllOffers(from, to).then(result => {
-      console.log(result)
-      this.allOffers = result
+      this.allOffers = result;
     });
   }
 
@@ -70,7 +78,35 @@ export class BookingComponent implements OnInit {
    * Open the modal dialog to edit the current user.
    */
   openBookModal($event: BookingResult) {
-    this.bookModal.isActive($event.offer);
+    if (this.checkIfUserDataIsAvailable()) {
+      this.bookModal.isActive($event.offer);
+    } else {
+      this.alertService.warn('Du musst zuerst deine Daten aktuellisieren um ein Zimmer buchen zu können');
+    }
+  }
+
+  submitTransaction($event: any) {
+    if (this.checkIfUserDataIsAvailable()) {
+      this.transactionService.rentOffer($event.offer.id, new Date($event.fromDate), new Date($event.toDate)).then(() => {
+        this.alertService.success('Zimmer erfolgreich gebucht.');
+        this.bookModal.closeModal();
+      }).catch(err => {
+        this.alertService.error('Leider konnte das Zimmer nicht gebucht werden.');
+        console.error(err);
+      });
+    } else {
+      this.bookModal.closeModal();
+    }
+
+  }
+
+
+  private checkIfUserDataIsAvailable(): boolean {
+    const user: User = this.userService.getCurrentLoginUser();
+    if (!(user.passphrase && user.privateKey && user.publicKey && user.walletId)) {
+      return false;
+    }
+    return true;
   }
 
 }
