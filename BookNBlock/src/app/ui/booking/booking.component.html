@@ -1,13 +1,19 @@
-<section class="hero is-medium booking-banner">
+<section>
+  <div class="container">
+    <div class="img-container">
+      <img class="title-image" src="../assets/images/umbrella.jpg">
+      <div class="centered">
+        <h1 class="has-text-centered heading-text">Buchen</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<section class="hero is-transparent">
   <div class="hero-body">
     <div class="container">
-      <h1 class="title offer-tile">
-        Buchen
-      </h1>
-      <h2 class="subtitle">
-        Buche deine unvergessliche Unterkunft sicher und einfach mittels Blockchain Technologie
-      </h2>
-
       <div class="container">
         <div class="columns">
           <div class="column">
@@ -24,10 +30,10 @@
             <input class="input" type="text" placeholder="Location">
           </div>
           <div class="column">
-            <button (click)="getAllOffers()">Angebote suchen</button>
+            <button class="button-third" style="width: 100%" (click)="getAllOffers()">Angebote suchen</button>
           </div>
         </div>
-        <div class="columns" *ngFor="let offer of allOffers">
+        <div class="columns is-centered" *ngFor="let offer of allOffers">
           <app-booking-item [offer]="offer" [buttonText]="'Angebot buchen'" (confirmButton)="openBookModal($event)"></app-booking-item>
         </div>
       </div>
@@ -35,6 +41,6 @@
   </div>
 </section>
 
-<app-booking-modal #bookModal></app-booking-modal>
+<app-booking-modal #bookModal (bookingRequest)="submitTransaction($event)"></app-booking-modal>
 <!--  <app-datepicker [locale]="locale" (emitSelectedDate)="setSelectedDate($event)" [canChangeNavMonthLogic]="canChangeMonthLogic"
                   [isAvailableLogic]="isAvailableLogic"></app-datepicker> -->

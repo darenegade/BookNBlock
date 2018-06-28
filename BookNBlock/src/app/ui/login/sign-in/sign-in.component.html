@@ -6,8 +6,7 @@
   </div>
   <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
     <label for="password">Passwort</label>
-    <input type="password" class="input" [(ngModel)]="user.password" #password="ngModel" name="password" id="password"
-           required>
+    <input type="password" class="input" [(ngModel)]="user.password" #password="ngModel" name="password" id="password" required>
     <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
   </div>
   <div class="form-group">
