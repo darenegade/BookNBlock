@@ -39,17 +39,13 @@ func (e *Ethereum) IsAllowedAt(booking door.BookingID, renter door.RenterPublicK
 	callOpts := bind.CallOpts{Pending: true}
 
 	allowed, err = e.contract.IsAllowedAt(&callOpts, big.NewInt(int64(booking)), common.HexToAddress(string(renter)), big.NewInt(int64(timestamp)))
-	fmt.Println(allowed)
-	allowed = true
-	//allowed = true
-	//test, err := e.contract.NextID(&callOpts)
-	//test2, err := e.contract.GetOfferIDs(&callOpts)
-	//fmt.Println()
-	//fmt.Println(test)
-	//fmt.Println()
-	//fmt.Println(test2)
+	// fmt.Println(allowed)
+	// allowed = true
+	// test2, err := e.contract.GetOfferIDs(&callOpts)
+	// fmt.Println()
+	// fmt.Println(test2[0])
 	if err != nil {
-		fmt.Print("RPC-Call isAllowedAt did not work.")
+		log.Fatalf("RPC-Call isAllowedAt did not work: %v", err)
 	}
 	return allowed, nil
 }

@@ -42,46 +42,6 @@ type (
 	}
 )
 
-//renterID is not needed here (in contrast to the equivalent method for ethereum), since decrypting the message with the PK is proof enough for the requester's authenticity
-//update: the whole method might not be needed, since getting the key from the offer that is valid in the very moment also proofs
-//that the user who authenticated himself/herself successfully is allowed in right now.
-func (h *HyperLedger) isAllowedAt(requestPointofTime time.Time, startTime time.Time, endTime time.Time) (allowed bool) {
-	if requestPointofTime.Before(endTime) && requestPointofTime.After(startTime) {
-		return true
-	}
-	return false
-}
-
-//By decrypting the payload with the public key that is stored in booking that is currently valid not only the user's
-//authenticity is validated but also the fact that he/she is allowed in in the very moment.
-func (h *HyperLedger) isAllowedIn(payload string, publicKey string) bool {
-	return true
-	// Decrypt function missing --> Have to talk to Max
-
-	// key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
-	// ciphertext, _ := hex.DecodeString(payload)
-	// nonce := []byte("64a9433eae7c")
-
-	// block, err := aes.NewCipher(key)
-	// if err != nil {
-	// 	panic(err.Error())
-	// 	return false
-	// }
-
-	// aesgcm, err := cipher.NewGCM(block)
-	// if err != nil {
-	// 	panic(err.Error())
-	// 	return false
-	// }
-
-	// _, err := aesgcm.Open(nil, nonce, ciphertext, nil)
-	// if err != nil {
-	// 	panic(err.Error())
-	// 	return false
-	// }
-	// return true
-}
-
 func (h *HyperLedger) getPubKeyOfValidUser(resp []Response) string {
 	currentTime := time.Now()
 	for _, element := range resp {
@@ -154,4 +114,44 @@ func (h *HyperLedger) getBlockData() *Offer {
 
 	return &offer
 
+}
+
+//renterID is not needed here (in contrast to the equivalent method for ethereum), since decrypting the message with the PK is proof enough for the requester's authenticity
+//update: the whole method might not be needed, since getting the key from the offer that is valid in the very moment also proofs
+//that the user who authenticated himself/herself successfully is allowed in right now.
+func (h *HyperLedger) isAllowedAt(requestPointofTime time.Time, startTime time.Time, endTime time.Time) (allowed bool) {
+	if requestPointofTime.Before(endTime) && requestPointofTime.After(startTime) {
+		return true
+	}
+	return false
+}
+
+//By decrypting the payload with the public key that is stored in booking that is currently valid not only the user's
+//authenticity is validated but also the fact that he/she is allowed in in the very moment.
+func (h *HyperLedger) isAllowedIn(payload string, publicKey string) bool {
+	return true
+	// Decrypt function missing --> Have to talk to Max
+
+	// key, _ := hex.DecodeString("6368616e676520746869732070617373776f726420746f206120736563726574")
+	// ciphertext, _ := hex.DecodeString(payload)
+	// nonce := []byte("64a9433eae7c")
+
+	// block, err := aes.NewCipher(key)
+	// if err != nil {
+	// 	panic(err.Error())
+	// 	return false
+	// }
+
+	// aesgcm, err := cipher.NewGCM(block)
+	// if err != nil {
+	// 	panic(err.Error())
+	// 	return false
+	// }
+
+	// _, err := aesgcm.Open(nil, nonce, ciphertext, nil)
+	// if err != nil {
+	// 	panic(err.Error())
+	// 	return false
+	// }
+	// return true
 }
