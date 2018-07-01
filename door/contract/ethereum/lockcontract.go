@@ -4,6 +4,7 @@
 package contract
 
 import (
+	"fmt"
 	"math/big"
 	"strings"
 
@@ -443,6 +444,7 @@ func (_LockContract *LockContractCaller) IsAllowedAt(opts *bind.CallOpts, bookin
 	)
 	out := ret0
 	err := _LockContract.contract.Call(opts, out, "isAllowedAt", bookingID, tenant, time)
+	fmt.Print(out)
 	return *ret0, err
 }
 
