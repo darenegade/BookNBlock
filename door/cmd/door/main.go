@@ -19,6 +19,7 @@ type (
 )
 
 func main() {
+	defer lock.Lock.Finish()
 	var config Config
 	flag.StringVar(&config.PrivateKey, "key", "6ecd6756d5e9d9df44be83b82d99b17983ae5ce9d0f2de9dcd68c80197aafc4a", "private key to proof that this the the door it pretends to be")
 	flag.StringVar(&config.BootstrapNode, "bootnode", "enode://7d13360f5b1ddcf6947f244639113597a863abba0589d2fa5fffb2816ead0acea6211d5778a8be648e45e81ed881f4c1f5c9bbbf0e79065dfb54bcd97de3beab@127.0.0.1:30349", "bootnode to start connection to the ethereum network")
