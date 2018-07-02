@@ -31,7 +31,7 @@ var Lock = Pin{
 
 func (p Pin) Open() {
 	p.pin.Out(gpio.High)
-	time.AfterFunc(time.Second*3, func() {
+	time.AfterFunc(time.Second*6, func() {
 		p.pin.Out(gpio.Low)
 	})
 }
