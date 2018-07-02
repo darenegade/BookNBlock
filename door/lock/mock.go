@@ -15,3 +15,8 @@ var Lock = Mock{}
 func (Mock) Open() {
 	fmt.Println("Opened Lock")
 }
+
+
+func (Mock) Finish() {
+	fmt.Println("Closed Lock for finish")
+}

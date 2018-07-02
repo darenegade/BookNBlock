@@ -98,7 +98,7 @@
 			},
 			{
 				"name": "door",
-				"type": "address"
+				"type": "string"
 			},
 			{
 				"name": "validFrom",
@@ -161,6 +161,20 @@
 			{
 				"name": "checkOut",
 				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getOwnBookingIDs",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256[]"
 			}
 		],
 		"payable": false,
@@ -262,7 +276,26 @@
 			},
 			{
 				"name": "door",
-				"type": "address"
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "offerIDs",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -298,7 +331,7 @@
 			},
 			{
 				"name": "door",
-				"type": "address"
+				"type": "string"
 			},
 			{
 				"name": "validFrom",
@@ -319,25 +352,6 @@
 		"constant": true,
 		"inputs": [
 			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "offerIDs",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
 				"name": "from",
 				"type": "uint256"
 			},
@@ -350,20 +364,6 @@
 		"outputs": [
 			{
 				"name": "",
-				"type": "uint256[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getOfferIDs",
-		"outputs": [
-			{
-				"name": "offerIDs",
 				"type": "uint256[]"
 			}
 		],
@@ -396,7 +396,7 @@
 			},
 			{
 				"name": "door",
-				"type": "address"
+				"type": "string"
 			},
 			{
 				"name": "validFrom",
@@ -411,6 +411,20 @@
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getOfferIDs",
+		"outputs": [
+			{
+				"name": "ids",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
