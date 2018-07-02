@@ -38,7 +38,7 @@ func main() {
 	var ethCon contract.Ethereum
 	whisper := message.StartNode(whisperConfig)
 	ethCon.SetPath("https://rinkeby.infura.io/VhXic4UDRfv5w86p2hq7")
-	ethCon.SetContractAddress("0xEe86D8d8163844517676C918556CDf42310c1671")
+	ethCon.SetContractAddress("0x86f7c1a9fc3a143eB85F2d24Fe3bbE8f8A69dB9c")
 	var connected = ethCon.CreateConnection()
 	if !connected {
 		log.Fatal("Connection to ethereum failed.")
