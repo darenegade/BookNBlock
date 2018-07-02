@@ -22,7 +22,7 @@ func init() {
 		panic(err)
 	}
 
-	Lock.pin.Out(gpio.Low)
+	Lock.pin.Out(gpio.High)
 }
 
 var Lock = Pin{
@@ -30,8 +30,8 @@ var Lock = Pin{
 }
 
 func (p Pin) Open() {
-	p.pin.Out(gpio.High)
+	p.pin.Out(gpio.Low)
 	time.AfterFunc(time.Second*2, func() {
-		p.pin.Out(gpio.Low)
+		p.pin.Out(gpio.High)
 	})
 }
