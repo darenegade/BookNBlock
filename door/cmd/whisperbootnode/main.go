@@ -24,7 +24,7 @@ const DOOR_PUBLIC_KEY =
 // central network point for door or renter to join.
 func main() {
 	c := message.WhisperConfig{}
-	flag.StringVar(&c.ListenAddr, "listenaddr", "127.0.0.1:30349", "listen address for other nodes")
+	flag.StringVar(&c.ListenAddr, "listenaddr", "127.0.0.1:8066", "listen address for other nodes")
 	flag.StringVar(&c.NodeID, "nodeid", "b3651aff593ef395ee7c16f3ca681830f7d8d0b2729cf472b14f2c4ebe833aa0", "node id is private key for the door")
 	flag.IntVar(&c.HTTPPort, "httpport", 9945,"http port for api")
 	flag.StringVar(&c.HTTPHost, "httphost", "127.0.0.1","http host for api")

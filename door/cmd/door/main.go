@@ -16,6 +16,9 @@ type (
 		BootstrapNode string
 		PrivateKey    string
 		LogServer     bool
+		ListenAddr    string
+		HTTPHost      string
+		HTTPPort      int
 	}
 )
 
@@ -23,13 +26,19 @@ func main() {
 	defer lock.Lock.Finish()
 	var config Config
 	flag.StringVar(&config.PrivateKey, "key", "6ecd6756d5e9d9df44be83b82d99b17983ae5ce9d0f2de9dcd68c80197aafc4a", "private key to proof that this the the door it pretends to be")
-	flag.StringVar(&config.BootstrapNode, "bootnode", "enode://7d13360f5b1ddcf6947f244639113597a863abba0589d2fa5fffb2816ead0acea6211d5778a8be648e45e81ed881f4c1f5c9bbbf0e79065dfb54bcd97de3beab@127.0.0.1:30349", "bootnode to start connection to the ethereum network")
+	flag.StringVar(&config.BootstrapNode, "bootnode", "enode://7d13360f5b1ddcf6947f244639113597a863abba0589d2fa5fffb2816ead0acea6211d5778a8be648e45e81ed881f4c1f5c9bbbf0e79065dfb54bcd97de3beab@127.0.0.1:8066", "bootnode to start connection to the ethereum network")
 	flag.BoolVar(&config.LogServer, "logserver", false, "enable the logging server")
+	flag.StringVar(&config.ListenAddr, "listenaddr", "127.0.0.1:8067", "listen address for other nodes")
+	flag.IntVar(&config.HTTPPort, "httpport", 9945, "http port for api")
+	flag.StringVar(&config.HTTPHost, "httphost", "127.0.0.1", "http host for api")
 	flag.Parse()
 
 	whisperConfig := message.WhisperConfig{
 		BootstrapNodes: []string{config.BootstrapNode},
 		NodeID:         config.PrivateKey,
+		ListenAddr:     config.ListenAddr,
+		HTTPHost:       config.HTTPHost,
+		HTTPPort:       config.HTTPPort,
 	}
 
 	if config.LogServer {
