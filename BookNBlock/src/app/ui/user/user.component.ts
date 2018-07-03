@@ -76,7 +76,7 @@ export class UserComponent implements OnInit {
     }).catch(err => {
       this.alert.error(err);
       this.doorModal.closeModal();
-    })
+    });
   }
 
   private getOfferForUser() {

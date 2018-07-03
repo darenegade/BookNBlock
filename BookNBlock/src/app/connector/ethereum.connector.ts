@@ -107,6 +107,9 @@ export class EthereumConnector extends BlockchainConnector {
 
   sendMessage(message: OpenDoorMessage): Promise<void> {
     return this.web3.shh.addPrivateKey(`0x${this.user.privateKey}`).then(id => {
+      if (!message.doorId.startsWith('0x')) {
+        message.doorId = '0x' + message.doorId;
+      }
       return this.web3.shh.post({
         sig: id, // signs using the private key ID
         pubKey: message.doorId,
