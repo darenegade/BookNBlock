@@ -9,6 +9,7 @@ import { OpenDoorModalComponent } from './openDoorModal/open-door-modal.componen
 import { MessageService } from '../../services/message.service';
 import { Booking } from '../../data/booking';
 import { BookingResult } from '../booking/booking-item/booking-item.component';
+import { AlertService } from '../../services/alert.service';
 
 /**
  * The user management component.
@@ -38,6 +39,7 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     private queryService: QueryService,
     private messageService: MessageService,
+    private alert: AlertService
   ) {
 
   }
@@ -68,7 +70,13 @@ export class UserComponent implements OnInit {
   }
 
   openDoorForOffer($event: BookingResult) {
-    this.messageService.sendMessage($event.offer.doorId, $event.booking.id);
+    this.messageService.sendMessage($event.offer.doorId, $event.booking.id).then(() => {
+      this.alert.info('Tür geöffnet');
+      this.doorModal.closeModal();
+    }).catch(err => {
+      this.alert.error(err);
+      this.doorModal.closeModal();
+    })
   }
 
   private getOfferForUser() {
