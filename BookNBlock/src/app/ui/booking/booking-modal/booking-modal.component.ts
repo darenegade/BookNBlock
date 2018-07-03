@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { Offer } from '../../../data/offer';
 import { TransactionService } from '../../../services/transaction.service';
 import { AlertService } from '../../../services/alert.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-booking-modal',
@@ -19,8 +20,8 @@ export class BookingModalComponent implements OnInit {
   bookingRequest: EventEmitter<any> = new EventEmitter();
 
   constructor(
-    private transactionService: TransactionService,
-    private alert: AlertService) { }
+    private spinner: NgxSpinnerService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -39,6 +40,7 @@ export class BookingModalComponent implements OnInit {
    * Close the modal.
    */
   closeModal() {
+    this.spinner.hide();
     this.active = false;
   }
 
@@ -46,6 +48,7 @@ export class BookingModalComponent implements OnInit {
    * Submit changes to parent component.
    */
   submitChanges() {
+    this.spinner.show();
     this.bookingRequest.emit({ offer: this.currentOffer, fromDate: this.fromDate, toDate: this.toDate });
   }
 }

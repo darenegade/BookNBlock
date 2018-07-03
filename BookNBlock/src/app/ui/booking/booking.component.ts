@@ -8,6 +8,7 @@ import { UserService } from '../../services/user.service';
 import { User } from '../../data/user';
 import { AlertService } from '../../services/alert.service';
 import { TransactionService } from '../../services/transaction.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-booking',
@@ -30,7 +31,8 @@ export class BookingComponent implements OnInit {
     private queryService: QueryService,
     private userService: UserService,
     private alertService: AlertService,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private spinner: NgxSpinnerService
   ) {
     const d = new Date();
     this.fromDate = d.toISOString().substring(0, 10);
@@ -47,10 +49,12 @@ export class BookingComponent implements OnInit {
    * Get all offers.
    */
   getAllOffers(): void {
+    this.spinner.show();
     const from = new Date(this.fromDate);
     const to = new Date(this.toDate);
     this.queryService.queryAllOffers(from, to).then(result => {
       this.allOffers = result;
+      this.spinner.hide();
     });
   }
 

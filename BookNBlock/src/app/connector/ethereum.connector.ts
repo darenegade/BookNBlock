@@ -10,8 +10,7 @@ import { environment } from '../../environments/environment';
 import { Contract, BatchRequest } from 'web3/types';
 import { User } from '../data/user';
 import { Booking } from '../data/booking';
-import { resolve } from 'path';
-import { reject } from 'q';
+
 
 /**
  * A connector to the Ethereum Blockchain.
