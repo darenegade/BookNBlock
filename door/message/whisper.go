@@ -151,7 +151,7 @@ func (w Whisper) Post(openDoorMessage door.OpenDoorMessage, privateKey *ecdsa.Pr
 	if err != nil {
 		return err
 	}
-	destination := crypto.ToECDSAPub(data)
+	destination, err := crypto.DecompressPubkey(data)	
 	if err != nil {
 		return err
 	}
