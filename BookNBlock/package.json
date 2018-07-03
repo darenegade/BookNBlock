@@ -38,6 +38,7 @@
     "crypto-browserify": "^3.12.0",
     "font-awesome": "^4.7.0",
     "moment": "^2.22.2",
+    "ngx-spinner": "^6.0.0",
     "rxjs": "^5.5.6",
     "to-string-loader": "^1.1.5",
     "truffle-hdwallet-provider": "0.0.5",
