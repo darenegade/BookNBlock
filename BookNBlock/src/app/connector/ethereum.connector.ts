@@ -168,6 +168,7 @@ export class EthereumConnector extends BlockchainConnector {
     offer.address = offerFromBC.objectAddress;
     offer.title = offerFromBC.objectName;
     offer.nameLandlord = offerFromBC.ownerName;
+    offer.description = offerFromBC.description;
     return offer;
   }
 }

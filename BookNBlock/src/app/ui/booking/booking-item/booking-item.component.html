@@ -9,6 +9,7 @@
       <div class="columns">
         <div class="column">
           <div class="user-col">
+            <h2>{{offer.title}}</h2>
             <table class="table">
               <thead>
                 <tr>
@@ -22,7 +23,12 @@
                 <tr>
                   <td>{{offer.description}}</td>
                   <td>{{offer.address}}</td>
-                  <td>{{offer.fromDate | date:'dd.MM.yyyy'}} / {{offer.toDate | date:'dd.MM.yyyy'}} </td>
+                  <ng-container *ngIf="booking?.checkIn && booking?.checkOut; else offerBlock">
+                      <td>{{booking.checkIn | date:'dd.MM.yyyy'}} / {{booking.checkOut | date:'dd.MM.yyyy'}} </td>
+                  </ng-container>
+                  <ng-template #offerBlock>
+                    <td>{{offer.fromDate | date:'dd.MM.yyyy'}} / {{offer.toDate | date:'dd.MM.yyyy'}} </td>
+                  </ng-template>
                   <td>{{offer.prize}}</td>
                 </tr>
               </tbody>
