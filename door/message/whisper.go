@@ -44,6 +44,7 @@ type (
 		NodeID         string
 
 		HTTPPort int
+		HTTPHost string
 	}
 )
 
@@ -56,7 +57,7 @@ func StartNode(config WhisperConfig) *Whisper {
 
 	nodeConfig.DataDir = "."
 
-	nodeConfig.HTTPHost = "127.0.0.1"
+	nodeConfig.HTTPHost = config.HTTPHost
 	nodeConfig.HTTPPort = config.HTTPPort
 	nodeConfig.HTTPModules = []string{"shh", "admin"}
 	nodeConfig.HTTPCors = []string{"*"}

@@ -10,6 +10,7 @@ import (
 	"log"
 	"fmt"
 	"strconv"
+	"flag"
 )
 
 const RENTER_PRIVATE_KEY =
@@ -22,11 +23,13 @@ const DOOR_PUBLIC_KEY =
 // main used to start an bootnode for the whisper protocol. It is used to provide an initial
 // central network point for door or renter to join.
 func main() {
-	c := message.WhisperConfig{
-		ListenAddr: "127.0.0.1:30349",
-		NodeID:     `b3651aff593ef395ee7c16f3ca681830f7d8d0b2729cf472b14f2c4ebe833aa0`,
-		HTTPPort:   9945,
-	}
+	c := message.WhisperConfig{}
+	flag.StringVar(&c.ListenAddr, "listenaddr", "127.0.0.1:30349", "listen address for other nodes")
+	flag.StringVar(&c.NodeID, "nodeid", "b3651aff593ef395ee7c16f3ca681830f7d8d0b2729cf472b14f2c4ebe833aa0", "node id is private key for the door")
+	flag.IntVar(&c.HTTPPort, "httpport", 9945,"http port for api")
+	flag.StringVar(&c.HTTPHost, "httphost", "127.0.0.1","http host for api")
+	flag.Parse()
+
 	w := message.StartNode(c)
 	mess,_ := w.Subscribe(door.DoorPrivateKey(DOOR_PRIVATE_KEY))
 	go func() {
