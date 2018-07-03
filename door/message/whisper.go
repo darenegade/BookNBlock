@@ -51,7 +51,7 @@ type (
 // StartNode starts an ethereum p2p node and the whisper protocol. Needed to
 // start listening for messages. Or providing an api to transmit messages.
 func StartNode(config WhisperConfig) *Whisper {
-	elog.Root().SetHandler(elog.LvlFilterHandler(elog.Lvl(elog.LvlInfo), elog.StreamHandler(os.Stderr, elog.TerminalFormat(false))))
+	elog.Root().SetHandler(elog.LvlFilterHandler(elog.Lvl(elog.LvlDebug), elog.StreamHandler(os.Stderr, elog.TerminalFormat(false))))
 
 	nodeConfig := node.DefaultConfig
 
@@ -151,7 +151,7 @@ func (w Whisper) Post(openDoorMessage door.OpenDoorMessage, privateKey *ecdsa.Pr
 	if err != nil {
 		return err
 	}
-	destination, err := crypto.DecompressPubkey(data)	
+	destination,err := crypto.UnmarshalPubkey(data)
 	if err != nil {
 		return err
 	}
