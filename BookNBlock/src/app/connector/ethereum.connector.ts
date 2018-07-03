@@ -82,8 +82,11 @@ export class EthereumConnector extends BlockchainConnector {
 
   async insertOffer(offer: Offer): Promise<number> {
     this.log.debug('EthereumConnector.insertOffer()');
-    return this.contract.methods.insertOffer(offer.prize, offer.title, offer.address, offer.nameLandlord,
-      offer.description, offer.doorId, offer.fromDate.getTime(), offer.toDate.getTime()).send().then(receipt => {
+
+    return this.contract.methods.insertOffer(
+      offer.prize, offer.title, offer.address, offer.nameLandlord,
+      offer.description, offer.doorId, offer.fromDate.getTime(), offer.toDate.getTime())
+      .send({gas: '7000000'}).then(receipt => {
         return 0;
       }).catch(error => {
         return Promise.reject(error);
