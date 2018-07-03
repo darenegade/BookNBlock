@@ -35,7 +35,7 @@ import { DatepickerComponent } from './ui/booking/datepicker/datepicker.componen
 import { BookingModalComponent } from './ui/booking/booking-modal/booking-modal.component';
 import { BookingItemComponent } from './ui/booking/booking-item/booking-item.component';
 import { OpenDoorModalComponent } from './ui/user/openDoorModal/open-door-modal.component';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const passphrase = `diet asthma equip loan jealous twist divorce cloth gym ramp stomach noise`;
 const publicKey = 'VhXic4UDRfv5w86p2hq7';
@@ -65,6 +65,7 @@ const walletId = '0xADF900e582b34EC29DF534e32db6250cf9529FB9';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgxSpinnerModule,
     NgLoggerModule.forRoot(environment.loglevel),
     RouterModule.forRoot(routes)
   ],

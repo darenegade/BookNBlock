@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Offer } from '../../data/offer';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../data/user';
 import { UserService } from '../../services/user.service';
 import { TransactionService } from '../../services/transaction.service';
 import { AlertService } from '../../services/alert.service';
 import { Logger } from '@nsalaun/ng-logger';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-offer',
@@ -17,8 +17,11 @@ export class OfferComponent implements OnInit {
   offerForm: FormGroup;
   user: User;
 
-  constructor(private userService: UserService, private transactionService: TransactionService,
-    private alert: AlertService, private log: Logger) {
+  constructor(private userService: UserService,
+    private transactionService: TransactionService,
+    private spinner: NgxSpinnerService,
+    private alert: AlertService,
+    private log: Logger) {
     this.createOfferForm();
   }
 
@@ -42,6 +45,7 @@ export class OfferComponent implements OnInit {
   }
 
   onSubmit() {
+    this.spinner.show();
     const formModel = this.offerForm.value;
     const address = `${formModel.street} ${formModel.number}
     ${formModel.zip} ${formModel.city}`;
@@ -49,7 +53,9 @@ export class OfferComponent implements OnInit {
       new Date(formModel.toDate), address, formModel.title,
       formModel.nameLandlord, formModel.description).then(offer => {
         this.alert.success('Zimmer erfolgreich angelegt.');
+        this.spinner.hide();
       }).catch(err => {
+        this.spinner.hide();
         this.log.error(err);
         this.alert.error('Zimmer konnte nicht angelegt werden.');
       });
