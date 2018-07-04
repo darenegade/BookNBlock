@@ -30,7 +30,7 @@ type Offer struct {
 	DoorID     string
 }
 
-func (e *Ethereum) IsAllowedAt(booking door.BookingID, renter door.RenterPublicKey, timestamp int) (allowed bool, err error) {
+func (e *Ethereum) IsAllowedAt(booking door.BookingID, renter door.RenterPublicKey, timestamp int64) (allowed bool, err error) {
 	//Annahme: Es existiert ein Contract mit der Methode 'isAllowed(doorID string, renterID string, time time.Time)'
 	if e.contract == nil {
 		fmt.Print("Contract not initialized yet.")
@@ -38,7 +38,7 @@ func (e *Ethereum) IsAllowedAt(booking door.BookingID, renter door.RenterPublicK
 	}
 	callOpts := bind.CallOpts{Pending: true}
 
-	allowed, err = e.contract.IsAllowedAt(&callOpts, big.NewInt(int64(booking)), common.HexToAddress(string(renter)), big.NewInt(int64(timestamp)))
+	allowed, err = e.contract.IsAllowedAt(&callOpts, big.NewInt(int64(booking)), common.HexToAddress(string(renter)), big.NewInt(timestamp))
 	// fmt.Println(allowed)
 	// allowed = true
 	// test2, err := e.contract.GetOfferIDs(&callOpts)

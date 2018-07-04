@@ -13,7 +13,7 @@ type (
 	OpenDoorMessage struct {
 		DoorID       DoorPublicKey
 		RenterPubkey RenterPublicKey
-		Timestamp    int
+		Timestamp    int64
 		Booking      BookingID
 	}
 

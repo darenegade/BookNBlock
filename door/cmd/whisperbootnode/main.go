@@ -44,8 +44,8 @@ func main() {
 		booking, _ := strconv.Atoi(scanner.Text())
 		opendoormessage := door.OpenDoorMessage{
 			DoorID: DOOR_PUBLIC_KEY,
-			RenterPubkey: door.RenterPublicKey("0xADF900e582b34EC29DF534e32db6250cf9529FB9"),
-			Timestamp: int(time.Now().Unix()),
+			RenterPubkey: door.RenterPublicKey(`0x889D7cD07E813775082Df71838704F3111a70374`),
+			Timestamp: time.Now().Unix(),
 			Booking: door.BookingID(booking),
 		}
 
