@@ -45,7 +45,7 @@ func main() {
 		opendoormessage := door.OpenDoorMessage{
 			DoorID: DOOR_PUBLIC_KEY,
 			RenterPubkey: door.RenterPublicKey(`0x889D7cD07E813775082Df71838704F3111a70374`),
-			Timestamp: time.Now().Unix(),
+			Timestamp: time.Now().UnixNano()/1000,
 			Booking: door.BookingID(booking),
 		}
 
